@@ -1,9 +1,8 @@
 # Pleo RevOps Performance Analyst — Technical Challenge
 
-**Author:** Daniel Amezquita
-**Submission:** `Amezquita_Daniel_RevOps`
-**Stack:** dbt (`dbt-duckdb`) → DuckDB → Jupyter → single-HTML React + Recharts
-**Analysis date:** 14 May 2026 (Q2 2026, week 7)
+**Author:** Daniel Amezquita · **Stack:** dbt + DuckDB → Jupyter → React + Recharts
+
+**[→ View dashboard](https://juandaniel190.github.io/Pleo/)**
 
 ## What's here
 
