@@ -55,9 +55,10 @@ def render_html():
     """
     app_jsx     = (DASH_DIR / 'app.jsx').read_text()
     queries_js  = (DASH_DIR / 'queries.js').read_text()
+    # Strip the `export` keyword — when inlined into <script type="module">
+    # the export declaration is a syntax error in some browsers.
+    queries_js  = queries_js.replace('export async function loadData', 'async function loadData')
 
-    # Heredoc for JSX needs all braces escaped for f-string. We use .format
-    # with a triple-brace trick instead to keep the JSX readable.
     template = HTML_TEMPLATE.replace('__QUERIES_JS__', queries_js) \
                             .replace('__APP_JSX__', app_jsx)
 

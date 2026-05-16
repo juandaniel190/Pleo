@@ -48,18 +48,19 @@ async function bootDuckDB() {
 }
 
 async function mountTables(db) {
-  // Tell DuckDB how to fetch each parquet over HTTP, then create a view per
-  // table so the rest of the queries can use unqualified names.
+  // Fetch each parquet as a full buffer and register it in-memory.
+  // This avoids HTTP range requests (which Python's http.server doesn't support)
+  // and works on any static host including GitHub Pages.
   const conn = await db.connect();
-  for (const t of TABLES) {
+  await Promise.all(TABLES.map(async (t) => {
     const filename = `${t}.parquet`;
-    await db.registerFileURL(
-      filename,
-      `${DATA_DIR}/${filename}`,
-      duckdb.DuckDBDataProtocol.HTTP,
-      false
-    );
-    await conn.query(`CREATE OR REPLACE VIEW ${t} AS SELECT * FROM '${filename}'`);
+    const resp = await fetch(`${DATA_DIR}/${filename}`);
+    if (!resp.ok) throw new Error(`Failed to fetch ${filename}: ${resp.status}`);
+    const buf = await resp.arrayBuffer();
+    await db.registerFileBuffer(filename, new Uint8Array(buf));
+  }));
+  for (const t of TABLES) {
+    await conn.query(`CREATE OR REPLACE VIEW ${t} AS SELECT * FROM '${t}.parquet'`);
   }
   return conn;
 }
@@ -123,7 +124,7 @@ async function buildTrend(conn) {
     FROM fct_quarterly_arr
     WHERE right(quarter, 4) IN ('2024','2025','2026')
     GROUP BY right(quarter, 4) || ' ' || left(quarter, 2)
-    ORDER BY right(quarter, 4), left(quarter, 2)`);
+    ORDER BY 1`);
   return r.map(x => ({ quarter: x.quarter, target_k: num(x.target_k), closed_k: num(x.closed_k) }));
 }
 
