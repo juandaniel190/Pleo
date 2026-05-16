@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_funnel_events_standardized
+    description: Funnel events with canonical demand_source and market (UK rename).

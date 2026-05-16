@@ -1,0 +1,13 @@
+.venv/
+pleo/
+__pycache__/
+*.pyc
+*.duckdb
+*.duckdb.wal
+.DS_Store
+dbt_pleo/target/
+dbt_pleo/logs/
+.ipynb_checkpoints/
+logs/
+.claude/
+nohup.out

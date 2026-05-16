@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_accounts_standardized
+    description: Canonical country / market (UK, not UKI) / segment re-derived from *_raw with drift flags vs Pleo's pre-cleaned columns.

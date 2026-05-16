@@ -1,0 +1,12 @@
+pleo_revops:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # NOTE: the database file lives outside the project folder because the
+      # mounted folder on the runner does not permit overwriting .wal files.
+      # In a normal local checkout this would just be 'pleo.duckdb'.
+      path: "{{ env_var('DBT_DUCKDB_PATH', '/tmp/pleo.duckdb') }}"
+      threads: 4
+      extensions:
+        - parquet

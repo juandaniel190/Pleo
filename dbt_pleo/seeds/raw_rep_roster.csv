@@ -1,0 +1,17 @@
+rep_id,rep_name,market,segment,team,ramp_status,rep_start_date,annual_quota_eur,market_change_date,prior_market,ramp_start_month,full_productivity_month,notes
+REP-001,S. Andersen,UKI,Enterprise,Team UKI,Active,2022-03-01,180000,,,,,
+REP-002,N. Walsh,UKI,Enterprise,Team UKI,Active,2023-01-15,168000,,,,,
+REP-003,M. Eriksson,UKI,Mid-Market,Team UKI,Active,2022-09-01,108000,,,,,
+REP-004,L. Dubois,UKI,Mid-Market,Team UKI,Active,2021-06-01,96000,2025-10-01,DK,,,Changed market from DK to UKI in Oct 2025. Attribute pre-Oct pipeline to DK.
+REP-005,J. Patel,UKI,SMB,Team UKI,Active,2024-02-01,60000,,,,,
+REP-006,N. Weber,DE,Enterprise,Team DACH,Active,2022-05-01,192000,,,,,
+REP-007,T. Brauer,DE,Mid-Market,Team DACH,Active,2023-04-01,120000,,,,,
+REP-008,E. Lindqvist,SE,Enterprise,Team Nordics,Active,2022-11-01,156000,,,,,
+REP-009,S. Muller,SE,Mid-Market,Team Nordics,Ramping,2025-10-01,84000,,,2025-10,2026-04,Ramping. Started Oct 2025. 6-month ramp. Full productivity from Apr 2026. May 2026 is month 8 — full quota.
+REP-010,P. Van Berg,NL,Enterprise,Team Benelux,Active,2022-04-01,168000,,,,,
+REP-011,F. Jacobs,NL,Mid-Market,Team Benelux,Active,2023-06-01,96000,,,,,
+REP-012,C. Rossi,DK,Enterprise,Team Nordics,Active,2022-07-01,156000,,,,,
+REP-013,I. Garcia,ES,Mid-Market,Team South,Active,2023-03-01,84000,,,,,
+REP-014,O. Svensson,ES,SMB,Team South,Active,2024-04-01,48000,,,,,
+REP-015,A. Kowalski,DE,SMB,Team DACH,Active,2024-07-01,60000,,,,,
+REP-016,K. Nguyen,ES,Enterprise,Team South,Ramping,2026-02-01,144000,,,2026-02,2026-08,Ramping. Started Feb 2026. 6-month ramp. Full productivity from Aug 2026. May 2026 is month 4 (67% productivity).

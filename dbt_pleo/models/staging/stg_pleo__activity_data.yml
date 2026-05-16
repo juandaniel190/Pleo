@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_pleo__activity_data
+    description: Activity log. opportunity_id is nullable (pre-opp SDR outreach).
+    columns:
+      - name: activity_id
+        data_tests: [unique, not_null]

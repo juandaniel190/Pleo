@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: fct_rep_attainment
+    description: Rep × month closed-won ARR vs ramp-adjusted target with QTD running totals.

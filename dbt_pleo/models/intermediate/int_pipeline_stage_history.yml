@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_pipeline_stage_history
+    description: Per-opp snapshot history with previous-stage / previous-close-date lookbacks and slippage.

@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_activity_outcomes_filled
+    description: Activity log with missing outcomes coalesced to 'Unknown' and is_outcome_known flag.

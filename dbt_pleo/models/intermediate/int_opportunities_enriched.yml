@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_opportunities_enriched
+    description: Opportunities joined to accounts and reps, with canonical stage and demand_source plus is_open/won/lost lifecycle flags.

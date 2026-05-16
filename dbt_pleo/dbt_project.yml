@@ -1,0 +1,67 @@
+name: 'pleo_revops'
+version: '1.0.0'
+config-version: 2
+
+profile: 'pleo_revops'
+
+model-paths:    ["models"]
+seed-paths:     ["seeds"]
+macro-paths:    ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Analysis-as-of date — override with `dbt run --vars '{analysis_as_of_date: "2026-05-14"}'`
+vars:
+  analysis_as_of_date: "current_date"
+
+models:
+  pleo_revops:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
+
+# Seeds: every column that contains a mixed-format date or a '%' is forced to
+# varchar so the parse_date / parse_percent macros in staging can normalise it.
+# This avoids fighting DuckDB's CSV sniffer (which sees the first few rows and
+# picks DATE/INTEGER, then chokes on later rows with DD/MM/YYYY or 100%).
+seeds:
+  pleo_revops:
+    +schema: raw
+    +quote_columns: true
+    raw_accounts:
+      +column_types:
+        created_date: varchar
+    raw_opportunities:
+      +column_types:
+        close_date: varchar
+        created_date: varchar
+        created_at: varchar
+        close_probability_pct: varchar
+    raw_pipeline_snapshots:
+      +column_types:
+        snapshot_month: varchar
+        close_date_at_snapshot: varchar
+        next_step_date: varchar
+    raw_funnel_events:
+      +column_types:
+        event_month: varchar
+    raw_sales_targets:
+      +column_types:
+        target_month: varchar
+    raw_rep_roster:
+      +column_types:
+        rep_start_date: varchar
+        market_change_date: varchar
+        ramp_start_month: varchar
+        full_productivity_month: varchar
+    raw_activity_data:
+      +column_types:
+        activity_date: varchar

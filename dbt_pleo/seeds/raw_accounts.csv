@@ -1,0 +1,41 @@
+account_id,account_name,country,country_raw,market,region_raw,segment,segment_raw,industry,employee_count,created_date
+ACC-001,Too Good To Go,DK,DK,DK,DK,Mid-Market,Mid Market,Food Tech,854,2021-12-27
+ACC-002,Trustpilot,DK,DK,DK,DK,Enterprise,Enterprise,SaaS / Review Platform,5139,2021-07-25
+ACC-003,Templafy,DK,Denmark,DK,DK,Mid-Market,Mid-Market,SaaS / Productivity,877,23/04/2022
+ACC-004,Pento,DK,DK,DK,DK,SMB,SMB,HR Tech / Payroll,26,2023-07-19
+ACC-005,Contractbook,DK,Denmark,DK,Denmark,SMB,SMB,Legal Tech,30,2023-07-16
+ACC-006,Lunar,DK,Denmark,DK,DK,Mid-Market,Mid-Market,FinTech / Banking,333,2023-01-14
+ACC-007,Klarna,SE,SE,SE,Nordics,Enterprise,Large,FinTech / Payments,2332,29/06/2023
+ACC-008,Epidemic Sound,SE,SE,SE,Sweden,Mid-Market,Mid-Market,Media / Music,646,2022-10-15
+ACC-009,Mentimeter,SE,Sweden,SE,SE,SMB,smb,SaaS / Collaboration,44,05/08/2021
+ACC-010,Kry,SE,SE,SE,Nordics,Mid-Market,Mid-Market,Health Tech,317,19/03/2024
+ACC-011,Worksome,SE,Sweden,SE,SE,SMB,SMB,Future of Work,86,08/06/2024
+ACC-012,Funnel.io,SE,Sweden,SE,Sweden,SMB,small,SaaS / Analytics,80,2024-03-07
+ACC-013,Personio,DE,DE,DE,DE,Enterprise,Enterprise,HR Tech,6574,2023-10-13
+ACC-014,GetYourGuide,DE,Germany,DE,DE,Mid-Market,Mid-Market,Travel Tech,798,04/06/2024
+ACC-015,Taxfix,DE,Germany,DE,Germany,SMB,SMB,FinTech,15,2022-11-22
+ACC-016,Aleph Alpha,DE,DE,DE,DE,SMB,Small,AI / Research,92,2022-07-13
+ACC-017,Contentful,DE,DE,DE,Germany,Mid-Market,Mid-Market,SaaS / CMS,119,16/01/2022
+ACC-018,Mews Systems,NL,Netherlands,NL,NL,Mid-Market,Mid-Market,Hospitality Tech,680,2021-11-09
+ACC-019,Adyen,NL,NL,NL,NL,Enterprise,ENT,FinTech / Payments,4893,2024-06-30
+ACC-020,Sendcloud,NL,NL,NL,Netherlands,SMB,small,Logistics Tech,40,01/03/2023
+ACC-021,Catawiki,NL,Netherlands,NL,NL,Mid-Market,mid-market,E-commerce / Marketplace,330,10/10/2021
+ACC-022,Picnic,NL,NL,NL,NL,Mid-Market,Mid Market,E-commerce / Grocery,824,2021-09-29
+ACC-023,Glovo,ES,ES,ES,ES,Enterprise,Enterprise,On-Demand Delivery,2949,23/12/2022
+ACC-024,Factorial,ES,ES,ES,ES,Mid-Market,Mid-Market,HR Tech,690,2024-01-25
+ACC-025,Holded,ES,Spain,ES,ES,SMB,SMB,SaaS / ERP,70,27/05/2023
+ACC-026,Amenitiz,ES,ES,ES,ES,SMB,SMB,Hospitality Tech,58,2022-01-10
+ACC-027,TravelPerk,ES,ES,ES,Southern Europe,Mid-Market,Mid Market,Travel Tech,573,2022-10-25
+ACC-028,Jobandtalent,ES,ES,ES,ES,Mid-Market,Mid-Market,Future of Work,195,2022-09-28
+ACC-029,Wallapop,ES,Spain,ES,ES,Mid-Market,Mid-Market,E-commerce / Marketplace,268,2023-07-17
+ACC-030,Wolt,GB,UK,UKI,UKI,Mid-Market,mid-market,Food Delivery,777,2024-02-22
+ACC-031,Monzo Bank,GB,GB,UKI,UKI,Enterprise,Enterprise,FinTech / Banking,7027,2024-06-15
+ACC-032,Wise,GB,GB,UKI,UKI,Enterprise,Enterprise,FinTech / Payments,2289,2021-09-25
+ACC-033,Typeform,GB,GB,UKI,UKI,Mid-Market,Mid Market,SaaS / Forms,352,2021-08-21
+ACC-034,Bloom & Wild,GB,United Kingdom,UKI,UK&I,SMB,Small,E-commerce / Retail,55,02/10/2022
+ACC-035,Remote,IE,Ireland,UKI,UKI,Mid-Market,Mid-Market,HR Tech / Future of Work,736,2021-12-22
+ACC-036,Omio,GB,United Kingdom,UKI,UK&I,Mid-Market,MM,Travel Tech,478,2023-01-05
+ACC-037,Urban Sports Club,DE,Germany,DE,DE,Mid-Market,Mid-Market,Health & Wellness,406,2021-12-30
+ACC-038,Alan,IE,IE,UKI,UKI,SMB,smb,InsurTech,41,2023-05-04
+ACC-039,Dept Agency,NL,Netherlands,NL,NL,Mid-Market,MM,Digital Agency,194,16/10/2023
+ACC-040,Bolt,DE,DE,DE,DACH,Enterprise,ENT,Mobility / Ride-Hailing,2323,22/11/2023

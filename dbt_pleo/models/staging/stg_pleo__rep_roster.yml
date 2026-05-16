@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_pleo__rep_roster
+    description: Rep master (16 reps) — includes ramp metadata.
+    columns:
+      - name: rep_id
+        data_tests: [unique, not_null]

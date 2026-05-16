@@ -1,0 +1,238 @@
+activity_id,activity_date,rep_id,account_id,opportunity_id,activity_type,outcome,notes
+ACT-0001,18/08/2024,REP-001,ACC-030,OPP-001,Call,Connected,Budget discussion — CFO joining.
+ACT-0002,28/08/2024,REP-001,ACC-030,OPP-001,Meeting,Demo Scheduled,Price concern raised.
+ACT-0003,2024-07-20,REP-001,ACC-030,OPP-001,Email,No Reply,Sent follow-up email.
+ACT-0004,23/07/2024,REP-001,ACC-030,OPP-001,Meeting,,Escalated to regional VP.
+ACT-0005,2026-01-23,REP-001,ACC-033,OPP-002,LinkedIn,Connected,Demo rescheduled.
+ACT-0006,2026-01-16,REP-001,ACC-033,OPP-002,Email,Replied,Escalated to regional VP.
+ACT-0007,18/01/2024,REP-001,ACC-036,OPP-003,Meeting,No Show,
+ACT-0008,2024-03-20,REP-001,ACC-036,OPP-003,Meeting,Demo Scheduled,Demo rescheduled.
+ACT-0009,2024-03-11,REP-001,ACC-036,OPP-003,Demo,,
+ACT-0010,21/07/2024,REP-001,ACC-033,OPP-004,LinkedIn,,
+ACT-0011,20/08/2024,REP-001,ACC-033,OPP-004,LinkedIn,No Reply,POC requested.
+ACT-0012,2024-07-07,REP-001,ACC-033,OPP-004,Email,No Reply,
+ACT-0013,2024-06-19,REP-001,ACC-033,OPP-004,Email,Replied,Price concern raised.
+ACT-0014,29/08/2024,REP-001,ACC-030,OPP-005,Email,Meeting Booked,Left voicemail.
+ACT-0015,23/06/2024,REP-001,ACC-030,OPP-005,Email,No Reply,Budget discussion — CFO joining.
+ACT-0016,2024-07-03,REP-001,ACC-030,OPP-005,Email,No Reply,Budget discussion — CFO joining.
+ACT-0017,15/06/2024,REP-001,ACC-030,OPP-005,Meeting,Demo Scheduled,
+ACT-0018,21/06/2024,REP-001,ACC-033,OPP-006,Email,No Reply,Competitor mentioned (Expensify).
+ACT-0019,21/06/2024,REP-001,ACC-033,OPP-006,Demo,Proposal Requested,POC requested.
+ACT-0020,2024-07-10,REP-001,ACC-033,OPP-006,Meeting,No Show,Champion confirmed.
+ACT-0021,17/06/2024,REP-001,ACC-033,OPP-006,LinkedIn,,Left voicemail.
+ACT-0022,03/08/2024,REP-001,ACC-031,OPP-007,Demo,Proposal Requested,Decision delayed to next quarter.
+ACT-0023,28/06/2024,REP-001,ACC-031,OPP-007,Meeting,Demo Scheduled,Budget discussion — CFO joining.
+ACT-0024,2024-08-16,REP-001,ACC-031,OPP-007,Meeting,No Show,Sent follow-up email.
+ACT-0025,2024-06-19,REP-001,ACC-036,OPP-008,Call,No Answer,POC requested.
+ACT-0026,13/07/2024,REP-001,ACC-036,OPP-008,LinkedIn,,Price concern raised.
+ACT-0027,2024-08-26,REP-002,ACC-031,OPP-009,Call,No Answer,Demo rescheduled.
+ACT-0028,14/08/2024,REP-002,ACC-031,OPP-009,Email,,Multi-threaded — 3 contacts.
+ACT-0029,23/02/2025,REP-002,ACC-038,OPP-010,Demo,Proposal Requested,
+ACT-0030,23/01/2025,REP-002,ACC-038,OPP-010,Call,Meeting Booked,
+ACT-0031,2025-02-01,REP-002,ACC-038,OPP-010,Meeting,Demo Scheduled,
+ACT-0032,16/06/2025,REP-002,ACC-031,OPP-011,Meeting,No Show,Multi-threaded — 3 contacts.
+ACT-0033,2025-04-22,REP-002,ACC-031,OPP-011,Email,Meeting Booked,
+ACT-0034,2025-05-25,REP-002,ACC-031,OPP-011,Meeting,Follow-up Booked,POC requested.
+ACT-0035,2025-04-13,REP-002,ACC-031,OPP-011,Call,,Strong product interest.
+ACT-0036,2025-05-01,REP-002,ACC-038,OPP-012,Email,No Reply,Left voicemail.
+ACT-0037,29/05/2025,REP-002,ACC-038,OPP-012,Call,Connected,POC requested.
+ACT-0038,12/05/2025,REP-002,ACC-038,OPP-012,Email,Replied,Multi-threaded — 3 contacts.
+ACT-0039,2025-04-28,REP-002,ACC-038,OPP-012,Meeting,Demo Scheduled,Strong product interest.
+ACT-0040,2024-07-14,REP-002,ACC-034,OPP-013,LinkedIn,No Reply,Competitor mentioned (Expensify).
+ACT-0041,01/08/2024,REP-002,ACC-034,OPP-013,Call,No Answer,Demo rescheduled.
+ACT-0042,23/07/2024,REP-002,ACC-034,OPP-013,LinkedIn,,Multi-threaded — 3 contacts.
+ACT-0043,08/08/2024,REP-003,ACC-036,OPP-014,Call,Meeting Booked,Budget discussion — CFO joining.
+ACT-0044,20/06/2024,REP-003,ACC-036,OPP-014,Call,,
+ACT-0045,2024-06-22,REP-003,ACC-036,OPP-014,Email,No Reply,POC requested.
+ACT-0046,30/08/2024,REP-003,ACC-036,OPP-014,Demo,No Progress,Budget discussion — CFO joining.
+ACT-0047,2025-07-14,REP-003,ACC-036,OPP-015,Email,Meeting Booked,
+ACT-0048,2025-07-22,REP-003,ACC-036,OPP-015,Call,Connected,Budget discussion — CFO joining.
+ACT-0049,2025-08-09,REP-003,ACC-036,OPP-015,Email,No Reply,Strong product interest.
+ACT-0050,2024-08-01,REP-003,ACC-030,OPP-016,Meeting,No Show,Champion confirmed.
+ACT-0051,06/08/2024,REP-003,ACC-030,OPP-016,Meeting,Demo Scheduled,Stakeholder change.
+ACT-0052,2024-08-06,REP-003,ACC-030,OPP-016,Call,Connected,Multi-threaded — 3 contacts.
+ACT-0053,2024-09-08,REP-003,ACC-036,OPP-017,Call,Meeting Booked,POC requested.
+ACT-0054,23/11/2024,REP-003,ACC-036,OPP-017,Demo,Next Step,Procurement team engaged.
+ACT-0055,10/11/2024,REP-003,ACC-036,OPP-017,Email,Replied,Competitor mentioned (Expensify).
+ACT-0056,2024-07-06,REP-003,ACC-033,OPP-018,Call,No Answer,Strong product interest.
+ACT-0057,09/08/2024,REP-003,ACC-033,OPP-018,Email,No Reply,Decision delayed to next quarter.
+ACT-0058,10/06/2024,REP-003,ACC-036,OPP-019,Email,No Reply,Sent follow-up email.
+ACT-0059,2024-06-17,REP-003,ACC-036,OPP-019,Call,Connected,Stakeholder change.
+ACT-0060,12/06/2024,REP-004,ACC-035,OPP-020,Email,No Reply,No response to 3 touchpoints.
+ACT-0061,2024-07-10,REP-004,ACC-035,OPP-020,Email,No Reply,Demo rescheduled.
+ACT-0062,2024-06-17,REP-004,ACC-036,OPP-021,Call,Connected,Demo rescheduled.
+ACT-0063,10/07/2024,REP-004,ACC-036,OPP-021,Meeting,Demo Scheduled,Decision delayed to next quarter.
+ACT-0064,29/06/2024,REP-004,ACC-036,OPP-021,Call,Meeting Booked,Stakeholder change.
+ACT-0065,24/06/2024,REP-004,ACC-036,OPP-021,Meeting,No Show,
+ACT-0066,2025-04-26,REP-004,ACC-032,OPP-022,Email,Replied,POC requested.
+ACT-0067,01/06/2025,REP-004,ACC-032,OPP-022,Meeting,Demo Scheduled,Champion confirmed.
+ACT-0068,11/08/2024,REP-005,ACC-038,OPP-023,Meeting,Demo Scheduled,Escalated to regional VP.
+ACT-0069,01/07/2024,REP-005,ACC-038,OPP-023,Meeting,Demo Scheduled,Budget discussion — CFO joining.
+ACT-0070,14/07/2024,REP-005,ACC-038,OPP-023,Call,Connected,Multi-threaded — 3 contacts.
+ACT-0071,28/08/2024,REP-005,ACC-035,OPP-024,Call,Connected,Champion confirmed.
+ACT-0072,15/08/2024,REP-005,ACC-035,OPP-024,Meeting,Demo Scheduled,Price concern raised.
+ACT-0073,2024-07-10,REP-005,ACC-035,OPP-024,LinkedIn,,Stakeholder change.
+ACT-0074,2024-07-12,REP-005,ACC-035,OPP-024,Email,Replied,Competitor mentioned (Expensify).
+ACT-0075,08/07/2024,REP-005,ACC-034,OPP-025,Demo,Next Step,
+ACT-0076,2024-05-25,REP-005,ACC-034,OPP-025,Email,No Reply,Multi-threaded — 3 contacts.
+ACT-0077,26/05/2024,REP-005,ACC-034,OPP-025,Email,Meeting Booked,No response to 3 touchpoints.
+ACT-0078,2024-04-29,REP-005,ACC-034,OPP-025,Meeting,Demo Scheduled,POC requested.
+ACT-0079,19/05/2024,REP-005,ACC-038,OPP-026,LinkedIn,Connected,Champion confirmed.
+ACT-0080,08/05/2024,REP-005,ACC-038,OPP-026,Demo,Next Step,Stakeholder change.
+ACT-0081,19/07/2024,REP-005,ACC-030,OPP-027,Email,No Reply,Competitor mentioned (Expensify).
+ACT-0082,25/06/2024,REP-005,ACC-030,OPP-027,Email,Meeting Booked,Competitor mentioned (Expensify).
+ACT-0083,2024-07-07,REP-005,ACC-030,OPP-027,LinkedIn,Connected,Budget discussion — CFO joining.
+ACT-0084,2025-04-02,REP-005,ACC-038,OPP-028,Call,Connected,Budget discussion — CFO joining.
+ACT-0085,17/04/2025,REP-005,ACC-038,OPP-028,Meeting,Demo Scheduled,Price concern raised.
+ACT-0086,28/05/2025,REP-005,ACC-038,OPP-028,Email,Replied,No response to 3 touchpoints.
+ACT-0087,28/04/2025,REP-005,ACC-038,OPP-028,Call,No Answer,Decision delayed to next quarter.
+ACT-0088,04/08/2024,REP-006,ACC-014,OPP-029,Call,No Answer,Sent follow-up email.
+ACT-0089,05/06/2024,REP-006,ACC-014,OPP-029,Email,Replied,Budget discussion — CFO joining.
+ACT-0090,19/06/2024,REP-006,ACC-014,OPP-029,Meeting,No Show,
+ACT-0091,11/06/2024,REP-006,ACC-014,OPP-029,Email,No Reply,Budget discussion — CFO joining.
+ACT-0092,2024-08-21,REP-006,ACC-040,OPP-030,Email,No Reply,Multi-threaded — 3 contacts.
+ACT-0093,08/08/2024,REP-006,ACC-040,OPP-030,Meeting,Demo Scheduled,Escalated to regional VP.
+ACT-0094,2024-07-16,REP-006,ACC-040,OPP-030,LinkedIn,No Reply,Sent follow-up email.
+ACT-0095,28/08/2024,REP-006,ACC-040,OPP-030,LinkedIn,Connected,Sent follow-up email.
+ACT-0096,2024-07-31,REP-006,ACC-017,OPP-031,Email,Meeting Booked,POC requested.
+ACT-0097,02/08/2024,REP-006,ACC-017,OPP-031,Call,Meeting Booked,Competitor mentioned (Expensify).
+ACT-0098,2024-08-18,REP-006,ACC-017,OPP-031,Call,Connected,Price concern raised.
+ACT-0099,2024-08-15,REP-006,ACC-017,OPP-031,Meeting,No Show,Procurement team engaged.
+ACT-0100,01/07/2024,REP-006,ACC-013,OPP-032,Email,Replied,Budget discussion — CFO joining.
+ACT-0101,19/06/2024,REP-006,ACC-013,OPP-032,Meeting,Demo Scheduled,Stakeholder change.
+ACT-0102,2024-07-01,REP-006,ACC-013,OPP-032,Meeting,Follow-up Booked,No response to 3 touchpoints.
+ACT-0103,2024-06-07,REP-006,ACC-013,OPP-032,Meeting,Demo Scheduled,Price concern raised.
+ACT-0104,2025-04-20,REP-007,ACC-017,OPP-033,Email,No Reply,Stakeholder change.
+ACT-0105,26/05/2025,REP-007,ACC-017,OPP-033,Meeting,Follow-up Booked,Left voicemail.
+ACT-0106,05/04/2025,REP-007,ACC-017,OPP-033,LinkedIn,Connected,
+ACT-0107,06/06/2024,REP-007,ACC-016,OPP-034,Call,Meeting Booked,Procurement team engaged.
+ACT-0108,13/07/2024,REP-007,ACC-016,OPP-034,Call,Meeting Booked,Demo rescheduled.
+ACT-0109,26/08/2024,REP-007,ACC-016,OPP-034,Meeting,Follow-up Booked,Price concern raised.
+ACT-0110,2024-07-11,REP-007,ACC-016,OPP-034,Email,Replied,Escalated to regional VP.
+ACT-0111,07/08/2024,REP-007,ACC-037,OPP-035,Call,No Answer,Procurement team engaged.
+ACT-0112,2024-06-25,REP-007,ACC-037,OPP-035,Call,Connected,Champion confirmed.
+ACT-0113,2026-02-16,REP-001,ACC-030,OPP-083,Call,Connected,Champion confirmed.
+ACT-0114,24/02/2026,REP-001,ACC-030,OPP-083,Call,Connected,Procurement team engaged.
+ACT-0115,27/03/2026,REP-001,ACC-030,OPP-083,Meeting,No Show,Price concern raised.
+ACT-0116,2026-03-08,REP-002,ACC-030,OPP-084,Meeting,No Show,Procurement team engaged.
+ACT-0117,23/02/2026,REP-002,ACC-038,OPP-085,Email,No Reply,Price concern raised.
+ACT-0118,2026-04-24,REP-002,ACC-038,OPP-085,Email,Replied,Champion confirmed.
+ACT-0119,06/03/2026,REP-002,ACC-030,OPP-086,Call,,Demo rescheduled.
+ACT-0120,2026-02-03,REP-002,ACC-030,OPP-086,Demo,Proposal Requested,Stakeholder change.
+ACT-0121,20/02/2026,REP-003,ACC-035,OPP-087,Meeting,Demo Scheduled,
+ACT-0122,2026-03-28,REP-003,ACC-035,OPP-087,Email,Replied,Left voicemail.
+ACT-0123,30/04/2026,REP-003,ACC-031,OPP-088,Demo,No Progress,POC requested.
+ACT-0124,24/03/2026,REP-003,ACC-031,OPP-088,Call,Connected,
+ACT-0125,2026-02-11,REP-003,ACC-035,OPP-089,Demo,No Progress,Price concern raised.
+ACT-0126,12/04/2026,REP-003,ACC-035,OPP-089,Call,No Answer,Stakeholder change.
+ACT-0127,2026-04-22,REP-004,ACC-038,OPP-090,Meeting,Demo Scheduled,Competitor mentioned (Expensify).
+ACT-0128,25/02/2026,REP-004,ACC-038,OPP-091,Call,No Answer,Stakeholder change.
+ACT-0129,2026-04-11,REP-005,ACC-036,OPP-092,Meeting,Demo Scheduled,Sent follow-up email.
+ACT-0130,2026-02-08,REP-005,ACC-038,OPP-093,Email,Replied,Strong product interest.
+ACT-0131,2026-04-25,REP-005,ACC-038,OPP-093,Meeting,Follow-up Booked,Budget discussion — CFO joining.
+ACT-0132,2026-02-19,REP-005,ACC-032,OPP-094,Email,,Decision delayed to next quarter.
+ACT-0133,25/04/2026,REP-006,ACC-014,OPP-095,Call,Connected,Champion confirmed.
+ACT-0134,2026-03-31,REP-006,ACC-014,OPP-095,Meeting,Demo Scheduled,Champion confirmed.
+ACT-0135,2026-04-05,REP-006,ACC-014,OPP-095,Meeting,Demo Scheduled,Escalated to regional VP.
+ACT-0136,2026-04-28,REP-006,ACC-037,OPP-096,Email,No Reply,Multi-threaded — 3 contacts.
+ACT-0137,2026-02-28,REP-006,ACC-037,OPP-096,Meeting,No Show,Champion confirmed.
+ACT-0138,2026-02-19,REP-006,ACC-017,OPP-097,Meeting,No Show,Demo rescheduled.
+ACT-0139,2026-03-04,REP-006,ACC-017,OPP-097,LinkedIn,,Stakeholder change.
+ACT-0140,2026-02-03,REP-006,ACC-014,OPP-098,Demo,,Price concern raised.
+ACT-0141,2026-04-25,REP-006,ACC-017,OPP-099,Meeting,Demo Scheduled,Strong product interest.
+ACT-0142,2026-04-23,REP-007,ACC-016,OPP-100,Call,No Answer,Sent follow-up email.
+ACT-0143,24/02/2026,REP-007,ACC-037,OPP-101,Meeting,Demo Scheduled,No response to 3 touchpoints.
+ACT-0144,2026-03-26,REP-007,ACC-037,OPP-101,Call,Connected,No response to 3 touchpoints.
+ACT-0145,11/04/2026,REP-007,ACC-037,OPP-101,Email,No Reply,Sent follow-up email.
+ACT-0146,15/02/2026,REP-007,ACC-014,OPP-102,Demo,Next Step,Price concern raised.
+ACT-0147,27/04/2026,REP-007,ACC-015,OPP-103,LinkedIn,,POC requested.
+ACT-0148,2026-03-28,REP-008,ACC-010,OPP-104,Call,Connected,Champion confirmed.
+ACT-0149,07/02/2026,REP-008,ACC-009,OPP-105,LinkedIn,Connected,
+ACT-0150,15/02/2026,REP-008,ACC-009,OPP-105,Call,Connected,Escalated to regional VP.
+ACT-0151,2026-02-26,REP-008,ACC-009,OPP-105,Meeting,Follow-up Booked,Multi-threaded — 3 contacts.
+ACT-0152,13/02/2026,REP-008,ACC-009,OPP-106,Call,No Answer,Decision delayed to next quarter.
+ACT-0153,02/04/2026,REP-008,ACC-007,OPP-107,Meeting,,Competitor mentioned (Expensify).
+ACT-0154,20/04/2026,REP-009,ACC-008,OPP-108,Email,No Reply,Strong product interest.
+ACT-0155,2026-03-18,REP-009,ACC-012,OPP-109,LinkedIn,Connected,Sent follow-up email.
+ACT-0156,08/03/2026,REP-009,ACC-012,OPP-109,Call,Connected,Price concern raised.
+ACT-0157,2026-03-16,REP-009,ACC-012,OPP-109,Call,No Answer,
+ACT-0158,2026-02-01,REP-010,ACC-022,OPP-110,Call,Connected,
+ACT-0159,2026-02-01,REP-010,ACC-021,OPP-111,Call,No Answer,Multi-threaded — 3 contacts.
+ACT-0160,2026-02-01,REP-010,ACC-021,OPP-112,Email,No Reply,Left voicemail.
+ACT-0161,01/02/2026,REP-010,ACC-020,OPP-113,LinkedIn,,
+ACT-0162,01/02/2026,REP-011,ACC-019,OPP-114,Email,Replied,
+ACT-0163,2026-02-01,REP-011,ACC-039,OPP-115,Call,Connected,Competitor mentioned (Expensify).
+ACT-0164,2026-02-01,REP-011,ACC-018,OPP-116,Call,Connected,
+ACT-0165,2026-02-01,REP-012,ACC-005,OPP-117,Call,No Answer,Demo rescheduled.
+ACT-0166,18/02/2026,REP-013,ACC-028,OPP-118,Demo,No Progress,Left voicemail.
+ACT-0167,2026-04-22,REP-013,ACC-028,OPP-118,Call,Meeting Booked,POC requested.
+ACT-0168,2026-03-07,REP-013,ACC-028,OPP-119,Meeting,Follow-up Booked,Multi-threaded — 3 contacts.
+ACT-0169,2026-02-08,REP-013,ACC-028,OPP-119,Email,Meeting Booked,Champion confirmed.
+ACT-0170,19/03/2026,REP-014,ACC-023,OPP-120,Email,,Price concern raised.
+ACT-0171,2026-04-24,REP-014,ACC-023,OPP-120,Email,,Competitor mentioned (Expensify).
+ACT-0172,2026-03-03,REP-014,ACC-028,OPP-121,Email,No Reply,Decision delayed to next quarter.
+ACT-0173,14/03/2026,REP-014,ACC-028,OPP-121,Email,Replied,Sent follow-up email.
+ACT-0174,2026-03-20,REP-015,ACC-015,OPP-122,Email,No Reply,
+ACT-0175,10/04/2026,REP-015,ACC-015,OPP-123,Meeting,No Show,No response to 3 touchpoints.
+ACT-0176,2026-04-28,REP-015,ACC-015,OPP-123,LinkedIn,Connected,Demo rescheduled.
+ACT-0177,2026-02-12,REP-015,ACC-015,OPP-123,Call,Meeting Booked,Champion confirmed.
+ACT-0178,2026-03-08,REP-016,ACC-029,OPP-124,Call,No Answer,
+ACT-0179,2026-02-03,REP-016,ACC-024,OPP-125,Call,No Answer,
+ACT-0180,17/03/2026,REP-016,ACC-024,OPP-125,Email,Replied,Strong product interest.
+ACT-0181,09/02/2026,REP-016,ACC-024,OPP-125,Call,No Answer,Escalated to regional VP.
+ACT-0182,16/03/2026,REP-016,ACC-026,OPP-126,Meeting,Demo Scheduled,Demo rescheduled.
+ACT-0183,2026-03-11,REP-016,ACC-026,OPP-126,Email,Meeting Booked,Procurement team engaged.
+ACT-0184,2026-03-02,REP-016,ACC-026,OPP-126,Email,Replied,No response to 3 touchpoints.
+ACT-0185,01/02/2026,REP-012,ACC-005,OPP-127,Email,No Reply,Price concern raised.
+ACT-0186,2026-02-01,REP-010,ACC-020,OPP-128,Demo,Next Step,Decision delayed to next quarter.
+ACT-0187,01/02/2026,REP-011,ACC-022,OPP-129,Call,No Answer,Procurement team engaged.
+ACT-0188,23/10/2025,REP-012,ACC-012,,Email,,No response to 3 touchpoints.
+ACT-0189,2025-12-24,REP-005,ACC-024,,Email,Meeting Booked,Left voicemail.
+ACT-0190,2026-03-16,REP-013,ACC-032,,Call,Meeting Booked,Left voicemail.
+ACT-0191,31/12/2025,REP-011,ACC-019,,Demo,Next Step,Multi-threaded — 3 contacts.
+ACT-0192,19/04/2026,REP-004,ACC-031,,Call,Connected,Left voicemail.
+ACT-0193,2026-04-04,REP-013,ACC-040,,Call,Meeting Booked,Strong product interest.
+ACT-0194,2025-10-21,REP-008,ACC-018,,Call,Connected,
+ACT-0195,04/01/2026,REP-013,ACC-013,,Email,Replied,Stakeholder change.
+ACT-0196,04/12/2025,REP-005,ACC-028,,Email,,No response to 3 touchpoints.
+ACT-0197,12/04/2026,REP-010,ACC-029,,Email,Replied,Demo rescheduled.
+ACT-0198,2026-03-26,REP-010,ACC-011,,Meeting,Demo Scheduled,Budget discussion — CFO joining.
+ACT-0199,2025-11-17,REP-005,ACC-014,,Email,Meeting Booked,Stakeholder change.
+ACT-0200,14/12/2025,REP-003,ACC-001,,Meeting,Follow-up Booked,Competitor mentioned (Expensify).
+ACT-0201,02/04/2026,REP-007,ACC-012,,Email,Replied,POC requested.
+ACT-0202,2026-03-09,REP-016,ACC-036,,Email,,Competitor mentioned (Expensify).
+ACT-0203,11/02/2026,REP-009,ACC-020,,Demo,No Progress,Price concern raised.
+ACT-0204,08/09/2025,REP-016,ACC-016,,Call,Connected,
+ACT-0205,08/02/2026,REP-014,ACC-017,,Meeting,Demo Scheduled,
+ACT-0206,2025-10-12,REP-001,ACC-017,,Meeting,Demo Scheduled,No response to 3 touchpoints.
+ACT-0207,2025-11-09,REP-006,ACC-004,,Email,Meeting Booked,POC requested.
+ACT-0208,2026-02-11,REP-010,ACC-034,,LinkedIn,Connected,Champion confirmed.
+ACT-0209,22/11/2025,REP-006,ACC-035,,Demo,No Progress,No response to 3 touchpoints.
+ACT-0210,27/01/2026,REP-004,ACC-035,,Email,No Reply,No response to 3 touchpoints.
+ACT-0211,2025-11-27,REP-016,ACC-027,,LinkedIn,Connected,
+ACT-0212,23/03/2026,REP-008,ACC-013,,Demo,Proposal Requested,Demo rescheduled.
+ACT-0213,29/03/2026,REP-003,ACC-008,,Call,,POC requested.
+ACT-0214,29/03/2026,REP-012,ACC-009,,Email,No Reply,Price concern raised.
+ACT-0215,2026-03-10,REP-010,ACC-002,,Demo,Next Step,POC requested.
+ACT-0216,2025-10-04,REP-005,ACC-014,,LinkedIn,Connected,Left voicemail.
+ACT-0217,2025-09-11,REP-016,ACC-028,,Call,,
+ACT-0218,2025-09-12,REP-004,ACC-017,,Call,Connected,Strong product interest.
+ACT-0219,19/02/2026,REP-007,ACC-012,,Email,,No response to 3 touchpoints.
+ACT-0220,2026-04-07,REP-012,ACC-011,,Email,No Reply,Champion confirmed.
+ACT-0221,2025-10-26,REP-001,ACC-034,,Meeting,Follow-up Booked,Champion confirmed.
+ACT-0222,06/04/2026,REP-007,ACC-033,,Meeting,Follow-up Booked,Champion confirmed.
+ACT-0223,2025-12-07,REP-006,ACC-023,,Email,Replied,Multi-threaded — 3 contacts.
+ACT-0224,29/09/2025,REP-004,ACC-030,,Email,Meeting Booked,
+ACT-0225,23/11/2025,REP-002,ACC-006,,Email,Replied,Demo rescheduled.
+ACT-0226,2025-12-14,REP-008,ACC-036,,Call,No Answer,
+ACT-0227,04/09/2025,REP-012,ACC-012,,LinkedIn,Connected,Demo rescheduled.
+ACT-0228,2025-10-07,REP-003,ACC-008,,Email,Replied,Budget discussion — CFO joining.
+ACT-0229,2025-11-26,REP-012,ACC-013,,Call,Connected,Decision delayed to next quarter.
+ACT-0230,11/11/2025,REP-014,ACC-032,,Meeting,No Show,No response to 3 touchpoints.
+ACT-0231,13/12/2025,REP-016,ACC-039,,LinkedIn,Connected,Champion confirmed.
+ACT-0232,2026-01-04,REP-004,ACC-017,,Email,No Reply,Champion confirmed.
+ACT-0233,06/01/2026,REP-002,ACC-005,,Meeting,Demo Scheduled,Competitor mentioned (Expensify).
+ACT-0234,07/02/2026,REP-010,ACC-040,,Call,,Demo rescheduled.
+ACT-0235,17/02/2026,REP-007,ACC-019,,Email,No Reply,
+ACT-0236,20/12/2025,REP-001,ACC-003,,Demo,Next Step,Stakeholder change.
+ACT-0237,2025-09-10,REP-015,ACC-030,,Call,Meeting Booked,

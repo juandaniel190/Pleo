@@ -1,0 +1,110 @@
+{
+  "row_counts": {
+    "raw_accounts": 40,
+    "raw_rep_roster": 16,
+    "raw_opportunities": 130,
+    "raw_pipeline_snapshots": 185,
+    "raw_funnel_events": 275,
+    "raw_sales_targets": 464,
+    "raw_activity_data": 237
+  },
+  "pk_uniqueness": {
+    "raw_accounts": {
+      "pk": "account_id",
+      "duplicate_rows": 0,
+      "duplicate_pk_values": []
+    },
+    "raw_rep_roster": {
+      "pk": "rep_id",
+      "duplicate_rows": 0,
+      "duplicate_pk_values": []
+    },
+    "raw_opportunities": {
+      "pk": "opportunity_id",
+      "duplicate_rows": 2,
+      "duplicate_pk_values": [
+        "OPP-127"
+      ]
+    },
+    "raw_funnel_events": {
+      "pk": "event_id",
+      "duplicate_rows": 0,
+      "duplicate_pk_values": []
+    },
+    "raw_sales_targets": {
+      "pk": "target_id",
+      "duplicate_rows": 0,
+      "duplicate_pk_values": []
+    },
+    "raw_activity_data": {
+      "pk": "activity_id",
+      "duplicate_rows": 0,
+      "duplicate_pk_values": []
+    }
+  },
+  "null_counts": {
+    "raw_accounts": {},
+    "raw_rep_roster": {
+      "market_change_date": 15,
+      "prior_market": 15,
+      "ramp_start_month": 14,
+      "full_productivity_month": 14,
+      "notes": 13
+    },
+    "raw_opportunities": {
+      "closed_lost_reason": 66
+    },
+    "raw_pipeline_snapshots": {
+      "next_step_date": 95
+    },
+    "raw_funnel_events": {},
+    "raw_sales_targets": {},
+    "raw_activity_data": {
+      "opportunity_id": 50,
+      "outcome": 26,
+      "notes": 35
+    }
+  },
+  "fk_violations": {
+    "raw_opportunities.account_id -> raw_accounts.account_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_opportunities.owner_id -> raw_rep_roster.rep_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_pipeline_snapshots.opportunity_id -> raw_opportunities.opportunity_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_pipeline_snapshots.owner_id -> raw_rep_roster.rep_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_funnel_events.account_id -> raw_accounts.account_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_funnel_events.rep_id -> raw_rep_roster.rep_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_sales_targets.rep_id -> raw_rep_roster.rep_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_activity_data.rep_id -> raw_rep_roster.rep_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_activity_data.account_id -> raw_accounts.account_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    },
+    "raw_activity_data.opportunity_id -> raw_opportunities.opportunity_id": {
+      "orphan_count": 0,
+      "orphan_values_sample": []
+    }
+  }
+}

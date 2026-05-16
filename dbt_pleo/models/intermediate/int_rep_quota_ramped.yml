@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_rep_quota_ramped
+    description: Rep × month targets with effective_monthly_target_eur that always reflects ramp adjustment.

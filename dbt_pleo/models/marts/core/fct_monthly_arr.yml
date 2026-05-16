@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: fct_monthly_arr
+    description: Monthly ARR view. `new_arr_eur` is closed-won ARR booked in that month; `cumulative_arr_eur` is the running total since 2024-01 (assumes no churn — this dataset has no churn event).
+    columns:
+      - name: month
+        data_tests: [unique, not_null]

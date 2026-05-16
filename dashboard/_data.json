@@ -1,0 +1,917 @@
+{
+  "hero": {
+    "asOf": "14 May 2026",
+    "q2Target": 310600,
+    "q2Closed": 0,
+    "q2Gap": 310600,
+    "q2PipeGross": 854000,
+    "q2PipeWeighted": 255350,
+    "staleDeals": 34,
+    "staleArr": 1341000,
+    "staleWeighted": 383450,
+    "staleAvgSilent": 76,
+    "winRatePct": 22.0,
+    "recoveryEur": 44154
+  },
+  "trend": [
+    {
+      "quarter": "Q1 2024",
+      "target_k": 480.0,
+      "closed_k": 309.0
+    },
+    {
+      "quarter": "Q1 2025",
+      "target_k": 480.0,
+      "closed_k": 155.0
+    },
+    {
+      "quarter": "Q1 2026",
+      "target_k": 480.0,
+      "closed_k": 117.0
+    },
+    {
+      "quarter": "Q2 2024",
+      "target_k": 480.0,
+      "closed_k": 81.0
+    },
+    {
+      "quarter": "Q2 2025",
+      "target_k": 480.0,
+      "closed_k": 162.0
+    },
+    {
+      "quarter": "Q2 2026",
+      "target_k": 310.6,
+      "closed_k": 0.0
+    },
+    {
+      "quarter": "Q3 2024",
+      "target_k": 480.0,
+      "closed_k": 45.0
+    },
+    {
+      "quarter": "Q3 2025",
+      "target_k": 480.0,
+      "closed_k": 157.0
+    },
+    {
+      "quarter": "Q4 2024",
+      "target_k": 480.0,
+      "closed_k": 14.0
+    },
+    {
+      "quarter": "Q4 2025",
+      "target_k": 480.0,
+      "closed_k": 24.0
+    }
+  ],
+  "pipelineQuality": {
+    "stalledDeals": 34,
+    "stalledArr": 1341000,
+    "slippedDeals": 9,
+    "slippedArr": 405000,
+    "avgCycle": 2.0,
+    "aspEur": 59111
+  },
+  "qualityFlags": [
+    {
+      "flag": "Stalled > 30d no activity",
+      "deals": 34,
+      "arr_keur": 1341.0,
+      "flag_owner": "Sales lead",
+      "severity": "red"
+    },
+    {
+      "flag": "Slipped close date",
+      "deals": 9,
+      "arr_keur": 405.0,
+      "flag_owner": "Sales lead",
+      "severity": "red"
+    },
+    {
+      "flag": "Deals > 90d in stage",
+      "deals": 23,
+      "arr_keur": 785.0,
+      "flag_owner": "Sales lead",
+      "severity": "amber"
+    },
+    {
+      "flag": "No activity ever logged",
+      "deals": 0,
+      "arr_keur": 0.0,
+      "flag_owner": "RevOps",
+      "severity": "gray"
+    }
+  ],
+  "aspBySource": [
+    {
+      "demand_source": "Partnerships",
+      "won_deals": 5,
+      "asp_eur": 93600.0,
+      "total_keur": 468.0
+    },
+    {
+      "demand_source": "Marketing",
+      "won_deals": 5,
+      "asp_eur": 68000.0,
+      "total_keur": 340.0
+    },
+    {
+      "demand_source": "SDR Outbound",
+      "won_deals": 5,
+      "asp_eur": 32200.0,
+      "total_keur": 161.0
+    },
+    {
+      "demand_source": "AE Outbound",
+      "won_deals": 3,
+      "asp_eur": 31667.0,
+      "total_keur": 95.0
+    }
+  ],
+  "velocity": [
+    {
+      "stage": "Initial Meeting",
+      "avg_days": 82.7,
+      "opps": 4
+    },
+    {
+      "stage": "Qualified",
+      "avg_days": 78.7,
+      "opps": 9
+    },
+    {
+      "stage": "Contracting",
+      "avg_days": 78.6,
+      "opps": 3
+    },
+    {
+      "stage": "Business Validation",
+      "avg_days": 74.8,
+      "opps": 11
+    },
+    {
+      "stage": "Discovery",
+      "avg_days": 58.8,
+      "opps": 10
+    },
+    {
+      "stage": "Negotiation",
+      "avg_days": 58.4,
+      "opps": 2
+    },
+    {
+      "stage": "Evaluation",
+      "avg_days": 56.7,
+      "opps": 8
+    }
+  ],
+  "topStale": [
+    {
+      "account_name": "Wise",
+      "rep_name": "J. Patel",
+      "market": "UK",
+      "segment": "Enterprise",
+      "stage": "Qualified",
+      "arr_keur": 161.0,
+      "days_silent": 85
+    },
+    {
+      "account_name": "Klarna",
+      "rep_name": "E. Lindqvist",
+      "market": "DK",
+      "segment": "Enterprise",
+      "stage": "Evaluation",
+      "arr_keur": 110.0,
+      "days_silent": 43
+    },
+    {
+      "account_name": "Adyen",
+      "rep_name": "F. Jacobs",
+      "market": "NL",
+      "segment": "Enterprise",
+      "stage": "Initial Meeting",
+      "arr_keur": 95.0,
+      "days_silent": 103
+    },
+    {
+      "account_name": "Wolt",
+      "rep_name": "N. Walsh",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "stage": "Contracting",
+      "arr_keur": 59.0,
+      "days_silent": 70
+    },
+    {
+      "account_name": "Wolt",
+      "rep_name": "S. Andersen",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "stage": "Discovery",
+      "arr_keur": 58.0,
+      "days_silent": 49
+    },
+    {
+      "account_name": "GetYourGuide",
+      "rep_name": "N. Weber",
+      "market": "DE",
+      "segment": "Mid-Market",
+      "stage": "Contracting",
+      "arr_keur": 58.0,
+      "days_silent": 101
+    },
+    {
+      "account_name": "Remote",
+      "rep_name": "M. Eriksson",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "stage": "Negotiation",
+      "arr_keur": 57.0,
+      "days_silent": 33
+    },
+    {
+      "account_name": "Omio",
+      "rep_name": "J. Patel",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "stage": "Discovery",
+      "arr_keur": 53.0,
+      "days_silent": 34
+    },
+    {
+      "account_name": "Jobandtalent",
+      "rep_name": "O. Svensson",
+      "market": "ES",
+      "segment": "Mid-Market",
+      "stage": "Initial Meeting",
+      "arr_keur": 52.0,
+      "days_silent": 62
+    },
+    {
+      "account_name": "Kry",
+      "rep_name": "E. Lindqvist",
+      "market": "DK",
+      "segment": "Mid-Market",
+      "stage": "Qualified",
+      "arr_keur": 49.0,
+      "days_silent": 48
+    },
+    {
+      "account_name": "Factorial",
+      "rep_name": "K. Nguyen",
+      "market": "ES",
+      "segment": "Mid-Market",
+      "stage": "Discovery",
+      "arr_keur": 43.0,
+      "days_silent": 59
+    },
+    {
+      "account_name": "GetYourGuide",
+      "rep_name": "T. Brauer",
+      "market": "DE",
+      "segment": "Mid-Market",
+      "stage": "Evaluation",
+      "arr_keur": 41.0,
+      "days_silent": 89
+    }
+  ],
+  "staleBySegment": [
+    {
+      "market": "UK",
+      "segment": "Mid-Market",
+      "deals": 6,
+      "arr_keur": 296.0
+    },
+    {
+      "market": "NL",
+      "segment": "Mid-Market",
+      "deals": 6,
+      "arr_keur": 199.0
+    },
+    {
+      "market": "UK",
+      "segment": "Enterprise",
+      "deals": 1,
+      "arr_keur": 161.0
+    },
+    {
+      "market": "ES",
+      "segment": "Mid-Market",
+      "deals": 4,
+      "arr_keur": 151.0
+    },
+    {
+      "market": "DE",
+      "segment": "Mid-Market",
+      "deals": 4,
+      "arr_keur": 141.0
+    },
+    {
+      "market": "DK",
+      "segment": "Enterprise",
+      "deals": 1,
+      "arr_keur": 110.0
+    },
+    {
+      "market": "NL",
+      "segment": "Enterprise",
+      "deals": 1,
+      "arr_keur": 95.0
+    },
+    {
+      "market": "DK",
+      "segment": "Mid-Market",
+      "deals": 1,
+      "arr_keur": 49.0
+    },
+    {
+      "market": "NL",
+      "segment": "SMB",
+      "deals": 2,
+      "arr_keur": 30.0
+    },
+    {
+      "market": "SE",
+      "segment": "SMB",
+      "deals": 3,
+      "arr_keur": 29.0
+    },
+    {
+      "market": "DK",
+      "segment": "SMB",
+      "deals": 2,
+      "arr_keur": 28.0
+    },
+    {
+      "market": "UK",
+      "segment": "SMB",
+      "deals": 1,
+      "arr_keur": 18.0
+    },
+    {
+      "market": "ES",
+      "segment": "SMB",
+      "deals": 1,
+      "arr_keur": 17.0
+    },
+    {
+      "market": "DE",
+      "segment": "SMB",
+      "deals": 1,
+      "arr_keur": 17.0
+    }
+  ],
+  "funnel": [
+    {
+      "stage": "Leads",
+      "count": 14,
+      "fill": "#a69ae3"
+    },
+    {
+      "stage": "MQL",
+      "count": 9,
+      "fill": "#a69ae3"
+    },
+    {
+      "stage": "SQL",
+      "count": 8,
+      "fill": "#a69ae3"
+    },
+    {
+      "stage": "Demo",
+      "count": 5,
+      "fill": "#a69ae3"
+    },
+    {
+      "stage": "Opp",
+      "count": 1,
+      "fill": "#ace3bd"
+    },
+    {
+      "stage": "Won",
+      "count": 1,
+      "fill": "#2c8354"
+    }
+  ],
+  "funnelBySource": [
+    {
+      "demand_source": "SDR Outbound",
+      "segment": "Mid-Market",
+      "leads": 5.0,
+      "opps": 1.0,
+      "won": 4.0,
+      "won_keur": 116.0,
+      "lead_to_won": 80.0
+    },
+    {
+      "demand_source": "Marketing",
+      "segment": "Enterprise",
+      "leads": 2.0,
+      "opps": 1.0,
+      "won": 1.0,
+      "won_keur": 87.0,
+      "lead_to_won": 50.0
+    },
+    {
+      "demand_source": "Marketing",
+      "segment": "Mid-Market",
+      "leads": 4.0,
+      "opps": 5.0,
+      "won": 2.0,
+      "won_keur": 63.0,
+      "lead_to_won": 50.0
+    },
+    {
+      "demand_source": "AE Outbound",
+      "segment": "Mid-Market",
+      "leads": 13.0,
+      "opps": 1.0,
+      "won": 2.0,
+      "won_keur": 74.0,
+      "lead_to_won": 15.4
+    },
+    {
+      "demand_source": "SDR Outbound",
+      "segment": "SMB",
+      "leads": 3.0,
+      "opps": 1.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": 0.0
+    },
+    {
+      "demand_source": "Marketing",
+      "segment": "SMB",
+      "leads": 7.0,
+      "opps": 1.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": 0.0
+    },
+    {
+      "demand_source": "AE Outbound",
+      "segment": "Enterprise",
+      "leads": 2.0,
+      "opps": 2.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": 0.0
+    },
+    {
+      "demand_source": "Partnerships",
+      "segment": "Enterprise",
+      "leads": 1.0,
+      "opps": 0.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": 0.0
+    },
+    {
+      "demand_source": "Partnerships",
+      "segment": "SMB",
+      "leads": 0.0,
+      "opps": 2.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": NaN
+    },
+    {
+      "demand_source": "AE Outbound",
+      "segment": "SMB",
+      "leads": 0.0,
+      "opps": 2.0,
+      "won": 1.0,
+      "won_keur": 11.0,
+      "lead_to_won": NaN
+    },
+    {
+      "demand_source": "SDR Outbound",
+      "segment": "Enterprise",
+      "leads": 0.0,
+      "opps": 2.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": NaN
+    },
+    {
+      "demand_source": "Partnerships",
+      "segment": "Mid-Market",
+      "leads": 0.0,
+      "opps": 0.0,
+      "won": 0.0,
+      "won_keur": NaN,
+      "lead_to_won": NaN
+    }
+  ],
+  "slippageTrend": [
+    {
+      "snapshot_month": "2025-09-01",
+      "deals_slipped": 0,
+      "total_deals": 1,
+      "slipped_keur": NaN
+    },
+    {
+      "snapshot_month": "2026-01-01",
+      "deals_slipped": 0,
+      "total_deals": 3,
+      "slipped_keur": NaN
+    },
+    {
+      "snapshot_month": "2026-02-01",
+      "deals_slipped": 1,
+      "total_deals": 34,
+      "slipped_keur": 13.0
+    },
+    {
+      "snapshot_month": "2026-03-01",
+      "deals_slipped": 4,
+      "total_deals": 43,
+      "slipped_keur": 241.0
+    },
+    {
+      "snapshot_month": "2026-04-01",
+      "deals_slipped": 8,
+      "total_deals": 53,
+      "slipped_keur": 183.0
+    },
+    {
+      "snapshot_month": "2026-05-01",
+      "deals_slipped": 9,
+      "total_deals": 47,
+      "slipped_keur": 405.0
+    }
+  ],
+  "rep": [
+    {
+      "rep_name": "K. Nguyen",
+      "market": "ES",
+      "segment": "Enterprise",
+      "team": "Team South",
+      "tgt_eur": 24000.0,
+      "won_eur": 0.0,
+      "q1_att": 325,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "N. Walsh",
+      "market": "UK",
+      "segment": "Enterprise",
+      "team": "Team UKI",
+      "tgt_eur": 28000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "M. Eriksson",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "team": "Team UKI",
+      "tgt_eur": 18000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "O. Svensson",
+      "market": "ES",
+      "segment": "SMB",
+      "team": "Team South",
+      "tgt_eur": 8000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "E. Lindqvist",
+      "market": "SE",
+      "segment": "Enterprise",
+      "team": "Team Nordics",
+      "tgt_eur": 26000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "L. Dubois",
+      "market": "UK",
+      "segment": "Mid-Market",
+      "team": "Team UKI",
+      "tgt_eur": 16000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "S. Muller",
+      "market": "SE",
+      "segment": "Mid-Market",
+      "team": "Team Nordics",
+      "tgt_eur": 4600.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "J. Patel",
+      "market": "UK",
+      "segment": "SMB",
+      "team": "Team UKI",
+      "tgt_eur": 10000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "C. Rossi",
+      "market": "DK",
+      "segment": "Enterprise",
+      "team": "Team Nordics",
+      "tgt_eur": 26000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "A. Kowalski",
+      "market": "DE",
+      "segment": "SMB",
+      "team": "Team DACH",
+      "tgt_eur": 10000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "I. Garcia",
+      "market": "ES",
+      "segment": "Mid-Market",
+      "team": "Team South",
+      "tgt_eur": 14000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "P. Van Berg",
+      "market": "NL",
+      "segment": "Enterprise",
+      "team": "Team Benelux",
+      "tgt_eur": 28000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "T. Brauer",
+      "market": "DE",
+      "segment": "Mid-Market",
+      "team": "Team DACH",
+      "tgt_eur": 20000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "N. Weber",
+      "market": "DE",
+      "segment": "Enterprise",
+      "team": "Team DACH",
+      "tgt_eur": 32000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "F. Jacobs",
+      "market": "NL",
+      "segment": "Mid-Market",
+      "team": "Team Benelux",
+      "tgt_eur": 16000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    },
+    {
+      "rep_name": "S. Andersen",
+      "market": "UK",
+      "segment": "Enterprise",
+      "team": "Team UKI",
+      "tgt_eur": 30000.0,
+      "won_eur": 0.0,
+      "q1_att": 0,
+      "q2_att": 0
+    }
+  ],
+  "pipeByMarket": [
+    {
+      "market": "UK",
+      "segment": "Mid-Market",
+      "open_deals": 6,
+      "arr_keur": 296.0,
+      "weighted_keur": 117.0,
+      "stale_deals": 6,
+      "stale_keur": 296.0
+    },
+    {
+      "market": "DE",
+      "segment": "Mid-Market",
+      "open_deals": 7,
+      "arr_keur": 276.0,
+      "weighted_keur": 160.0,
+      "stale_deals": 4,
+      "stale_keur": 141.0
+    },
+    {
+      "market": "UK",
+      "segment": "Enterprise",
+      "open_deals": 2,
+      "arr_keur": 231.0,
+      "weighted_keur": 53.0,
+      "stale_deals": 1,
+      "stale_keur": 161.0
+    },
+    {
+      "market": "NL",
+      "segment": "Mid-Market",
+      "open_deals": 6,
+      "arr_keur": 199.0,
+      "weighted_keur": 29.0,
+      "stale_deals": 6,
+      "stale_keur": 199.0
+    },
+    {
+      "market": "ES",
+      "segment": "Mid-Market",
+      "open_deals": 5,
+      "arr_keur": 177.0,
+      "weighted_keur": 26.0,
+      "stale_deals": 4,
+      "stale_keur": 151.0
+    },
+    {
+      "market": "ES",
+      "segment": "Enterprise",
+      "open_deals": 1,
+      "arr_keur": 167.0,
+      "weighted_keur": 33.0,
+      "stale_deals": 0,
+      "stale_keur": 0.0
+    },
+    {
+      "market": "DK",
+      "segment": "Enterprise",
+      "open_deals": 1,
+      "arr_keur": 110.0,
+      "weighted_keur": 50.0,
+      "stale_deals": 1,
+      "stale_keur": 110.0
+    },
+    {
+      "market": "NL",
+      "segment": "Enterprise",
+      "open_deals": 1,
+      "arr_keur": 95.0,
+      "weighted_keur": 10.0,
+      "stale_deals": 1,
+      "stale_keur": 95.0
+    },
+    {
+      "market": "DE",
+      "segment": "SMB",
+      "open_deals": 4,
+      "arr_keur": 51.0,
+      "weighted_keur": 14.0,
+      "stale_deals": 1,
+      "stale_keur": 17.0
+    },
+    {
+      "market": "DK",
+      "segment": "Mid-Market",
+      "open_deals": 1,
+      "arr_keur": 49.0,
+      "weighted_keur": 10.0,
+      "stale_deals": 1,
+      "stale_keur": 49.0
+    },
+    {
+      "market": "SE",
+      "segment": "Mid-Market",
+      "open_deals": 1,
+      "arr_keur": 39.0,
+      "weighted_keur": 2.0,
+      "stale_deals": 0,
+      "stale_keur": 0.0
+    },
+    {
+      "market": "UK",
+      "segment": "SMB",
+      "open_deals": 4,
+      "arr_keur": 38.0,
+      "weighted_keur": 10.0,
+      "stale_deals": 1,
+      "stale_keur": 18.0
+    },
+    {
+      "market": "NL",
+      "segment": "SMB",
+      "open_deals": 2,
+      "arr_keur": 30.0,
+      "weighted_keur": 7.0,
+      "stale_deals": 2,
+      "stale_keur": 30.0
+    },
+    {
+      "market": "SE",
+      "segment": "SMB",
+      "open_deals": 3,
+      "arr_keur": 29.0,
+      "weighted_keur": 6.0,
+      "stale_deals": 3,
+      "stale_keur": 29.0
+    },
+    {
+      "market": "DK",
+      "segment": "SMB",
+      "open_deals": 2,
+      "arr_keur": 28.0,
+      "weighted_keur": 7.0,
+      "stale_deals": 2,
+      "stale_keur": 28.0
+    },
+    {
+      "market": "ES",
+      "segment": "SMB",
+      "open_deals": 1,
+      "arr_keur": 17.0,
+      "weighted_keur": 2.0,
+      "stale_deals": 1,
+      "stale_keur": 17.0
+    }
+  ],
+  "drift": [
+    {
+      "field": "Accounts \u2014 market label drift",
+      "drift_rows": 2,
+      "total": 40
+    },
+    {
+      "field": "Accounts \u2014 segment drift",
+      "drift_rows": 0,
+      "total": 40
+    },
+    {
+      "field": "Accounts \u2014 country drift",
+      "drift_rows": 0,
+      "total": 40
+    },
+    {
+      "field": "Opportunities \u2014 stage drift",
+      "drift_rows": 0,
+      "total": 129
+    },
+    {
+      "field": "Opportunities \u2014 demand source drift",
+      "drift_rows": 0,
+      "total": 129
+    }
+  ],
+  "actions": [
+    {
+      "title": "Manager touch on Wise (J. Patel, \u20ac161K, 85d silent)",
+      "owner": "UK Sales Lead",
+      "value": "\u20ac161K at-risk",
+      "when": "This week",
+      "severity": "red"
+    },
+    {
+      "title": "UK Mid-Market re-engagement sprint (6 stale deals, \u20ac296K)",
+      "owner": "UK Sales Lead",
+      "value": "~\u20ac10K recovered",
+      "when": "45 days",
+      "severity": "amber"
+    },
+    {
+      "title": "Automated weekly stale-deal alert (source already in fct_pipeline_health.is_stale)",
+      "owner": "RevOps",
+      "value": "+\u20ac44K recovered",
+      "when": "45 days",
+      "severity": "amber"
+    },
+    {
+      "title": "Lock CRM picklists on segment / market / demand_source / stage",
+      "owner": "RevOps + Sales Ops",
+      "value": "Analyst time + forecast trust",
+      "when": "This sprint",
+      "severity": "gray"
+    },
+    {
+      "title": "Open Q2 contingency review with Finance \u2014 flip RAG to RED",
+      "owner": "CRO",
+      "value": "\u20ac310K target",
+      "when": "This week",
+      "severity": "red"
+    }
+  ]
+}

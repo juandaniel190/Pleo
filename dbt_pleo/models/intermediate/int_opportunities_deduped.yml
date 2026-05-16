@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: int_opportunities_deduped
+    description: Opportunities with OPP-127 duplicate resolved (kept earliest created_at).
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]

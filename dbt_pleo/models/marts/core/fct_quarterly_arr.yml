@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: fct_quarterly_arr
+    description: Quarter × market × segment closed ARR vs target.

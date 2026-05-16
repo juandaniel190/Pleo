@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: dim_accounts
+    description: Conformed account dimension. Canonical market = UK (Pleo's UKI renamed).
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]

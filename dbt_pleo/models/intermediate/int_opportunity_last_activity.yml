@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: int_opportunity_last_activity
+    description: Per-opp last_activity_date and days_since_last_activity (with account-level fallback).

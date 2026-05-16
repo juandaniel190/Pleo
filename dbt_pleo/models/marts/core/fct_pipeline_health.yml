@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: fct_pipeline_health
+    description: Open opportunities with stale flag, stage age, slippage, weighted ARR.
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]

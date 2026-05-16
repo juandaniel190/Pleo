@@ -1,0 +1,276 @@
+event_id,event_month,account_id,rep_id,event_type,demand_source_raw,demand_source_clean,segment,market,arr_eur
+EVT-0001,2024-01,ACC-013,REP-007,SQL,SDR,SDR Outbound,Enterprise,DE,144000
+EVT-0002,2024-01,ACC-013,REP-006,Opportunity Created,SDR,SDR Outbound,Enterprise,DE,87300
+EVT-0003,2024-01,ACC-008,REP-009,Lead Created,Marketing,Marketing,Mid-Market,SE,22400
+EVT-0004,2024-01,ACC-011,REP-009,SQL,SDR Outbound,SDR Outbound,SMB,SE,15300
+EVT-0005,2024-01,ACC-014,REP-006,Closed Won,Marketing,Marketing,Mid-Market,DE,19200
+EVT-0006,2024-01,ACC-028,REP-016,Closed Lost,Marketing,Marketing,Mid-Market,ES,27200
+EVT-0007,2024-01,ACC-017,REP-015,MQL,SDR Outbound,SDR Outbound,Mid-Market,DE,44100
+EVT-0008,2024-01,ACC-028,REP-016,MQL,Inbound,Marketing,Mid-Market,ES,38400
+EVT-0009,2024-02,ACC-040,REP-006,Lead Created,Marketing,Marketing,Enterprise,DE,79200
+EVT-0010,2024-02,ACC-036,REP-002,MQL,sdr outbound,SDR Outbound,Mid-Market,UKI,36900
+EVT-0011,2024-02,ACC-016,REP-007,MQL,sdr outbound,SDR Outbound,SMB,DE,8100
+EVT-0012,2024-02,ACC-028,REP-013,SQL,SDR Outbound,SDR Outbound,Mid-Market,ES,20700
+EVT-0013,2024-02,ACC-005,REP-012,Demo Completed,SDR,SDR Outbound,SMB,DK,10800
+EVT-0014,2024-02,ACC-019,REP-011,MQL,SDR Outbound,SDR Outbound,Enterprise,NL,88200
+EVT-0015,2024-02,ACC-022,REP-010,Closed Won,Marketing,Marketing,Mid-Market,NL,20000
+EVT-0016,2024-02,ACC-002,REP-012,MQL,Partner,Partnerships,Enterprise,DK,91000
+EVT-0017,2024-03,ACC-020,REP-011,Opportunity Created,MKT,Marketing,SMB,NL,13600
+EVT-0018,2024-03,ACC-020,REP-011,Lead Created,Channel,Partnerships,SMB,NL,19600
+EVT-0019,2024-03,ACC-022,REP-011,Demo Completed,AE Outbound,AE Outbound,Mid-Market,NL,25000
+EVT-0020,2024-03,ACC-031,REP-003,Lead Created,AE Outbound,AE Outbound,Enterprise,UKI,171000
+EVT-0021,2024-03,ACC-026,REP-016,MQL,AE outbound,AE Outbound,SMB,ES,15000
+EVT-0022,2024-03,ACC-039,REP-011,Lead Created,AE Outbound,AE Outbound,Mid-Market,NL,20000
+EVT-0023,2024-03,ACC-026,REP-014,Demo Completed,Marketing,Marketing,SMB,ES,8800
+EVT-0024,2024-03,ACC-040,REP-015,Demo Completed,Inbound,Marketing,Enterprise,DE,117600
+EVT-0025,2024-03,ACC-026,REP-014,Demo Completed,Marketing,Marketing,SMB,ES,8000
+EVT-0026,2024-03,ACC-014,REP-007,SQL,SDR Outbound,SDR Outbound,Mid-Market,DE,44100
+EVT-0027,2024-04,ACC-034,REP-005,Demo Completed,SDR,SDR Outbound,SMB,UKI,10800
+EVT-0028,2024-04,ACC-002,REP-012,Demo Completed,Marketing,Marketing,Enterprise,DK,133600
+EVT-0029,2024-04,ACC-012,REP-008,Lead Created,Marketing,Marketing,SMB,SE,8000
+EVT-0030,2024-04,ACC-023,REP-013,MQL,Marketing,Marketing,Enterprise,ES,85600
+EVT-0031,2024-04,ACC-022,REP-011,MQL,AE outbound,AE Outbound,Mid-Market,NL,40000
+EVT-0032,2024-04,ACC-007,REP-009,Closed Won,Marketing,Marketing,Enterprise,SE,52800
+EVT-0033,2024-04,ACC-024,REP-016,SQL,MKT,Marketing,Mid-Market,ES,24800
+EVT-0034,2024-04,ACC-023,REP-014,MQL,Marketing,Marketing,Enterprise,ES,140800
+EVT-0035,2024-04,ACC-011,REP-009,Lead Created,MKT,Marketing,SMB,SE,13600
+EVT-0036,2024-04,ACC-010,REP-009,Opportunity Created,Channel,Partnerships,Mid-Market,SE,43400
+EVT-0037,2024-04,ACC-018,REP-010,Opportunity Created,AE outbound,AE Outbound,Mid-Market,NL,50000
+EVT-0038,2024-05,ACC-013,REP-007,SQL,AE Outbound,AE Outbound,Enterprise,DE,95000
+EVT-0039,2024-05,ACC-002,REP-012,Demo Completed,Sales Outbound,AE Outbound,Enterprise,DK,175000
+EVT-0040,2024-05,ACC-025,REP-016,Demo Completed,mktg,Marketing,SMB,ES,6400
+EVT-0041,2024-05,ACC-016,REP-007,Opportunity Created,sdr outbound,SDR Outbound,SMB,DE,15300
+EVT-0042,2024-05,ACC-012,REP-008,Opportunity Created,MKT,Marketing,SMB,SE,12800
+EVT-0043,2024-05,ACC-020,REP-010,Demo Completed,Sales Outbound,AE Outbound,SMB,NL,16000
+EVT-0044,2024-05,ACC-006,REP-012,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,DK,47700
+EVT-0045,2024-05,ACC-023,REP-013,Lead Created,sdr outbound,SDR Outbound,Enterprise,ES,94500
+EVT-0046,2024-05,ACC-009,REP-009,Demo Completed,Inbound,Marketing,SMB,SE,10400
+EVT-0047,2024-06,ACC-038,REP-002,Demo Completed,AE Outbound,AE Outbound,SMB,UKI,14000
+EVT-0048,2024-06,ACC-032,REP-002,Opportunity Created,mktg,Marketing,Enterprise,UKI,68000
+EVT-0049,2024-06,ACC-003,REP-012,Closed Lost,mktg,Marketing,Mid-Market,DK,18400
+EVT-0050,2024-06,ACC-023,REP-013,SQL,AE Outbound,AE Outbound,Enterprise,ES,117000
+EVT-0051,2024-06,ACC-004,REP-012,Opportunity Created,Marketing,Marketing,SMB,DK,6400
+EVT-0052,2024-06,ACC-013,REP-006,SQL,AE outbound,AE Outbound,Enterprise,DE,128000
+EVT-0053,2024-06,ACC-011,REP-008,MQL,Marketing,Marketing,SMB,SE,4800
+EVT-0054,2024-07,ACC-008,REP-008,Lead Created,Sales Outbound,AE Outbound,Mid-Market,SE,42000
+EVT-0055,2024-07,ACC-034,REP-003,MQL,AE Outbound,AE Outbound,SMB,UKI,13000
+EVT-0056,2024-07,ACC-010,REP-009,SQL,SDR,SDR Outbound,Mid-Market,SE,27000
+EVT-0057,2024-07,ACC-002,REP-012,Closed Won,Marketing,Marketing,Enterprise,DK,69600
+EVT-0058,2024-07,ACC-012,REP-008,SQL,SDR Outbound,SDR Outbound,SMB,SE,10800
+EVT-0059,2024-07,ACC-018,REP-010,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,NL,53100
+EVT-0060,2024-07,ACC-016,REP-006,Lead Created,SDR Outbound,SDR Outbound,SMB,DE,12600
+EVT-0061,2024-08,ACC-010,REP-008,Lead Created,AE Outbound,AE Outbound,Mid-Market,SE,60000
+EVT-0062,2024-08,ACC-031,REP-003,SQL,AE outbound,AE Outbound,Enterprise,UKI,74000
+EVT-0063,2024-08,ACC-019,REP-011,SQL,sdr outbound,SDR Outbound,Enterprise,NL,135000
+EVT-0064,2024-08,ACC-026,REP-014,Lead Created,AE OB,AE Outbound,SMB,ES,9000
+EVT-0065,2024-08,ACC-026,REP-013,Opportunity Created,Marketing,Marketing,SMB,ES,5600
+EVT-0066,2024-08,ACC-024,REP-014,Lead Created,sdr outbound,SDR Outbound,Mid-Market,ES,32400
+EVT-0067,2024-08,ACC-009,REP-009,Lead Created,Marketing,Marketing,SMB,SE,9600
+EVT-0068,2024-08,ACC-032,REP-002,Lead Created,SDR Outbound,SDR Outbound,Enterprise,UKI,91800
+EVT-0069,2024-08,ACC-009,REP-008,MQL,Marketing,Marketing,SMB,SE,5600
+EVT-0070,2024-09,ACC-037,REP-006,MQL,AE outbound,AE Outbound,Mid-Market,DE,25000
+EVT-0071,2024-09,ACC-036,REP-005,Opportunity Created,MKT,Marketing,Mid-Market,UKI,38400
+EVT-0072,2024-09,ACC-040,REP-007,Opportunity Created,SDR Outbound,SDR Outbound,Enterprise,DE,124200
+EVT-0073,2024-09,ACC-016,REP-006,Opportunity Created,MKT,Marketing,SMB,DE,9600
+EVT-0074,2024-09,ACC-029,REP-016,Lead Created,AE Outbound,AE Outbound,Mid-Market,ES,51000
+EVT-0075,2024-09,ACC-022,REP-010,SQL,sdr outbound,SDR Outbound,Mid-Market,NL,40500
+EVT-0076,2024-09,ACC-005,REP-012,Lead Created,SDR Outbound,SDR Outbound,SMB,DK,5400
+EVT-0077,2024-09,ACC-001,REP-012,Lead Created,AE outbound,AE Outbound,Mid-Market,DK,38000
+EVT-0078,2024-09,ACC-005,REP-012,Closed Lost,Marketing,Marketing,SMB,DK,9600
+EVT-0079,2024-09,ACC-013,REP-007,Lead Created,SDR,SDR Outbound,Enterprise,DE,105300
+EVT-0080,2024-10,ACC-016,REP-006,SQL,Marketing,Marketing,SMB,DE,11200
+EVT-0081,2024-10,ACC-025,REP-016,Demo Completed,AE Outbound,AE Outbound,SMB,ES,14000
+EVT-0082,2024-10,ACC-033,REP-004,Opportunity Created,Inbound,Marketing,Mid-Market,UKI,31200
+EVT-0083,2024-10,ACC-026,REP-013,SQL,Sales Outbound,AE Outbound,SMB,ES,7000
+EVT-0084,2024-10,ACC-022,REP-011,Lead Created,sdr outbound,SDR Outbound,Mid-Market,NL,21600
+EVT-0085,2024-10,ACC-028,REP-016,Lead Created,Marketing,Marketing,Mid-Market,ES,35200
+EVT-0086,2024-10,ACC-014,REP-007,SQL,Marketing,Marketing,Mid-Market,DE,24000
+EVT-0087,2024-10,ACC-038,REP-004,Lead Created,SDR,SDR Outbound,SMB,UKI,14400
+EVT-0088,2024-10,ACC-039,REP-010,SQL,AE Outbound,AE Outbound,Mid-Market,NL,53000
+EVT-0089,2024-11,ACC-027,REP-013,SQL,SDR,SDR Outbound,Mid-Market,ES,23400
+EVT-0090,2024-11,ACC-021,REP-011,Opportunity Created,Inbound,Marketing,Mid-Market,NL,44800
+EVT-0091,2024-11,ACC-010,REP-008,Opportunity Created,partnerships,Partnerships,Mid-Market,SE,36400
+EVT-0092,2024-11,ACC-027,REP-014,Opportunity Created,Sales Outbound,AE Outbound,Mid-Market,ES,53000
+EVT-0093,2024-11,ACC-025,REP-016,Lead Created,Sales Outbound,AE Outbound,SMB,ES,8000
+EVT-0094,2024-11,ACC-039,REP-011,Opportunity Created,Partnerships,Partnerships,Mid-Market,NL,35000
+EVT-0095,2024-11,ACC-028,REP-016,SQL,SDR Outbound,SDR Outbound,Mid-Market,ES,32400
+EVT-0096,2024-11,ACC-030,REP-004,MQL,SDR Outbound,SDR Outbound,Mid-Market,UKI,24300
+EVT-0097,2024-11,ACC-012,REP-009,Lead Created,MKT,Marketing,SMB,SE,6400
+EVT-0098,2024-11,ACC-035,REP-004,Opportunity Created,SDR,SDR Outbound,Mid-Market,UKI,21600
+EVT-0099,2024-12,ACC-014,REP-015,Opportunity Created,SDR,SDR Outbound,Mid-Market,DE,32400
+EVT-0100,2024-12,ACC-025,REP-016,Lead Created,SDR Outbound,SDR Outbound,SMB,ES,5400
+EVT-0101,2024-12,ACC-006,REP-012,Lead Created,mktg,Marketing,Mid-Market,DK,44000
+EVT-0102,2024-12,ACC-010,REP-008,SQL,AE OB,AE Outbound,Mid-Market,SE,22000
+EVT-0103,2024-12,ACC-036,REP-003,Lead Created,mktg,Marketing,Mid-Market,UKI,42400
+EVT-0104,2024-12,ACC-010,REP-008,Lead Created,Marketing,Marketing,Mid-Market,SE,16000
+EVT-0105,2024-12,ACC-027,REP-016,MQL,Marketing,Marketing,Mid-Market,ES,29600
+EVT-0106,2024-12,ACC-019,REP-010,SQL,Sales Outbound,AE Outbound,Enterprise,NL,126000
+EVT-0107,2024-12,ACC-013,REP-007,SQL,Marketing,Marketing,Enterprise,DE,70400
+EVT-0108,2024-12,ACC-005,REP-012,Opportunity Created,sdr outbound,SDR Outbound,SMB,DK,12600
+EVT-0109,2024-12,ACC-025,REP-014,Closed Lost,SDR Outbound,SDR Outbound,SMB,ES,8100
+EVT-0110,2025-01,ACC-010,REP-008,Lead Created,Partnerships,Partnerships,Mid-Market,SE,58799
+EVT-0111,2025-01,ACC-020,REP-011,Opportunity Created,Marketing,Marketing,SMB,NL,10400
+EVT-0112,2025-01,ACC-018,REP-010,Closed Won,Marketing,Marketing,Mid-Market,NL,22400
+EVT-0113,2025-01,ACC-006,REP-012,Opportunity Created,Partnerships,Partnerships,Mid-Market,DK,62999
+EVT-0114,2025-01,ACC-029,REP-013,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,ES,24300
+EVT-0115,2025-01,ACC-030,REP-002,Opportunity Created,Marketing,Marketing,Mid-Market,UKI,27200
+EVT-0116,2025-01,ACC-016,REP-007,SQL,Sales Outbound,AE Outbound,SMB,DE,16000
+EVT-0117,2025-01,ACC-018,REP-010,MQL,AE Outbound,AE Outbound,Mid-Market,NL,55000
+EVT-0118,2025-01,ACC-034,REP-003,Demo Completed,Marketing,Marketing,SMB,UKI,12000
+EVT-0119,2025-01,ACC-023,REP-014,Opportunity Created,mktg,Marketing,Enterprise,ES,64000
+EVT-0120,2025-01,ACC-012,REP-008,Lead Created,AE Outbound,AE Outbound,SMB,SE,10000
+EVT-0121,2025-02,ACC-030,REP-001,Lead Created,Partner,Partnerships,Mid-Market,UKI,75600
+EVT-0122,2025-02,ACC-006,REP-012,SQL,Sales Outbound,AE Outbound,Mid-Market,DK,31000
+EVT-0123,2025-02,ACC-002,REP-012,Opportunity Created,AE OB,AE Outbound,Enterprise,DK,84000
+EVT-0124,2025-02,ACC-021,REP-010,Opportunity Created,Marketing,Marketing,Mid-Market,NL,28800
+EVT-0125,2025-02,ACC-021,REP-011,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,NL,36000
+EVT-0126,2025-02,ACC-018,REP-010,Opportunity Created,Marketing,Marketing,Mid-Market,NL,30400
+EVT-0127,2025-02,ACC-005,REP-012,MQL,AE Outbound,AE Outbound,SMB,DK,18000
+EVT-0128,2025-02,ACC-002,REP-012,MQL,Marketing,Marketing,Enterprise,DK,76000
+EVT-0129,2025-02,ACC-016,REP-007,Lead Created,SDR Outbound,SDR Outbound,SMB,DE,16200
+EVT-0130,2025-03,ACC-008,REP-008,Lead Created,AE Outbound,AE Outbound,Mid-Market,SE,34000
+EVT-0131,2025-03,ACC-039,REP-010,SQL,SDR Outbound,SDR Outbound,Mid-Market,NL,49500
+EVT-0132,2025-03,ACC-020,REP-011,Opportunity Created,AE Outbound,AE Outbound,SMB,NL,16000
+EVT-0133,2025-03,ACC-029,REP-014,MQL,SDR,SDR Outbound,Mid-Market,ES,23400
+EVT-0134,2025-03,ACC-033,REP-005,SQL,AE Outbound,AE Outbound,Mid-Market,UKI,28000
+EVT-0135,2025-03,ACC-022,REP-010,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,NL,43200
+EVT-0136,2025-03,ACC-034,REP-003,Lead Created,Partner,Partnerships,SMB,UKI,12600
+EVT-0137,2025-03,ACC-016,REP-007,Lead Created,Inbound,Marketing,SMB,DE,4800
+EVT-0138,2025-03,ACC-039,REP-011,Opportunity Created,Marketing,Marketing,Mid-Market,NL,27200
+EVT-0139,2025-04,ACC-039,REP-010,Lead Created,Sales Outbound,AE Outbound,Mid-Market,NL,51000
+EVT-0140,2025-04,ACC-009,REP-009,Closed Lost,mktg,Marketing,SMB,SE,14400
+EVT-0141,2025-04,ACC-014,REP-006,SQL,AE OB,AE Outbound,Mid-Market,DE,22000
+EVT-0142,2025-04,ACC-003,REP-012,MQL,AE Outbound,AE Outbound,Mid-Market,DK,60000
+EVT-0143,2025-04,ACC-026,REP-014,Demo Completed,mktg,Marketing,SMB,ES,7200
+EVT-0144,2025-04,ACC-032,REP-005,Opportunity Created,AE OB,AE Outbound,Enterprise,UKI,135000
+EVT-0145,2025-04,ACC-019,REP-010,SQL,Marketing,Marketing,Enterprise,NL,64800
+EVT-0146,2025-04,ACC-039,REP-010,Lead Created,Marketing,Marketing,Mid-Market,NL,48000
+EVT-0147,2025-04,ACC-040,REP-007,Closed Won,SDR,SDR Outbound,Enterprise,DE,72900
+EVT-0148,2025-04,ACC-019,REP-011,MQL,Marketing,Marketing,Enterprise,NL,64800
+EVT-0149,2025-04,ACC-033,REP-004,MQL,SDR,SDR Outbound,Mid-Market,UKI,37800
+EVT-0150,2025-05,ACC-026,REP-013,Lead Created,Marketing,Marketing,SMB,ES,12000
+EVT-0151,2025-05,ACC-022,REP-010,MQL,Marketing,Marketing,Mid-Market,NL,18400
+EVT-0152,2025-05,ACC-028,REP-014,Lead Created,AE Outbound,AE Outbound,Mid-Market,ES,51000
+EVT-0153,2025-05,ACC-004,REP-012,Demo Completed,AE outbound,AE Outbound,SMB,DK,11000
+EVT-0154,2025-05,ACC-036,REP-002,Opportunity Created,AE Outbound,AE Outbound,Mid-Market,UKI,34000
+EVT-0155,2025-05,ACC-022,REP-011,Lead Created,Sales Outbound,AE Outbound,Mid-Market,NL,34000
+EVT-0156,2025-05,ACC-018,REP-010,Opportunity Created,Marketing,Marketing,Mid-Market,NL,33600
+EVT-0157,2025-05,ACC-032,REP-004,Opportunity Created,sdr outbound,SDR Outbound,Enterprise,UKI,128700
+EVT-0158,2025-06,ACC-020,REP-011,Demo Completed,Inbound,Marketing,SMB,NL,14400
+EVT-0159,2025-06,ACC-011,REP-009,SQL,MKT,Marketing,SMB,SE,8000
+EVT-0160,2025-06,ACC-024,REP-016,SQL,Channel,Partnerships,Mid-Market,ES,35000
+EVT-0161,2025-06,ACC-033,REP-005,MQL,SDR,SDR Outbound,Mid-Market,UKI,38700
+EVT-0162,2025-06,ACC-004,REP-012,Demo Completed,SDR Outbound,SDR Outbound,SMB,DK,16200
+EVT-0163,2025-06,ACC-031,REP-003,Lead Created,mktg,Marketing,Enterprise,UKI,70400
+EVT-0164,2025-06,ACC-039,REP-011,SQL,mktg,Marketing,Mid-Market,NL,44800
+EVT-0165,2025-06,ACC-016,REP-006,Opportunity Created,Marketing,Marketing,SMB,DE,7200
+EVT-0166,2025-06,ACC-033,REP-005,Closed Won,SDR,SDR Outbound,Mid-Market,UKI,25200
+EVT-0167,2025-06,ACC-034,REP-004,MQL,SDR,SDR Outbound,SMB,UKI,9900
+EVT-0168,2025-06,ACC-028,REP-013,MQL,SDR Outbound,SDR Outbound,Mid-Market,ES,20700
+EVT-0169,2025-07,ACC-009,REP-008,Demo Completed,Inbound,Marketing,SMB,SE,12000
+EVT-0170,2025-07,ACC-008,REP-009,MQL,Partnerships,Partnerships,Mid-Market,SE,70000
+EVT-0171,2025-07,ACC-020,REP-011,Lead Created,Marketing,Marketing,SMB,NL,13600
+EVT-0172,2025-07,ACC-010,REP-009,MQL,AE OB,AE Outbound,Mid-Market,SE,55000
+EVT-0173,2025-07,ACC-029,REP-013,SQL,SDR Outbound,SDR Outbound,Mid-Market,ES,28800
+EVT-0174,2025-07,ACC-034,REP-002,MQL,SDR,SDR Outbound,SMB,UKI,9000
+EVT-0175,2025-07,ACC-019,REP-011,Opportunity Created,Marketing,Marketing,Enterprise,NL,80000
+EVT-0176,2025-07,ACC-037,REP-006,Closed Won,MKT,Marketing,Mid-Market,DE,26400
+EVT-0177,2025-07,ACC-005,REP-012,Demo Completed,SDR,SDR Outbound,SMB,DK,7200
+EVT-0178,2025-07,ACC-026,REP-016,Lead Created,SDR Outbound,SDR Outbound,SMB,ES,5400
+EVT-0179,2025-07,ACC-015,REP-015,SQL,SDR Outbound,SDR Outbound,SMB,DE,9900
+EVT-0180,2025-08,ACC-014,REP-015,Closed Won,sdr outbound,SDR Outbound,Mid-Market,DE,31500
+EVT-0181,2025-08,ACC-021,REP-011,Opportunity Created,Marketing,Marketing,Mid-Market,NL,41600
+EVT-0182,2025-08,ACC-013,REP-015,MQL,MKT,Marketing,Enterprise,DE,100800
+EVT-0183,2025-08,ACC-004,REP-012,Opportunity Created,AE Outbound,AE Outbound,SMB,DK,11000
+EVT-0184,2025-08,ACC-008,REP-009,Demo Completed,Marketing,Marketing,Mid-Market,SE,38400
+EVT-0185,2025-08,ACC-014,REP-007,MQL,Partnerships,Partnerships,Mid-Market,DE,57399
+EVT-0186,2025-08,ACC-005,REP-012,MQL,Marketing,Marketing,SMB,DK,5600
+EVT-0187,2025-08,ACC-002,REP-012,Demo Completed,SDR Outbound,SDR Outbound,Enterprise,DK,108000
+EVT-0188,2025-08,ACC-039,REP-011,Lead Created,SDR,SDR Outbound,Mid-Market,NL,44100
+EVT-0189,2025-08,ACC-032,REP-001,SQL,mktg,Marketing,Enterprise,UKI,69600
+EVT-0190,2025-09,ACC-009,REP-009,SQL,Sales Outbound,AE Outbound,SMB,SE,14000
+EVT-0191,2025-09,ACC-035,REP-005,Demo Completed,AE outbound,AE Outbound,Mid-Market,UKI,30000
+EVT-0192,2025-09,ACC-009,REP-009,Opportunity Created,Sales Outbound,AE Outbound,SMB,SE,18000
+EVT-0193,2025-09,ACC-037,REP-006,Closed Won,sdr outbound,SDR Outbound,Mid-Market,DE,25200
+EVT-0194,2025-09,ACC-021,REP-010,Closed Won,AE Outbound,AE Outbound,Mid-Market,NL,23000
+EVT-0195,2025-09,ACC-025,REP-016,Lead Created,Inbound,Marketing,SMB,ES,12800
+EVT-0196,2025-09,ACC-027,REP-016,Closed Won,Inbound,Marketing,Mid-Market,ES,36800
+EVT-0197,2025-09,ACC-024,REP-016,Lead Created,AE Outbound,AE Outbound,Mid-Market,ES,34000
+EVT-0198,2025-09,ACC-004,REP-012,Opportunity Created,Partnerships,Partnerships,SMB,DK,9800
+EVT-0199,2025-10,ACC-017,REP-006,MQL,Partnerships,Partnerships,Mid-Market,DE,33600
+EVT-0200,2025-10,ACC-008,REP-008,Lead Created,mktg,Marketing,Mid-Market,SE,28800
+EVT-0201,2025-10,ACC-030,REP-003,Lead Created,AE OB,AE Outbound,Mid-Market,UKI,38000
+EVT-0202,2025-10,ACC-021,REP-010,MQL,sdr outbound,SDR Outbound,Mid-Market,NL,46800
+EVT-0203,2025-10,ACC-017,REP-015,SQL,Marketing,Marketing,Mid-Market,DE,46400
+EVT-0204,2025-10,ACC-038,REP-003,Closed Won,AE OB,AE Outbound,SMB,UKI,11000
+EVT-0205,2025-10,ACC-019,REP-011,Lead Created,AE Outbound,AE Outbound,Enterprise,NL,96000
+EVT-0206,2025-11,ACC-007,REP-009,Opportunity Created,AE outbound,AE Outbound,Enterprise,SE,162000
+EVT-0207,2025-11,ACC-008,REP-009,Lead Created,Marketing,Marketing,Mid-Market,SE,42400
+EVT-0208,2025-11,ACC-014,REP-007,Lead Created,AE outbound,AE Outbound,Mid-Market,DE,23000
+EVT-0209,2025-11,ACC-028,REP-014,Lead Created,AE Outbound,AE Outbound,Mid-Market,ES,36000
+EVT-0210,2025-11,ACC-032,REP-002,SQL,AE OB,AE Outbound,Enterprise,UKI,97000
+EVT-0211,2025-11,ACC-014,REP-007,MQL,Marketing,Marketing,Mid-Market,DE,15200
+EVT-0212,2025-11,ACC-034,REP-003,Closed Lost,Marketing,Marketing,SMB,UKI,6400
+EVT-0213,2025-11,ACC-038,REP-002,Opportunity Created,SDR,SDR Outbound,SMB,UKI,9900
+EVT-0214,2025-11,ACC-037,REP-006,Demo Completed,Sales Outbound,AE Outbound,Mid-Market,DE,39000
+EVT-0215,2025-11,ACC-010,REP-008,Opportunity Created,Marketing,Marketing,Mid-Market,SE,41600
+EVT-0216,2025-12,ACC-031,REP-002,Closed Won,mktg,Marketing,Enterprise,UKI,87200
+EVT-0217,2025-12,ACC-004,REP-012,MQL,SDR Outbound,SDR Outbound,SMB,DK,12600
+EVT-0218,2025-12,ACC-008,REP-008,Lead Created,sdr outbound,SDR Outbound,Mid-Market,SE,47700
+EVT-0219,2025-12,ACC-007,REP-008,Lead Created,AE OB,AE Outbound,Enterprise,SE,74000
+EVT-0220,2025-12,ACC-011,REP-008,MQL,Marketing,Marketing,SMB,SE,9600
+EVT-0221,2025-12,ACC-026,REP-016,Lead Created,SDR Outbound,SDR Outbound,SMB,ES,13500
+EVT-0222,2025-12,ACC-035,REP-001,Opportunity Created,mktg,Marketing,Mid-Market,UKI,16800
+EVT-0223,2025-12,ACC-004,REP-012,Lead Created,Marketing,Marketing,SMB,DK,8800
+EVT-0224,2025-12,ACC-024,REP-013,Demo Completed,Channel,Partnerships,Mid-Market,ES,58799
+EVT-0225,2025-12,ACC-026,REP-016,Lead Created,mktg,Marketing,SMB,ES,8000
+EVT-0226,2026-01,ACC-006,REP-012,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,DK,31500
+EVT-0227,2026-01,ACC-032,REP-004,SQL,SDR,SDR Outbound,Enterprise,UKI,87300
+EVT-0228,2026-01,ACC-008,REP-008,SQL,SDR,SDR Outbound,Mid-Market,SE,51300
+EVT-0229,2026-01,ACC-017,REP-007,Opportunity Created,SDR Outbound,SDR Outbound,Mid-Market,DE,27000
+EVT-0230,2026-01,ACC-036,REP-003,SQL,AE Outbound,AE Outbound,Mid-Market,UKI,25000
+EVT-0231,2026-01,ACC-024,REP-013,Opportunity Created,Marketing,Marketing,Mid-Market,ES,24000
+EVT-0232,2026-01,ACC-016,REP-015,Lead Created,Marketing,Marketing,SMB,DE,10400
+EVT-0233,2026-01,ACC-031,REP-001,Opportunity Created,Sales Outbound,AE Outbound,Enterprise,UKI,179000
+EVT-0234,2026-01,ACC-012,REP-008,Opportunity Created,Partnerships,Partnerships,SMB,SE,15399
+EVT-0235,2026-01,ACC-018,REP-011,Closed Won,Sales Outbound,AE Outbound,Mid-Market,NL,51000
+EVT-0236,2026-01,ACC-023,REP-013,Lead Created,MKT,Marketing,Enterprise,ES,121600
+EVT-0237,2026-02,ACC-014,REP-015,Lead Created,AE OB,AE Outbound,Mid-Market,DE,53000
+EVT-0238,2026-02,ACC-037,REP-015,Lead Created,Sales Outbound,AE Outbound,Mid-Market,DE,45000
+EVT-0239,2026-02,ACC-009,REP-008,Lead Created,SDR Outbound,SDR Outbound,SMB,SE,12600
+EVT-0240,2026-02,ACC-015,REP-007,MQL,partnerships,Partnerships,SMB,DE,16800
+EVT-0241,2026-02,ACC-033,REP-004,MQL,SDR,SDR Outbound,Mid-Market,UKI,47700
+EVT-0242,2026-02,ACC-023,REP-016,Lead Created,Channel,Partnerships,Enterprise,ES,89600
+EVT-0243,2026-02,ACC-033,REP-002,SQL,partnerships,Partnerships,Mid-Market,UKI,53200
+EVT-0244,2026-02,ACC-027,REP-016,Demo Completed,Inbound,Marketing,Mid-Market,ES,43200
+EVT-0245,2026-03,ACC-033,REP-002,Lead Created,MKT,Marketing,Mid-Market,UKI,27200
+EVT-0246,2026-03,ACC-039,REP-011,Lead Created,SDR,SDR Outbound,Mid-Market,NL,43200
+EVT-0247,2026-03,ACC-018,REP-011,Demo Completed,Marketing,Marketing,Mid-Market,NL,16000
+EVT-0248,2026-03,ACC-035,REP-003,SQL,SDR Outbound,SDR Outbound,Mid-Market,UKI,40500
+EVT-0249,2026-03,ACC-022,REP-010,Demo Completed,AE OB,AE Outbound,Mid-Market,NL,58000
+EVT-0250,2026-03,ACC-005,REP-012,MQL,SDR Outbound,SDR Outbound,SMB,DK,9900
+EVT-0251,2026-03,ACC-021,REP-011,Lead Created,AE Outbound,AE Outbound,Mid-Market,NL,56000
+EVT-0252,2026-03,ACC-035,REP-001,Lead Created,AE outbound,AE Outbound,Mid-Market,UKI,48000
+EVT-0253,2026-03,ACC-010,REP-008,Lead Created,AE Outbound,AE Outbound,Mid-Market,SE,26000
+EVT-0254,2026-03,ACC-033,REP-002,Lead Created,AE Outbound,AE Outbound,Mid-Market,UKI,22000
+EVT-0255,2026-03,ACC-036,REP-004,MQL,Marketing,Marketing,Mid-Market,UKI,32800
+EVT-0256,2026-04,ACC-035,REP-005,MQL,Inbound,Marketing,Mid-Market,UKI,36800
+EVT-0257,2026-04,ACC-035,REP-002,MQL,AE OB,AE Outbound,Mid-Market,UKI,23000
+EVT-0258,2026-04,ACC-029,REP-014,Lead Created,MKT,Marketing,Mid-Market,ES,14400
+EVT-0259,2026-04,ACC-033,REP-005,Demo Completed,mktg,Marketing,Mid-Market,UKI,24800
+EVT-0260,2026-04,ACC-014,REP-015,SQL,mktg,Marketing,Mid-Market,DE,48000
+EVT-0261,2026-04,ACC-030,REP-003,SQL,Marketing,Marketing,Mid-Market,UKI,24000
+EVT-0262,2026-04,ACC-013,REP-006,SQL,SDR Outbound,SDR Outbound,Enterprise,DE,98100
+EVT-0263,2026-04,ACC-023,REP-014,Opportunity Created,sdr outbound,SDR Outbound,Enterprise,ES,153900
+EVT-0264,2026-04,ACC-023,REP-014,MQL,SDR,SDR Outbound,Enterprise,ES,109800
+EVT-0265,2026-05,ACC-037,REP-006,Lead Created,AE outbound,AE Outbound,Mid-Market,DE,20000
+EVT-0266,2026-05,ACC-018,REP-011,SQL,mktg,Marketing,Mid-Market,NL,32000
+EVT-0267,2026-05,ACC-030,REP-003,MQL,Marketing,Marketing,Mid-Market,UKI,33600
+EVT-0268,2026-05,ACC-015,REP-006,Demo Completed,SDR Outbound,SDR Outbound,SMB,DE,7200
+EVT-0269,2026-05,ACC-022,REP-010,MQL,Marketing,Marketing,Mid-Market,NL,35200
+EVT-0270,2026-05,ACC-005,REP-012,Lead Created,Marketing,Marketing,SMB,DK,7200
+EVT-0271,2026-05,ACC-025,REP-016,SQL,SDR,SDR Outbound,SMB,ES,15300
+EVT-0272,2026-05,ACC-017,REP-006,Closed Won,SDR,SDR Outbound,Mid-Market,DE,34200
+EVT-0273,2026-05,ACC-002,REP-012,SQL,MKT,Marketing,Enterprise,DK,125600
+EVT-0274,2026-05,ACC-012,REP-009,Closed Lost,Inbound,Marketing,SMB,SE,6400
+EVT-0275,2026-05,ACC-022,REP-011,Lead Created,SDR Outbound,SDR Outbound,Mid-Market,NL,50400

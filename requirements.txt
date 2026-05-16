@@ -1,0 +1,19 @@
+# Python deps for the Pleo RevOps challenge.
+# Install in a venv:
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+
+# Warehouse
+dbt-core>=1.7,<1.12
+dbt-duckdb>=1.7,<1.12
+duckdb>=1.0
+
+# Ingestion (Excel → CSV seeds) and analysis
+pandas>=2.0
+openpyxl>=3.1
+
+# Notebook
+jupyter
+ipykernel
+nbconvert
+matplotlib>=3.7

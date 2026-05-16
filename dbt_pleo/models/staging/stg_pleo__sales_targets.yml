@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_pleo__sales_targets
+    description: Rep × month ARR targets with ramp-adjusted variant.
+    columns:
+      - name: target_id
+        data_tests: [unique, not_null]

@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: fct_funnel_conversion
+    description: Funnel stage volumes and stage-to-stage conversion rates by month × market × segment × demand_source.

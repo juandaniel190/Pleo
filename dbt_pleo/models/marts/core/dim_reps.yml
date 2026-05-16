@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: dim_reps
+    description: Conformed rep dimension. Market UKI renamed to UK.
+    columns:
+      - name: rep_id
+        data_tests: [unique, not_null]

@@ -1,0 +1,131 @@
+opportunity_id,account_id,owner_id,stage_raw,stage_clean,arr_eur,demand_source_raw,demand_source_clean,close_date,created_date,forecast_category,close_probability_pct,closed_lost_reason,sales_cycle_days,created_at
+OPP-001,ACC-030,REP-001,CLOSED WON,Closed Won,27000,AE Outbound,AE Outbound,2024-04-02,05/04/2024,Closed Won,100%,,1,2024-04-05 12:23
+OPP-002,ACC-033,REP-001,Won,Closed Won,24000,AE outbound,AE Outbound,2025-10-30,2025-10-30,Closed Won,100%,,1,2025-10-30 11:55
+OPP-003,ACC-036,REP-001,Closed Won,Closed Won,39000,SDR,SDR Outbound,28/01/2024,2024-01-13,Closed Won,100%,,15,2024-01-13 08:54
+OPP-004,ACC-033,REP-001,Closed Lost,Closed Lost,40000,MKT,Marketing,07/03/2026,22/03/2026,Closed Lost,0%,Timing,1,2026-03-22 12:22
+OPP-005,ACC-030,REP-001,Closed Lost,Closed Lost,34000,Inbound,Marketing,2024-04-14,20/04/2024,Closed Lost,0%,ND,1,2024-04-20 14:38
+OPP-006,ACC-033,REP-001,Won,Closed Won,45000,Marketing,Marketing,14/09/2024,12/09/2024,Closed Won,100%,,2,2024-09-12 09:42
+OPP-007,ACC-031,REP-001,Closed Lost,Closed Lost,124000,AE outbound,AE Outbound,2025-12-07,05/12/2025,Closed Lost,0%,timing,2,2025-12-05 18:47
+OPP-008,ACC-036,REP-001,CL,Closed Lost,37000,Marketing,Marketing,2025-06-15,15/06/2025,Closed Lost,0%,timing,1,2025-06-15 10:42
+OPP-009,ACC-031,REP-002,Closed Lost,Closed Lost,90000,Partner,Partnerships,2026-03-08,02/03/2026,Closed Lost,0%,Timing,6,2026-03-02 15:26
+OPP-010,ACC-038,REP-002,Won,Closed Won,16000,SDR Outbound,SDR Outbound,2025-01-26,2025-01-06,Closed Won,100%,,20,2025-01-06 16:29
+OPP-011,ACC-031,REP-002,CLOSED WON,Closed Won,119000,Partnerships,Partnerships,27/03/2025,2025-03-20,Closed Won,100%,,7,2025-03-20 16:27
+OPP-012,ACC-038,REP-002,Won,Closed Won,9000,SDR,SDR Outbound,15/03/2025,2025-03-09,Closed Won,100%,,6,2025-03-09 09:45
+OPP-013,ACC-034,REP-002,Won,Closed Won,14000,Marketing,Marketing,07/11/2024,23/11/2024,Closed Won,100%,,1,2024-11-23 09:26
+OPP-014,ACC-036,REP-003,Closed Won,Closed Won,44000,AE Outbound,AE Outbound,16/02/2024,13/02/2024,Closed Won,100%,,3,2024-02-13 08:22
+OPP-015,ACC-036,REP-003,Closed Lost,Closed Lost,52000,SDR Outbound,SDR Outbound,16/06/2025,2025-06-14,Closed Lost,0%,Pricing,2,2025-06-14 10:53
+OPP-016,ACC-030,REP-003,Lost,Closed Lost,60000,MKT,Marketing,09/01/2025,02/01/2025,Closed Lost,0%,timing,7,2025-01-02 13:21
+OPP-017,ACC-036,REP-003,Closed Lost,Closed Lost,48000,Inbound,Marketing,2024-09-25,2024-09-03,Closed Lost,0%,price,22,2024-09-03 11:53
+OPP-018,ACC-033,REP-003,Lost,Closed Lost,25000,Sales Outbound,AE Outbound,2024-05-20,20/05/2024,Closed Lost,0%,price,1,2024-05-20 12:06
+OPP-019,ACC-036,REP-003,Closed Lost,Closed Lost,30000,MKT,Marketing,10/01/2025,25/01/2025,Closed Lost,0%,product gap,1,2025-01-25 08:22
+OPP-020,ACC-035,REP-004,CLOSED LOST,Closed Lost,49000,mktg,Marketing,24/01/2024,06/01/2024,Closed Lost,0%,Feature gap,18,2024-01-06 17:51
+OPP-021,ACC-036,REP-004,CLOSED LOST,Closed Lost,35000,Marketing,Marketing,25/03/2026,08/03/2026,Closed Lost,0%,timing,17,2026-03-08 13:01
+OPP-022,ACC-032,REP-004,CW,Closed Won,162000,Marketing,Marketing,2025-04-01,2025-04-18,Closed Won,100%,,1,2025-04-18 16:12
+OPP-023,ACC-038,REP-005,Closed Lost,Closed Lost,17000,AE outbound,AE Outbound,08/06/2025,10/06/2025,Closed Lost,0%,Delayed,1,2025-06-10 18:37
+OPP-024,ACC-035,REP-005,Lost,Closed Lost,53000,Inbound,Marketing,24/02/2025,04/02/2025,Closed Lost,0%,Lost to competitor,20,2025-02-04 11:13
+OPP-025,ACC-034,REP-005,Closed Lost,Closed Lost,10000,Marketing,Marketing,05/04/2024,2024-04-18,Closed Lost,0%,No Decision,1,2024-04-18 08:35
+OPP-026,ACC-038,REP-005,Closed Lost,Closed Lost,15000,Inbound,Marketing,09/04/2024,2024-04-02,Closed Lost,0%,Timing,7,2024-04-02 09:25
+OPP-027,ACC-030,REP-005,Closed Won,Closed Won,54000,Partnerships,Partnerships,2024-05-25,18/05/2024,Closed Won,100%,,7,2024-05-18 14:38
+OPP-028,ACC-038,REP-005,Closed Lost,Closed Lost,15000,Partnerships,Partnerships,24/03/2025,2025-03-31,Closed Lost,0%,price,1,2025-03-31 18:13
+OPP-029,ACC-014,REP-006,Closed Lost,Closed Lost,28000,Marketing,Marketing,2024-06-10,08/06/2024,Closed Lost,0%,Stalled,2,2024-06-08 09:43
+OPP-030,ACC-040,REP-006,Closed Lost,Closed Lost,144000,Partnerships,Partnerships,2026-02-21,08/02/2026,Closed Lost,0%,Lost to competitor,13,2026-02-08 09:03
+OPP-031,ACC-017,REP-006,CL,Closed Lost,36000,Sales Outbound,AE Outbound,18/12/2025,17/12/2025,Closed Lost,0%,Timing,1,2025-12-17 14:47
+OPP-032,ACC-013,REP-006,CW,Closed Won,146000,Partnerships,Partnerships,02/03/2024,19/03/2024,Closed Won,100%,,1,2024-03-19 10:30
+OPP-033,ACC-017,REP-007,Closed Lost,Closed Lost,49000,Channel,Partnerships,06/02/2025,2025-02-28,Closed Lost,0%,Stalled,1,2025-02-28 12:42
+OPP-034,ACC-016,REP-007,Closed Lost,Closed Lost,11000,Marketing,Marketing,28/03/2024,22/03/2024,Closed Lost,0%,Product Gap,6,2024-03-22 11:33
+OPP-035,ACC-037,REP-007,CLOSED LOST,Closed Lost,31000,Marketing,Marketing,2025-03-01,04/03/2025,Closed Lost,0%,product gap,1,2025-03-04 10:19
+OPP-036,ACC-013,REP-007,CL,Closed Lost,176000,MKT,Marketing,23/08/2024,2024-08-17,Closed Lost,0%,Stalled,6,2024-08-17 15:15
+OPP-037,ACC-008,REP-008,Closed Lost,Closed Lost,26000,Channel,Partnerships,27/08/2025,2025-08-09,Closed Lost,0%,Too expensive,18,2025-08-09 17:37
+OPP-038,ACC-010,REP-008,Lost,Closed Lost,39000,AE outbound,AE Outbound,08/06/2025,23/06/2025,Closed Lost,0%,Feature gap,1,2025-06-23 08:20
+OPP-039,ACC-010,REP-008,Closed Lost,Closed Lost,59000,Partnerships,Partnerships,19/10/2025,2025-10-31,Closed Lost,0%,Stalled,1,2025-10-31 09:33
+OPP-040,ACC-012,REP-008,CL,Closed Lost,16000,Partnerships,Partnerships,20/05/2024,11/05/2024,Closed Lost,0%,Delayed,9,2024-05-11 18:54
+OPP-041,ACC-012,REP-008,Closed Lost,Closed Lost,13000,Partnerships,Partnerships,2025-11-22,21/11/2025,Closed Lost,0%,No Decision,1,2025-11-21 14:06
+OPP-042,ACC-008,REP-008,CLOSED LOST,Closed Lost,19000,Inbound,Marketing,2025-11-08,2025-11-05,Closed Lost,0%,product gap,3,2025-11-05 10:10
+OPP-043,ACC-011,REP-009,Closed Lost,Closed Lost,15000,Inbound,Marketing,26/10/2025,29/10/2025,Closed Lost,0%,Not now,1,2025-10-29 09:28
+OPP-044,ACC-012,REP-009,CLOSED LOST,Closed Lost,13000,SDR Outbound,SDR Outbound,08/02/2025,04/02/2025,Closed Lost,0%,Delayed,4,2025-02-04 12:01
+OPP-045,ACC-007,REP-009,CLOSED LOST,Closed Lost,159000,Partnerships,Partnerships,29/07/2025,2025-07-27,Closed Lost,0%,No decision,2,2025-07-27 17:51
+OPP-046,ACC-012,REP-009,Closed Lost,Closed Lost,16000,SDR,SDR Outbound,2024-07-26,2024-07-10,Closed Lost,0%,Timing,16,2024-07-10 13:46
+OPP-047,ACC-009,REP-009,CL,Closed Lost,8000,Inbound,Marketing,06/11/2024,2024-11-27,Closed Lost,0%,Stalled,1,2024-11-27 12:47
+OPP-048,ACC-010,REP-009,Closed Won,Closed Won,32000,Channel,Partnerships,03/03/2024,2024-03-12,Closed Won,100%,,1,2024-03-12 14:00
+OPP-049,ACC-020,REP-010,Closed Lost,Closed Lost,10000,Sales Outbound,AE Outbound,2025-10-16,08/10/2025,Closed Lost,0%,Too expensive,8,2025-10-08 17:14
+OPP-050,ACC-039,REP-010,Closed Lost,Closed Lost,25000,Inbound,Marketing,08/10/2024,2024-10-04,Closed Lost,0%,Product Gap,4,2024-10-04 15:23
+OPP-051,ACC-021,REP-010,Closed Won,Closed Won,49000,sdr outbound,SDR Outbound,2025-09-07,12/09/2025,Closed Won,100%,,1,2025-09-12 15:28
+OPP-052,ACC-018,REP-010,CLOSED LOST,Closed Lost,59000,AE OB,AE Outbound,22/10/2025,2025-10-03,Closed Lost,0%,Competitor,19,2025-10-03 08:50
+OPP-053,ACC-019,REP-010,Closed Lost,Closed Lost,68000,Partnerships,Partnerships,2026-02-08,2026-02-28,Closed Lost,0%,No Decision,1,2026-02-28 12:54
+OPP-054,ACC-022,REP-010,Closed Lost,Closed Lost,25000,SDR Outbound,SDR Outbound,2024-09-26,2024-09-26,Closed Lost,0%,Competitor,1,2024-09-26 10:16
+OPP-055,ACC-022,REP-011,Closed Lost,Closed Lost,48000,AE Outbound,AE Outbound,08/04/2024,17/04/2024,Closed Lost,0%,Product Gap,1,2024-04-17 18:33
+OPP-056,ACC-039,REP-011,CLOSED WON,Closed Won,48000,SDR Outbound,SDR Outbound,2024-01-29,2024-01-03,Closed Won,100%,,26,2024-01-03 09:20
+OPP-057,ACC-019,REP-011,CLOSED LOST,Closed Lost,134000,SDR,SDR Outbound,2024-09-20,17/09/2024,Closed Lost,0%,Timing,3,2024-09-17 09:54
+OPP-058,ACC-021,REP-011,CL,Closed Lost,47000,Sales Outbound,AE Outbound,2024-08-31,2024-08-12,Closed Lost,0%,competitor,19,2024-08-12 09:05
+OPP-059,ACC-021,REP-011,Closed Lost,Closed Lost,41000,SDR,SDR Outbound,22/04/2024,11/04/2024,Closed Lost,0%,Pricing,11,2024-04-11 08:18
+OPP-060,ACC-018,REP-011,Closed Lost,Closed Lost,27000,SDR Outbound,SDR Outbound,2025-07-04,12/07/2025,Closed Lost,0%,Stalled,1,2025-07-12 16:49
+OPP-061,ACC-002,REP-012,Closed Lost,Closed Lost,99000,Partner,Partnerships,2024-09-13,2024-09-22,Closed Lost,0%,Price,1,2024-09-22 18:01
+OPP-062,ACC-004,REP-012,Closed Lost,Closed Lost,8000,AE Outbound,AE Outbound,06/02/2025,05/02/2025,Closed Lost,0%,Product Gap,1,2025-02-05 09:17
+OPP-063,ACC-004,REP-012,CL,Closed Lost,10000,Inbound,Marketing,2025-08-22,22/08/2025,Closed Lost,0%,product gap,1,2025-08-22 12:02
+OPP-064,ACC-023,REP-013,Closed Lost,Closed Lost,87000,partnerships,Partnerships,2024-07-24,16/07/2024,Closed Lost,0%,Timing,8,2024-07-16 14:34
+OPP-065,ACC-023,REP-013,Closed Lost,Closed Lost,65000,AE Outbound,AE Outbound,19/01/2025,2025-01-14,Closed Lost,0%,timing,5,2025-01-14 12:07
+OPP-066,ACC-025,REP-013,Closed Lost,Closed Lost,15000,Sales Outbound,AE Outbound,04/06/2024,28/06/2024,Closed Lost,0%,competitor,1,2024-06-28 16:05
+OPP-067,ACC-024,REP-014,CL,Closed Lost,22000,AE Outbound,AE Outbound,2024-11-24,2024-11-12,Closed Lost,0%,Lost to competitor,12,2024-11-12 12:12
+OPP-068,ACC-029,REP-014,Closed Lost,Closed Lost,29000,Channel,Partnerships,22/01/2026,2026-01-15,Closed Lost,0%,product gap,7,2026-01-15 13:55
+OPP-069,ACC-026,REP-014,Closed Lost,Closed Lost,16000,Marketing,Marketing,15/03/2024,2024-03-10,Closed Lost,0%,Timing,5,2024-03-10 13:53
+OPP-070,ACC-028,REP-014,Closed Lost,Closed Lost,23000,SDR Outbound,SDR Outbound,2026-04-30,2026-04-15,Closed Lost,0%,Feature gap,15,2026-04-15 17:30
+OPP-071,ACC-026,REP-014,Closed Lost,Closed Lost,11000,Partnerships,Partnerships,23/04/2024,08/04/2024,Closed Lost,0%,Not now,15,2024-04-08 13:23
+OPP-072,ACC-040,REP-015,Closed Lost,Closed Lost,66000,Partnerships,Partnerships,2024-11-13,22/11/2024,Closed Lost,0%,No decision,1,2024-11-22 13:05
+OPP-073,ACC-015,REP-015,CLOSED LOST,Closed Lost,12000,Marketing,Marketing,26/09/2025,21/09/2025,Closed Lost,0%,No Decision,5,2025-09-21 18:42
+OPP-074,ACC-013,REP-015,Closed Lost,Closed Lost,87000,AE OB,AE Outbound,2024-12-05,05/12/2024,Closed Lost,0%,Price,1,2024-12-05 16:49
+OPP-075,ACC-040,REP-015,Closed Won,Closed Won,108000,Marketing,Marketing,29/08/2025,2025-08-26,Closed Won,100%,,3,2025-08-26 10:46
+OPP-076,ACC-016,REP-015,Closed Lost,Closed Lost,9000,Channel,Partnerships,10/12/2024,08/12/2024,Closed Lost,0%,Not now,2,2024-12-08 13:43
+OPP-077,ACC-040,REP-015,Lost,Closed Lost,124000,SDR,SDR Outbound,2024-10-09,2024-10-28,Closed Lost,0%,Too expensive,1,2024-10-28 16:59
+OPP-078,ACC-023,REP-016,Won,Closed Won,117000,Partnerships,Partnerships,2026-01-15,27/01/2026,Closed Won,100%,,1,2026-01-27 13:59
+OPP-079,ACC-023,REP-016,Closed Lost,Closed Lost,90000,AE Outbound,AE Outbound,2025-01-30,11/01/2025,Closed Lost,0%,Too expensive,19,2025-01-11 10:08
+OPP-080,ACC-029,REP-016,Closed Lost,Closed Lost,26000,SDR,SDR Outbound,01/04/2025,2025-04-03,Closed Lost,0%,No decision,1,2025-04-03 16:46
+OPP-081,ACC-029,REP-016,Closed Lost,Closed Lost,25000,Marketing,Marketing,2024-10-29,2024-10-27,Closed Lost,0%,Timing,2,2024-10-27 18:32
+OPP-082,ACC-025,REP-016,CW,Closed Won,11000,Marketing,Marketing,2025-02-17,03/02/2025,Closed Won,100%,,14,2025-02-03 16:32
+OPP-083,ACC-030,REP-001,Discovery,Discovery,58000,AE Outbound,AE Outbound,2026-05-31,12/03/2026,Pipeline,5%,,80,2026-03-12 18:40
+OPP-084,ACC-030,REP-002,Evaluation,Evaluation,40000,AE OB,AE Outbound,2026-07-01,2026-04-23,Best Case,45%,,69,2026-04-23 18:11
+OPP-085,ACC-038,REP-002,Evaluation,Evaluation,6000,Marketing,Marketing,10/06/2026,02/02/2026,Best Case,45%,,128,2026-02-02 12:32
+OPP-086,ACC-030,REP-002,CTR,Contracting,59000,Marketing,Marketing,16/05/2026,09/03/2026,Committed,80%,,68,2026-03-09 13:27
+OPP-087,ACC-035,REP-003,Business Validation,Business Validation,29000,AE Outbound,AE Outbound,2026-06-24,24/03/2026,Pipeline,30%,,92,2026-03-24 09:27
+OPP-088,ACC-031,REP-003,Validate,Business Validation,70000,AE outbound,AE Outbound,28/07/2026,2026-03-06,Pipeline,30%,,144,2026-03-06 15:22
+OPP-089,ACC-035,REP-003,Negotiation,Negotiation,57000,Partnerships,Partnerships,2026-06-21,2026-02-21,Best Case,65%,,120,2026-02-21 13:32
+OPP-090,ACC-038,REP-004,Qualify,Qualified,6000,Inbound,Marketing,17/07/2026,02/04/2026,Pipeline,20%,,106,2026-04-02 10:43
+OPP-091,ACC-038,REP-004,BV,Business Validation,18000,Marketing,Marketing,2026-06-05,2026-03-21,Pipeline,30%,,76,2026-03-21 11:07
+OPP-092,ACC-036,REP-005,Discovery,Discovery,53000,mktg,Marketing,2026-06-06,2026-03-20,Pipeline,5%,,78,2026-03-20 15:12
+OPP-093,ACC-038,REP-005,0a Discovery,Discovery,8000,Partnerships,Partnerships,14/06/2026,22/04/2026,Pipeline,5%,,53,2026-04-22 09:35
+OPP-094,ACC-032,REP-005,Qual,Qualified,161000,AE OB,AE Outbound,03/07/2026,26/04/2026,Pipeline,20%,,68,2026-04-26 08:23
+OPP-095,ACC-014,REP-006,Evaluation,Evaluation,57000,Partnerships,Partnerships,2026-06-22,2026-02-17,Best Case,45%,,125,2026-02-17 14:52
+OPP-096,ACC-037,REP-006,Evaluation,Evaluation,22000,Sales Outbound,AE Outbound,2026-07-10,2026-03-27,Best Case,45%,,105,2026-03-27 18:37
+OPP-097,ACC-017,REP-006,Contracting,Contracting,21000,sdr outbound,SDR Outbound,30/07/2026,2026-03-11,Committed,80%,,141,2026-03-11 11:22
+OPP-098,ACC-014,REP-006,Contracting,Contracting,58000,partnerships,Partnerships,2026-07-22,2026-03-17,Committed,80%,,127,2026-03-17 10:37
+OPP-099,ACC-017,REP-006,Negotiation,Negotiation,56000,Marketing,Marketing,06/05/2026,2026-02-03,Best Case,65%,,92,2026-02-03 18:49
+OPP-100,ACC-016,REP-007,BV,Business Validation,15000,SDR,SDR Outbound,01/06/2026,16/02/2026,Pipeline,30%,,105,2026-02-16 18:25
+OPP-101,ACC-037,REP-007,Business Validation,Business Validation,21000,mktg,Marketing,19/05/2026,20/04/2026,Pipeline,30%,,29,2026-04-20 13:55
+OPP-102,ACC-014,REP-007,Evaluation,Evaluation,41000,AE Outbound,AE Outbound,2026-06-04,2026-03-04,Best Case,45%,,92,2026-03-04 15:15
+OPP-103,ACC-015,REP-007,Evaluate,Evaluation,12000,Partner,Partnerships,2026-06-10,24/04/2026,Best Case,45%,,47,2026-04-24 11:48
+OPP-104,ACC-010,REP-008,Qualify,Qualified,49000,Partnerships,Partnerships,31/05/2026,2026-02-15,Pipeline,20%,,105,2026-02-15 11:37
+OPP-105,ACC-009,REP-008,Business Validation,Business Validation,13000,AE outbound,AE Outbound,14/05/2026,28/04/2026,Pipeline,30%,,16,2026-04-28 14:08
+OPP-106,ACC-009,REP-008,BV,Business Validation,6000,AE OB,AE Outbound,19/06/2026,2026-03-03,Pipeline,30%,,108,2026-03-03 16:28
+OPP-107,ACC-007,REP-008,Eval,Evaluation,110000,AE Outbound,AE Outbound,2026-07-17,2026-04-07,Best Case,45%,,101,2026-04-07 16:25
+OPP-108,ACC-008,REP-009,Disc,Discovery,39000,SDR,SDR Outbound,2026-06-11,05/04/2026,Pipeline,5%,,67,2026-04-05 17:20
+OPP-109,ACC-012,REP-009,Disc,Discovery,10000,AE Outbound,AE Outbound,30/06/2026,2026-02-10,Pipeline,5%,,140,2026-02-10 08:23
+OPP-110,ACC-022,REP-010,0a Discovery,Discovery,37000,SDR Outbound,SDR Outbound,2026-07-23,2026-03-31,Pipeline,5%,,114,2026-03-31 17:36
+OPP-111,ACC-021,REP-010,Discovery,Discovery,28000,AE outbound,AE Outbound,2026-06-01,2026-02-22,Pipeline,5%,,99,2026-02-22 08:36
+OPP-112,ACC-021,REP-010,Qualify,Qualified,38000,AE OB,AE Outbound,2026-06-30,2026-04-30,Pipeline,20%,,61,2026-04-30 08:45
+OPP-113,ACC-020,REP-010,Qualify,Qualified,16000,AE OB,AE Outbound,09/07/2026,11/02/2026,Pipeline,20%,,148,2026-02-11 13:43
+OPP-114,ACC-019,REP-011,Init Mtg,Initial Meeting,95000,sdr outbound,SDR Outbound,30/07/2026,23/04/2026,Pipeline,10%,,98,2026-04-23 15:20
+OPP-115,ACC-039,REP-011,Initial Mtg,Initial Meeting,35000,Marketing,Marketing,2026-06-14,27/02/2026,Pipeline,10%,,107,2026-02-27 10:18
+OPP-116,ACC-018,REP-011,Qualified,Qualified,40000,Channel,Partnerships,08/07/2026,2026-02-27,Pipeline,20%,,131,2026-02-27 12:59
+OPP-117,ACC-005,REP-012,Qualified,Qualified,17000,AE Outbound,AE Outbound,07/05/2026,08/04/2026,Pipeline,20%,,29,2026-04-08 09:26
+OPP-118,ACC-028,REP-013,Validate,Business Validation,26000,MKT,Marketing,23/07/2026,16/04/2026,Pipeline,30%,,98,2026-04-16 11:48
+OPP-119,ACC-028,REP-013,Evaluate,Evaluation,21000,Partnerships,Partnerships,2026-08-01,24/03/2026,Best Case,45%,,130,2026-03-24 08:58
+OPP-120,ACC-023,REP-014,Qualified,Qualified,167000,Sales Outbound,AE Outbound,12/07/2026,10/04/2026,Pipeline,20%,,93,2026-04-10 17:06
+OPP-121,ACC-028,REP-014,Initial Mtg,Initial Meeting,52000,AE OB,AE Outbound,2026-05-25,09/03/2026,Pipeline,10%,,77,2026-03-09 09:21
+OPP-122,ACC-015,REP-015,Qual,Qualified,17000,Inbound,Marketing,18/07/2026,06/02/2026,Pipeline,20%,,162,2026-02-06 18:57
+OPP-123,ACC-015,REP-015,Discovery,Discovery,7000,AE Outbound,AE Outbound,01/06/2026,2026-02-11,Pipeline,5%,,110,2026-02-11 08:16
+OPP-124,ACC-029,REP-016,Discovery,Discovery,35000,Partnerships,Partnerships,2026-06-16,21/03/2026,Pipeline,5%,,87,2026-03-21 11:03
+OPP-125,ACC-024,REP-016,0a Discovery,Discovery,43000,sdr outbound,SDR Outbound,2026-07-18,12/03/2026,Pipeline,5%,,128,2026-03-12 11:14
+OPP-126,ACC-026,REP-016,Initial Meeting,Initial Meeting,17000,Partnerships,Partnerships,2026-07-25,2026-04-26,Pipeline,10%,,90,2026-04-26 11:48
+OPP-127,ACC-005,REP-012,Business Validation,Business Validation,13000,AE Outbound,AE Outbound,2026-07-10,2026-01-27,Pipeline,30%,,164,2026-01-27 16:12
+OPP-128,ACC-020,REP-010,Bus. Validation,Business Validation,14000,AE Outbound,AE Outbound,08/05/2026,15/01/2026,Pipeline,30%,,113,2026-01-15 15:08
+OPP-129,ACC-022,REP-011,Validate,Business Validation,21000,Sales Outbound,AE Outbound,2026-05-01,2026-01-09,Pipeline,30%,,112,2026-01-09 11:37
+OPP-127,ACC-005,REP-012,Business Validation,Business Validation,11000,AE Outbound,AE Outbound,2026-07-10,2026-01-27,Pipeline,30%,,164,2026-01-25 07:42:00

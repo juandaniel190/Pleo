@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_pleo__accounts
+    description: One row per account. Raw + Pleo-cleaned columns preserved for downstream re-derivation.
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]

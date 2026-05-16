@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: stg_pleo__pipeline_snapshots
+    description: Monthly pipeline cuts. Grain (snapshot_month, opportunity_id).

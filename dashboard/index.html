@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pleo RevOps — Weekly GTM Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2.12.7/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
+<style>
+  /* Pleo Telescope · Inter throughout · cream page background. */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F4EFE8; color: #000000;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { margin: 0; }
+  table { border-collapse: collapse; }
+  .recharts-cartesian-axis-tick text { font-family: 'Inter', sans-serif; }
+  ::selection { background: #000000; color: #FFFFFF; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>window.DATA = {"hero": {"asOf": "14 May 2026", "q2Target": 310600, "q2Closed": 0, "q2Gap": 310600, "q2PipeGross": 854000, "q2PipeWeighted": 255350, "staleDeals": 34, "staleArr": 1341000, "staleWeighted": 383450, "staleAvgSilent": 76, "winRatePct": 22.0, "recoveryEur": 44154}, "trend": [{"quarter": "Q1 2024", "target_k": 480.0, "closed_k": 309.0}, {"quarter": "Q1 2025", "target_k": 480.0, "closed_k": 155.0}, {"quarter": "Q1 2026", "target_k": 480.0, "closed_k": 117.0}, {"quarter": "Q2 2024", "target_k": 480.0, "closed_k": 81.0}, {"quarter": "Q2 2025", "target_k": 480.0, "closed_k": 162.0}, {"quarter": "Q2 2026", "target_k": 310.6, "closed_k": 0.0}, {"quarter": "Q3 2024", "target_k": 480.0, "closed_k": 45.0}, {"quarter": "Q3 2025", "target_k": 480.0, "closed_k": 157.0}, {"quarter": "Q4 2024", "target_k": 480.0, "closed_k": 14.0}, {"quarter": "Q4 2025", "target_k": 480.0, "closed_k": 24.0}], "pipelineQuality": {"stalledDeals": 34, "stalledArr": 1341000, "slippedDeals": 9, "slippedArr": 405000, "avgCycle": 2.0, "aspEur": 59111}, "qualityFlags": [{"flag": "Stalled > 30d no activity", "deals": 34, "arr_keur": 1341.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Slipped close date", "deals": 9, "arr_keur": 405.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Deals > 90d in stage", "deals": 23, "arr_keur": 785.0, "flag_owner": "Sales lead", "severity": "amber"}, {"flag": "No activity ever logged", "deals": 0, "arr_keur": 0.0, "flag_owner": "RevOps", "severity": "gray"}], "aspBySource": [{"demand_source": "Partnerships", "won_deals": 5, "asp_eur": 93600.0, "total_keur": 468.0}, {"demand_source": "Marketing", "won_deals": 5, "asp_eur": 68000.0, "total_keur": 340.0}, {"demand_source": "SDR Outbound", "won_deals": 5, "asp_eur": 32200.0, "total_keur": 161.0}, {"demand_source": "AE Outbound", "won_deals": 3, "asp_eur": 31667.0, "total_keur": 95.0}], "velocity": [{"stage": "Initial Meeting", "avg_days": 82.7, "opps": 4}, {"stage": "Qualified", "avg_days": 78.7, "opps": 9}, {"stage": "Contracting", "avg_days": 78.6, "opps": 3}, {"stage": "Business Validation", "avg_days": 74.8, "opps": 11}, {"stage": "Discovery", "avg_days": 58.8, "opps": 10}, {"stage": "Negotiation", "avg_days": 58.4, "opps": 2}, {"stage": "Evaluation", "avg_days": 56.7, "opps": 8}], "topStale": [{"account_name": "Wise", "rep_name": "J. Patel", "market": "UK", "segment": "Enterprise", "stage": "Qualified", "arr_keur": 161.0, "days_silent": 85}, {"account_name": "Klarna", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Enterprise", "stage": "Evaluation", "arr_keur": 110.0, "days_silent": 43}, {"account_name": "Adyen", "rep_name": "F. Jacobs", "market": "NL", "segment": "Enterprise", "stage": "Initial Meeting", "arr_keur": 95.0, "days_silent": 103}, {"account_name": "Wolt", "rep_name": "N. Walsh", "market": "UK", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 59.0, "days_silent": 70}, {"account_name": "Wolt", "rep_name": "S. Andersen", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 58.0, "days_silent": 49}, {"account_name": "GetYourGuide", "rep_name": "N. Weber", "market": "DE", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 58.0, "days_silent": 101}, {"account_name": "Remote", "rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "stage": "Negotiation", "arr_keur": 57.0, "days_silent": 33}, {"account_name": "Omio", "rep_name": "J. Patel", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 53.0, "days_silent": 34}, {"account_name": "Jobandtalent", "rep_name": "O. Svensson", "market": "ES", "segment": "Mid-Market", "stage": "Initial Meeting", "arr_keur": 52.0, "days_silent": 62}, {"account_name": "Kry", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Mid-Market", "stage": "Qualified", "arr_keur": 49.0, "days_silent": 48}, {"account_name": "Factorial", "rep_name": "K. Nguyen", "market": "ES", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 43.0, "days_silent": 59}, {"account_name": "GetYourGuide", "rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "stage": "Evaluation", "arr_keur": 41.0, "days_silent": 89}], "staleBySegment": [{"market": "UK", "segment": "Mid-Market", "deals": 6, "arr_keur": 296.0}, {"market": "NL", "segment": "Mid-Market", "deals": 6, "arr_keur": 199.0}, {"market": "UK", "segment": "Enterprise", "deals": 1, "arr_keur": 161.0}, {"market": "ES", "segment": "Mid-Market", "deals": 4, "arr_keur": 151.0}, {"market": "DE", "segment": "Mid-Market", "deals": 4, "arr_keur": 141.0}, {"market": "DK", "segment": "Enterprise", "deals": 1, "arr_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "deals": 1, "arr_keur": 95.0}, {"market": "DK", "segment": "Mid-Market", "deals": 1, "arr_keur": 49.0}, {"market": "NL", "segment": "SMB", "deals": 2, "arr_keur": 30.0}, {"market": "SE", "segment": "SMB", "deals": 3, "arr_keur": 29.0}, {"market": "DK", "segment": "SMB", "deals": 2, "arr_keur": 28.0}, {"market": "UK", "segment": "SMB", "deals": 1, "arr_keur": 18.0}, {"market": "DE", "segment": "SMB", "deals": 1, "arr_keur": 17.0}, {"market": "ES", "segment": "SMB", "deals": 1, "arr_keur": 17.0}], "funnel": [{"stage": "Leads", "count": 14}, {"stage": "MQL", "count": 9}, {"stage": "SQL", "count": 8}, {"stage": "Demo", "count": 5}, {"stage": "Opp", "count": 1}, {"stage": "Won", "count": 1}], "funnelBySource": [{"demand_source": "SDR Outbound", "segment": "Mid-Market", "leads": 5.0, "opps": 1.0, "won": 4.0, "won_keur": 116.0, "lead_to_won": 80.0}, {"demand_source": "Marketing", "segment": "Mid-Market", "leads": 4.0, "opps": 5.0, "won": 2.0, "won_keur": 63.0, "lead_to_won": 50.0}, {"demand_source": "Marketing", "segment": "Enterprise", "leads": 2.0, "opps": 1.0, "won": 1.0, "won_keur": 87.0, "lead_to_won": 50.0}, {"demand_source": "AE Outbound", "segment": "Mid-Market", "leads": 13.0, "opps": 1.0, "won": 2.0, "won_keur": 74.0, "lead_to_won": 15.4}, {"demand_source": "Marketing", "segment": "SMB", "leads": 7.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "SDR Outbound", "segment": "SMB", "leads": 3.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "AE Outbound", "segment": "Enterprise", "leads": 2.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "Enterprise", "leads": 1.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "AE Outbound", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 1.0, "won_keur": 11.0, "lead_to_won": null}, {"demand_source": "SDR Outbound", "segment": "Enterprise", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "Partnerships", "segment": "Mid-Market", "leads": 0.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": null}], "slippageTrend": [{"snapshot_month": "2025-09-01", "deals_slipped": 0, "total_deals": 1, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-01-01", "deals_slipped": 0, "total_deals": 3, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-02-01", "deals_slipped": 1, "total_deals": 34, "slipped_keur": 13.0, "slip_rate": 2.9}, {"snapshot_month": "2026-03-01", "deals_slipped": 4, "total_deals": 43, "slipped_keur": 241.0, "slip_rate": 9.3}, {"snapshot_month": "2026-04-01", "deals_slipped": 8, "total_deals": 53, "slipped_keur": 183.0, "slip_rate": 15.1}, {"snapshot_month": "2026-05-01", "deals_slipped": 9, "total_deals": 47, "slipped_keur": 405.0, "slip_rate": 19.1}], "rep": [{"rep_name": "K. Nguyen", "market": "ES", "segment": "Enterprise", "team": "Team South", "tgt_eur": 24000.0, "won_eur": 0.0, "q1_att": 325, "q2_att": 0}, {"rep_name": "S. Muller", "market": "SE", "segment": "Mid-Market", "team": "Team Nordics", "tgt_eur": 4600.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 18000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "J. Patel", "market": "UK", "segment": "SMB", "team": "Team UKI", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Walsh", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "L. Dubois", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "O. Svensson", "market": "ES", "segment": "SMB", "team": "Team South", "tgt_eur": 8000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "I. Garcia", "market": "ES", "segment": "Mid-Market", "team": "Team South", "tgt_eur": 14000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "team": "Team DACH", "tgt_eur": 20000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "P. Van Berg", "market": "NL", "segment": "Enterprise", "team": "Team Benelux", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Weber", "market": "DE", "segment": "Enterprise", "team": "Team DACH", "tgt_eur": 32000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "F. Jacobs", "market": "NL", "segment": "Mid-Market", "team": "Team Benelux", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "A. Kowalski", "market": "DE", "segment": "SMB", "team": "Team DACH", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "S. Andersen", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 30000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "E. Lindqvist", "market": "SE", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "C. Rossi", "market": "DK", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}], "pipeByMarket": [{"market": "UK", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 296.0, "weighted_keur": 117.0, "stale_deals": 6, "stale_keur": 296.0}, {"market": "DE", "segment": "Mid-Market", "open_deals": 7, "arr_keur": 276.0, "weighted_keur": 160.0, "stale_deals": 4, "stale_keur": 141.0}, {"market": "UK", "segment": "Enterprise", "open_deals": 2, "arr_keur": 231.0, "weighted_keur": 53.0, "stale_deals": 1, "stale_keur": 161.0}, {"market": "NL", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 199.0, "weighted_keur": 29.0, "stale_deals": 6, "stale_keur": 199.0}, {"market": "ES", "segment": "Mid-Market", "open_deals": 5, "arr_keur": 177.0, "weighted_keur": 26.0, "stale_deals": 4, "stale_keur": 151.0}, {"market": "ES", "segment": "Enterprise", "open_deals": 1, "arr_keur": 167.0, "weighted_keur": 33.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "DK", "segment": "Enterprise", "open_deals": 1, "arr_keur": 110.0, "weighted_keur": 50.0, "stale_deals": 1, "stale_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "open_deals": 1, "arr_keur": 95.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 95.0}, {"market": "DE", "segment": "SMB", "open_deals": 4, "arr_keur": 51.0, "weighted_keur": 14.0, "stale_deals": 1, "stale_keur": 17.0}, {"market": "DK", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 49.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 49.0}, {"market": "SE", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 39.0, "weighted_keur": 2.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "UK", "segment": "SMB", "open_deals": 4, "arr_keur": 38.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 18.0}, {"market": "NL", "segment": "SMB", "open_deals": 2, "arr_keur": 30.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 30.0}, {"market": "SE", "segment": "SMB", "open_deals": 3, "arr_keur": 29.0, "weighted_keur": 6.0, "stale_deals": 3, "stale_keur": 29.0}, {"market": "DK", "segment": "SMB", "open_deals": 2, "arr_keur": 28.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 28.0}, {"market": "ES", "segment": "SMB", "open_deals": 1, "arr_keur": 17.0, "weighted_keur": 2.0, "stale_deals": 1, "stale_keur": 17.0}], "drift": [{"field": "Accounts \u2014 market label drift", "drift_rows": 2, "total": 40}, {"field": "Accounts \u2014 segment drift", "drift_rows": 0, "total": 40}, {"field": "Accounts \u2014 country drift", "drift_rows": 0, "total": 40}, {"field": "Opportunities \u2014 stage drift", "drift_rows": 0, "total": 129}, {"field": "Opportunities \u2014 demand source drift", "drift_rows": 0, "total": 129}], "actions": [{"title": "Manager touch on Wise (J. Patel, \u20ac161K, 85d silent)", "owner": "UK Sales Lead", "value": "\u20ac161K at-risk", "when": "This week", "severity": "red"}, {"title": "UK Mid-Market re-engagement sprint (6 stale deals, \u20ac296K)", "owner": "UK Sales Lead", "value": "~\u20ac10K recovered", "when": "45 days", "severity": "amber"}, {"title": "Automated weekly stale-deal alert (source already in fct_pipeline_health.is_stale)", "owner": "RevOps", "value": "+\u20ac44K recovered", "when": "45 days", "severity": "amber"}, {"title": "Lock CRM picklists on segment / market / demand_source / stage", "owner": "RevOps + Sales Ops", "value": "Analyst time + forecast trust", "when": "This sprint", "severity": "gray"}, {"title": "Open Q2 contingency review with Finance \u2014 flip RAG to RED", "owner": "CRO", "value": "\u20ac310K target", "when": "This week", "severity": "red"}], "cumulativeArr": [{"month": "2024-01-01", "new_arr_eur": 87000.0, "cumulative_arr_eur": 87000.0}, {"month": "2024-02-01", "new_arr_eur": 44000.0, "cumulative_arr_eur": 131000.0}, {"month": "2024-03-01", "new_arr_eur": 178000.0, "cumulative_arr_eur": 309000.0}, {"month": "2024-04-01", "new_arr_eur": 27000.0, "cumulative_arr_eur": 336000.0}, {"month": "2024-05-01", "new_arr_eur": 54000.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-08-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-09-01", "new_arr_eur": 45000.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-10-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-11-01", "new_arr_eur": 14000.0, "cumulative_arr_eur": 449000.0}, {"month": "2024-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 449000.0}, {"month": "2025-01-01", "new_arr_eur": 16000.0, "cumulative_arr_eur": 465000.0}, {"month": "2025-02-01", "new_arr_eur": 11000.0, "cumulative_arr_eur": 476000.0}, {"month": "2025-03-01", "new_arr_eur": 128000.0, "cumulative_arr_eur": 604000.0}, {"month": "2025-04-01", "new_arr_eur": 162000.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-08-01", "new_arr_eur": 108000.0, "cumulative_arr_eur": 874000.0}, {"month": "2025-09-01", "new_arr_eur": 49000.0, "cumulative_arr_eur": 923000.0}, {"month": "2025-10-01", "new_arr_eur": 24000.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-11-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2026-01-01", "new_arr_eur": 117000.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-02-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-03-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-04-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}]};</script>
+<script type="text/babel" data-presets="react">
+// Pleo RevOps dashboard — React + Recharts, rendered at runtime via Babel.
+//
+// Design intent (per Daniel's direction):
+//   - Pleo Telescope palette (no Finstatement / monochrome).
+//   - Warm cream background like Pleo's marketing site.
+//   - Inter for everything (no monospace). Numbers use tabular-nums.
+//   - Section cards live on a light grey panel; cards inside are white.
+//   - Pleo brand pastels (yellow / green / pink / purple) appear ONLY on
+//     specific data callouts (status pills, tiny accent dots, the won
+//     funnel bar). Everything else is black / grey / white.
+//   - Less colour overall; the eye should land on the numbers that matter.
+
+const { useState, useMemo } = React;
+
+if (typeof Recharts === 'undefined') {
+  document.getElementById('root').innerHTML =
+    '<div style="padding:40px;font-family:sans-serif;color:#c00"><strong>Error:</strong> Recharts CDN failed to load. Serve via HTTP, not file://.<br><code>python3 -m http.server 8000</code></div>';
+  throw new Error('Recharts not loaded');
+}
+
+const {
+  BarChart, Bar, LineChart, Line, ComposedChart, XAxis, YAxis, Tooltip, Legend,
+  ResponsiveContainer, CartesianGrid, Cell, LabelList
+} = Recharts;
+
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(e) { return { error: e }; }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding: 40, fontFamily: 'sans-serif', color: '#c00' }}>
+        <strong>Render error:</strong> {this.state.error.message}
+        <pre style={{ marginTop: 12, fontSize: 12 }}>{this.state.error.stack}</pre>
+      </div>
+    );
+    return this.props.children;
+  }
+}
+
+// --- Design tokens (Pleo Telescope) ---------------------------------------
+
+const T = {
+  // Surfaces — warm cream page, light grey section panel, white cards
+  bg:         '#F4EFE8',  // cream — Pleo marketing-site background
+  panel:      '#ECE7DF',  // section grouping panel
+  card:       '#FFFFFF',  // card / table fill
+  hairline:   '#E5E0D8',  // subtle separator (used very sparingly)
+
+  // Text
+  black:      '#000000',
+  textSec:    '#333333',  // Telescope shade700
+  textMuted:  '#737373',  // Telescope shade600
+
+  // Status (used sparingly — only where it actually matters)
+  positive:   '#2c8354',  // Telescope green800
+  negative:   '#e91c1c',  // Telescope red700
+
+  // Pleo brand pastels — reserved for tiny accents (avatar dots, "Won" bar, etc.)
+  pleoYellow: '#fcea88',
+  pleoGreen:  '#ace3bd',
+  pleoPink:   '#f39ca8',
+  pleoPurple: '#a69ae3',
+
+  // Chart neutrals
+  chartGrid:  '#E5E0D8',
+};
+
+const numStyle = { fontVariantNumeric: 'tabular-nums', fontFeatureSettings: '"tnum"' };
+
+const fmtEur = (n) => {
+  if (n === null || n === undefined) return '—';
+  if (Math.abs(n) >= 1000) return '€' + Math.round(n / 1000).toLocaleString() + 'K';
+  return '€' + Math.round(n).toLocaleString();
+};
+
+// --- Primitives -----------------------------------------------------------
+
+const Pill = ({ kind, children }) => {
+  // Quiet pills — no full-saturation backgrounds. Just a coloured dot + label
+  // in slightly tinted text. The screen stays calm; pills don't shout.
+  const colours = {
+    positive: T.positive,
+    negative: T.negative,
+    neutral:  T.textMuted,
+  };
+  const c = colours[kind || 'neutral'];
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      fontSize: 12, fontWeight: 500, color: c, ...numStyle,
+    }}>
+      <span style={{ width: 6, height: 6, borderRadius: 999, background: c, display: 'inline-block' }} />
+      {children}
+    </span>
+  );
+};
+
+const KpiCard = ({ label, value, sub, emphasised }) => (
+  // The "emphasised" prop just bolds the number a touch — no colour change.
+  <div style={{
+    background: T.card, borderRadius: 14, padding: '22px 24px',
+  }}>
+    <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
+                  letterSpacing: '0.06em', fontWeight: 500, marginBottom: 14 }}>{label}</div>
+    <div style={{ ...numStyle, fontSize: 30, fontWeight: emphasised ? 700 : 600,
+                  color: T.black, lineHeight: 1.1, letterSpacing: '-0.02em' }}>{value}</div>
+    {sub && <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>{sub}</div>}
+  </div>
+);
+
+const SectionBanner = ({ tag, title, caption, who }) => (
+  <div style={{ marginTop: 64, marginBottom: 24 }}>
+    <div style={{ fontSize: 10, color: T.textMuted, textTransform: 'uppercase',
+                  letterSpacing: '0.14em', fontWeight: 600, marginBottom: 8 }}>{tag}</div>
+    <h2 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: T.black,
+                 letterSpacing: '-0.02em', lineHeight: 1.2 }}>{title}</h2>
+    {caption && (
+      <div style={{ fontSize: 14, color: T.textSec, marginTop: 10, lineHeight: 1.55, maxWidth: 760 }}>
+        {caption}
+      </div>
+    )}
+    {who && (
+      <div style={{ fontSize: 11, color: T.textMuted, marginTop: 12,
+                    textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        Audience · {who}
+      </div>
+    )}
+  </div>
+);
+
+const SectionH = ({ children, meta }) => (
+  <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
+                letterSpacing: '0.12em', fontWeight: 500, marginTop: 32, marginBottom: 14 }}>
+    {children}
+    {meta && <span style={{ marginLeft: 10, color: T.textMuted, opacity: 0.7,
+                            textTransform: 'none', letterSpacing: 0, fontWeight: 400 }}>{meta}</span>}
+  </div>
+);
+
+const FindingBox = ({ children }) => (
+  // No coloured strip, no coloured background. Just a quiet quote-style
+  // indent — the words carry the weight.
+  <div style={{
+    padding: '14px 0 14px 20px',
+    margin: '16px 0 4px',
+    borderLeft: `2px solid ${T.hairline}`,
+    fontSize: 14, lineHeight: 1.6, color: T.textSec,
+  }}>{children}</div>
+);
+
+const Card = ({ children, style }) => (
+  <div style={{ background: T.card, borderRadius: 14, padding: 24, ...style }}>{children}</div>
+);
+
+const Table = ({ headers, rows, formatters }) => (
+  <div style={{ background: T.card, borderRadius: 14, overflow: 'hidden' }}>
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+      <thead>
+        <tr>
+          {headers.map((h, i) => (
+            <th key={i} style={{
+              textAlign: h.align || 'left', padding: '14px 20px',
+              fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
+              letterSpacing: '0.06em', fontWeight: 500,
+              borderBottom: `1px solid ${T.hairline}`,
+            }}>{h.label}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr key={i}>
+            {headers.map((h, j) => {
+              const v = r[h.key];
+              const cell = formatters && formatters[h.key] ? formatters[h.key](v, r) : v;
+              return (
+                <td key={j} style={{
+                  padding: '12px 20px', textAlign: h.align || 'left',
+                  color: h.muted ? T.textMuted : T.textSec,
+                  fontWeight: h.bold ? 600 : 400,
+                  borderTop: i > 0 ? `1px solid ${T.hairline}` : 'none',
+                  ...(h.numeric ? numStyle : {}),
+                }}>{cell}</td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+// --- Hero -----------------------------------------------------------------
+
+function HeroSection({ data }) {
+  const h = data.hero;
+  return (
+    <section style={{ background: T.black, color: '#FFFFFF',
+                      padding: '72px 40px 64px' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+                      textTransform: 'uppercase', letterSpacing: '0.14em',
+                      fontWeight: 600, marginBottom: 12 }}>
+          Weekly GTM Performance Review · {h.asOf}
+        </div>
+        <h1 style={{ margin: 0, fontSize: 44, fontWeight: 700, letterSpacing: '-0.03em',
+                     lineHeight: 1.1, color: '#FFFFFF', marginBottom: 20 }}>
+          Q2 2026 is behind plan.
+        </h1>
+        <div style={{ ...numStyle, fontSize: 36, fontWeight: 600,
+                      color: T.pleoYellow, lineHeight: 1.1, letterSpacing: '-0.02em',
+                      marginBottom: 24 }}>
+          €0 closed of {fmtEur(h.q2Target)}
+        </div>
+        <p style={{ fontSize: 15, lineHeight: 1.65, maxWidth: 720, opacity: 0.78,
+                    margin: '0 0 40px', color: '#FFFFFF' }}>
+          Six weeks into Q2, we have closed €0 of a ramp-adjusted {fmtEur(h.q2Target)} target.
+          Pipeline scheduled to close in Q2 is {fmtEur(h.q2PipeGross)} gross / {fmtEur(h.q2PipeWeighted)}{' '}
+          weighted — even if every weighted euro lands, we miss target by {fmtEur(h.q2Target - h.q2PipeWeighted)}.
+          The biggest controllable lever this week is the {h.staleDeals} open deals worth {fmtEur(h.staleArr)} with
+          no activity in 30+ days.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          {[
+            { label: 'Q2 ARR pace',         value: fmtEur(h.q2Closed),         sub: `${fmtEur(h.q2Gap)} behind plan` },
+            { label: 'Pipeline at risk',    value: fmtEur(h.staleArr),         sub: `${h.staleDeals} stale · ${h.staleAvgSilent}d avg silent` },
+            { label: 'Q2 weighted pipeline',value: fmtEur(h.q2PipeWeighted),   sub: `${fmtEur(h.q2PipeGross)} gross` },
+            { label: 'Recovery upside',     value: `+${fmtEur(h.recoveryEur)}`, sub: 'Stale re-engagement · 45d' },
+          ].map((k, i) => (
+            <div key={i} style={{ background: 'rgba(255,255,255,0.06)',
+                                  borderRadius: 12, padding: '20px 22px' }}>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+                            textTransform: 'uppercase', letterSpacing: '0.06em',
+                            fontWeight: 600, marginBottom: 12 }}>{k.label}</div>
+              <div style={{ ...numStyle, fontSize: 26, fontWeight: 700, color: '#FFFFFF',
+                            lineHeight: 1.1, letterSpacing: '-0.02em' }}>{k.value}</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)',
+                            marginTop: 10, lineHeight: 1.5 }}>{k.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Charts ---------------------------------------------------------------
+
+const TooltipBox   = { background: '#000000', border: 'none', borderRadius: 6, fontSize: 12, padding: '8px 10px' };
+const TooltipLabel = { color: '#FFF' };
+const TooltipItem  = { color: '#FFF' };
+
+function TrendChart({ data }) {
+  const points = data.trend.filter(r => r.quarter >= 'Q1 2025');
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={260}>
+        <BarChart data={points} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+          <XAxis dataKey="quarter" tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <Tooltip formatter={(v) => `€${v}K`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Bar dataKey="target_k" name="Target"     fill={T.hairline} radius={[4,4,0,0]} />
+          <Bar dataKey="closed_k" name="Closed-won" fill={T.black}    radius={[4,4,0,0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+function CumulativeArrChart({ data }) {
+  const points = data.cumulativeArr.filter(r => r.month <= '2026-06-01');
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart data={points} margin={{ top: 8, right: 30, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+          <XAxis dataKey="month" tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false}
+                 tickFormatter={(v) => v.substring(0, 7)} interval={2} />
+          <YAxis yAxisId="left"  tickFormatter={(v) => `€${Math.round(v/1000)}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="right" orientation="right" tickFormatter={(v) => `€${Math.round(v/1000)}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <Tooltip formatter={(v) => `€${Math.round(v/1000).toLocaleString()}K`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Bar  yAxisId="left"  dataKey="new_arr_eur"        name="New ARR booked"        fill={T.hairline} radius={[3,3,0,0]} />
+          <Line yAxisId="right" dataKey="cumulative_arr_eur" name="Cumulative (no churn)" stroke={T.black} strokeWidth={2} dot={{ r: 2, fill: T.black }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+function AspBySource({ data }) {
+  const rows = data.aspBySource.map(r => ({ ...r, asp_keur: Math.round(r.asp_eur / 1000) }));
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart data={rows} margin={{ top: 20, right: 8, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+          <XAxis dataKey="demand_source" tick={{ fontSize: 12, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <Tooltip formatter={(v) => `€${v}K ASP`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Bar dataKey="asp_keur" fill={T.black} radius={[4,4,0,0]}>
+            <LabelList dataKey="asp_keur" position="top" formatter={(v) => `€${v}K`} fontSize={11} fontWeight={600} fill={T.black} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+function VelocityByStage({ data }) {
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart layout="vertical" data={data.velocity} margin={{ top: 8, right: 50, left: 50, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" horizontal={false} stroke={T.chartGrid} />
+          <XAxis type="number" tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis dataKey="stage" type="category" tick={{ fontSize: 11, fill: T.textSec }} width={140} axisLine={false} tickLine={false} />
+          <Tooltip formatter={(v) => `${v} days`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Bar dataKey="avg_days" fill={T.black} radius={[0,4,4,0]}>
+            <LabelList dataKey="avg_days" position="right" formatter={(v) => `${v}d`} fontSize={11} fontWeight={600} fill={T.black} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+function StaleBySegmentChart({ data }) {
+  const rows = data.staleBySegment.slice(0, 10).map(r => ({ ...r, label: `${r.market} · ${r.segment}` }));
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={320}>
+        <BarChart layout="vertical" data={rows} margin={{ top: 8, right: 60, left: 100, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" horizontal={false} stroke={T.chartGrid} />
+          <XAxis type="number" tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis dataKey="label" type="category" tick={{ fontSize: 11, fill: T.textSec }} width={100} axisLine={false} tickLine={false} />
+          <Tooltip formatter={(v) => `€${v}K`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Bar dataKey="arr_keur" fill={T.black} radius={[0,4,4,0]}>
+            <LabelList dataKey="arr_keur" position="right" formatter={(v) => `€${v}K`} fontSize={11} fontWeight={600} fill={T.black} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+function FunnelChart({ data }) {
+  const rows = data.funnel.map((r, i) => {
+    const prev = i > 0 ? data.funnel[i - 1].count : null;
+    const conv = (prev && prev > 0) ? Math.round(r.count / prev * 100) : null;
+    return { ...r, conv };
+  });
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={260}>
+        <BarChart data={rows} margin={{ top: 20, right: 8, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+          <XAxis dataKey="stage" tick={{ fontSize: 12, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <Tooltip contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Bar dataKey="count" radius={[4,4,0,0]}>
+            {/* Only the "Won" bar gets a Pleo green accent — the one number that matters. */}
+            {rows.map((r, i) => (
+              <Cell key={i} fill={r.stage === 'Won' ? T.pleoGreen : T.black} />
+            ))}
+            <LabelList dataKey="count" position="top" fontSize={11} fontWeight={600} fill={T.black} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div style={{ fontSize: 11, color: T.textMuted, marginTop: 12,
+                    display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+        {rows.slice(1).map((r, i) => (
+          <span key={i}>{rows[i].stage}→{r.stage}: <strong style={{ color: T.black }}>{r.conv}%</strong></span>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function SlippageTrendChart({ data }) {
+  return (
+    <Card>
+      <ResponsiveContainer width="100%" height={260}>
+        <ComposedChart data={data.slippageTrend} margin={{ top: 8, right: 30, left: -10, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+          <XAxis dataKey="snapshot_month" tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="left" tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="right" orientation="right" tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <Tooltip contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Bar  yAxisId="left"  dataKey="slipped_keur" name="Slipped ARR (kEUR)" fill={T.hairline} radius={[3,3,0,0]} />
+          <Line yAxisId="right" dataKey="slip_rate"   name="Slip rate %"        stroke={T.black} strokeWidth={2} dot={{ r: 3, fill: T.black }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+// --- Main app -------------------------------------------------------------
+
+function App() {
+  const data = window.DATA;
+  const h = data.hero;
+  const cumPoints = (data.cumulativeArr || []).filter(r => r.cumulative_arr_eur > 0);
+  const lastCum = cumPoints.length ? cumPoints[cumPoints.length - 1].cumulative_arr_eur : 0;
+
+  return (
+    <div style={{ background: T.bg, color: T.black, minHeight: '100vh' }}>
+      <HeroSection data={data} />
+
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 40px 80px' }}>
+
+        {/* ===== Trend ===== */}
+        <SectionBanner
+          tag="CRO HEADLINE"
+          title="Three consecutive quarters of severe underperformance"
+          caption="Q4 2025 closed at 5%, Q1 2026 at 24%, Q2 2026 at 0%. One rep (K. Nguyen) carried the Q1 number; the other 15 closed zero. Q2 follows the same pattern — this is a system issue, not coaching."
+          who="CRO · CFO"
+        />
+        <TrendChart data={data} />
+
+        {/* ===== Pipeline quality ===== */}
+        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+          <SectionBanner
+            tag="PIPELINE QUALITY"
+            title="Stalled · slipped · velocity · ASP"
+            caption="Where revenue is leaking before it gets to the bottom of the funnel."
+            who="VP Sales · Marketing · RevOps"
+          />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+            <KpiCard label="Stalled"      value={`${data.pipelineQuality.stalledDeals} deals`} sub={`${fmtEur(data.pipelineQuality.stalledArr)} at risk`} emphasised />
+            <KpiCard label="Slipped"      value={`${data.pipelineQuality.slippedDeals} deals`} sub={`${fmtEur(data.pipelineQuality.slippedArr)} moved last month`} />
+            <KpiCard label="Median cycle" value={`${data.pipelineQuality.avgCycle} days`}      sub="Won · created → closed" />
+            <KpiCard label="ASP (won)"    value={fmtEur(data.pipelineQuality.aspEur)}          sub="All-time, won deals" />
+          </div>
+
+          <SectionH meta="Open opps flagged across four dimensions">Quality flags</SectionH>
+          <Table
+            headers={[
+              { key: 'flag',       label: 'Quality flag',                       bold: true },
+              { key: 'arr_keur',   label: 'ARR',          align: 'right', numeric: true, bold: true },
+              { key: 'deals',      label: 'Deals',        align: 'right', numeric: true },
+              { key: 'flag_owner', label: 'Owner',        align: 'right', muted: true },
+            ]}
+            rows={data.qualityFlags}
+            formatters={{
+              flag: (v, r) => <Pill kind={r.severity === 'red' ? 'negative' : 'neutral'}>{v}</Pill>,
+              arr_keur: (v) => `€${Math.round(v).toLocaleString()}K`,
+            }}
+          />
+          <FindingBox>
+            <strong style={{ color: T.black }}>Where to focus first.</strong>{' '}
+            {h.staleDeals} deals worth <strong style={{ color: T.black }}>{fmtEur(h.staleArr)}</strong> have not had an AE touch in 30+ days.
+            UK Mid-Market alone holds €296K across 6 deals. Single biggest at-risk deal:{' '}
+            <strong style={{ color: T.black }}>Wise (J. Patel, €161K, 85d silent)</strong>.
+          </FindingBox>
+
+          <SectionH meta="Open pipeline, current snapshot">Top stale deals · the call list</SectionH>
+          <Table
+            headers={[
+              { key: 'account_name',   label: 'Account',          bold: true },
+              { key: 'rep_name',       label: 'Rep',              muted: true },
+              { key: 'market_segment', label: 'Market · Segment', muted: true },
+              { key: 'stage',          label: 'Stage',            muted: true },
+              { key: 'arr_keur',       label: 'ARR',   align: 'right', numeric: true, bold: true },
+              { key: 'days_silent',    label: 'Days silent', align: 'right' },
+            ]}
+            rows={data.topStale.map(r => ({ ...r, market_segment: `${r.market} · ${r.segment}` }))}
+            formatters={{
+              arr_keur:    (v) => `€${v}K`,
+              days_silent: (v) => <Pill kind={v >= 60 ? 'negative' : 'neutral'}>{v}d</Pill>,
+            }}
+          />
+
+          <SectionH meta="Avg days an open deal spends in each stage">Pipeline velocity</SectionH>
+          <VelocityByStage data={data} />
+          <FindingBox>
+            Initial Meeting (83d) and Qualified (79d) are the longest open stages — also where most stale deals sit.
+            A stage-exit-criteria review with sales leads would compress the cycle.
+          </FindingBox>
+
+          <SectionH meta="Closed-won, all-time">ASP by demand source</SectionH>
+          <AspBySource data={data} />
+          <FindingBox>
+            <strong style={{ color: T.black }}>Partnerships and Marketing punch above their weight on deal size</strong> —
+            ASP €93K and €68K vs €32K for SDR / AE Outbound. Outbound generates volume; inbound and partnership generate value.
+          </FindingBox>
+
+          <SectionH meta="Last 9 months">Slippage trend · close-date drift on open pipeline</SectionH>
+          <SlippageTrendChart data={data} />
+
+          <SectionH meta="Open pipeline by market × segment">Stale concentration</SectionH>
+          <StaleBySegmentChart data={data} />
+        </div>
+
+        {/* ===== Pipeline by market ===== */}
+        <SectionBanner
+          tag="PIPELINE BY MARKET"
+          title="Mid-Market drives both the open pipeline and the risk"
+          caption="Open deals, gross ARR, probability-weighted ARR, and stale share."
+        />
+        <Table
+          headers={[
+            { key: 'market',         label: 'Market',     bold: true },
+            { key: 'segment',        label: 'Segment',    muted: true },
+            { key: 'open_deals',     label: 'Open deals',   align: 'right', numeric: true },
+            { key: 'arr_keur',       label: 'Gross ARR',    align: 'right', numeric: true },
+            { key: 'weighted_keur',  label: 'Weighted ARR', align: 'right', numeric: true },
+            { key: 'stale_deals',    label: 'Stale deals',  align: 'right', numeric: true },
+            { key: 'stale_keur',     label: 'Stale ARR',    align: 'right', numeric: true },
+          ]}
+          rows={data.pipeByMarket}
+          formatters={{
+            arr_keur:      (v) => `€${Math.round(v)}K`,
+            weighted_keur: (v) => `€${Math.round(v)}K`,
+            stale_keur:    (v) => v > 0 ? <Pill kind="negative">€{Math.round(v)}K</Pill> : '—',
+          }}
+        />
+
+        {/* ===== Funnel ===== */}
+        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+          <SectionBanner
+            tag="FUNNEL CONVERSION"
+            title="By stage · trail 13W"
+            caption="All deals in this dataset are SLG — no PLG split applicable."
+            who="Marketing · SLG · RevOps"
+          />
+          <FunnelChart data={data} />
+
+          <SectionH meta="Trail 12 months · sorted by win rate">By demand source × segment</SectionH>
+          <Table
+            headers={[
+              { key: 'demand_source', label: 'Source' },
+              { key: 'segment',       label: 'Segment',     muted: true },
+              { key: 'leads', label: 'Leads', align: 'right', numeric: true },
+              { key: 'opps',  label: 'Opps',  align: 'right', numeric: true },
+              { key: 'won',   label: 'Won',   align: 'right', numeric: true, bold: true },
+              { key: 'won_keur',   label: 'Won ARR',     align: 'right', numeric: true },
+              { key: 'lead_to_won',label: 'Lead → Won',  align: 'right' },
+            ]}
+            rows={data.funnelBySource}
+            formatters={{
+              won_keur:    (v) => v ? `€${Math.round(v)}K` : '—',
+              lead_to_won: (v) => v == null ? '—' :
+                <Pill kind={v >= 20 ? 'positive' : v >= 10 ? 'neutral' : 'negative'}>{v}%</Pill>,
+            }}
+          />
+        </div>
+
+        {/* ===== Rep attainment ===== */}
+        <SectionBanner
+          tag="REP ATTAINMENT"
+          title="Q2 attainment is uniformly 0% across the team"
+          caption="This is a system signal, not a coaching problem. Q1 had a single contributor (K. Nguyen)."
+          who="AE leadership · RevOps"
+        />
+        <Table
+          headers={[
+            { key: 'rep_name',       label: 'Rep', bold: true },
+            { key: 'team',           label: 'Team',             muted: true },
+            { key: 'market_segment', label: 'Market · Segment', muted: true },
+            { key: 'tgt',  label: 'Q2 target', align: 'right', numeric: true },
+            { key: 'won',  label: 'Q2 won',    align: 'right', numeric: true },
+            { key: 'q1_att', label: 'Q1 att', align: 'right' },
+            { key: 'q2_att', label: 'Q2 att', align: 'right' },
+          ]}
+          rows={data.rep.map(r => ({
+            ...r,
+            market_segment: `${r.market} · ${r.segment}`,
+            tgt: `€${Math.round(r.tgt_eur/1000)}K`,
+            won: `€${Math.round(r.won_eur/1000)}K`,
+          }))}
+          formatters={{
+            q1_att: (v) => <Pill kind={v >= 100 ? 'positive' : v >= 50 ? 'neutral' : 'negative'}>{v}%</Pill>,
+            q2_att: (v) => <Pill kind={v >= 100 ? 'positive' : v >= 50 ? 'neutral' : 'negative'}>{v}%</Pill>,
+          }}
+        />
+
+        {/* ===== Cumulative ARR (supporting) ===== */}
+        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+          <SectionBanner
+            tag="SUPPORTING · NO CHURN"
+            title="Cumulative ARR book"
+            caption="If no contracts churn, the running total of new closed-won is the ending ARR book. This dataset has no churn event — shown here as supporting context only, not headline attainment."
+          />
+          <FindingBox>
+            <strong style={{ color: T.black }}>Disclaimer.</strong>{' '}
+            Pleo's brief (Assumptions R36) defines attainment as new closed-won ARR in the target period —
+            that's what every other section measures. This chart assumes <strong style={{ color: T.black }}>zero churn</strong>,
+            which is consistent with the dataset but would not hold in production.
+            Ending book today: <strong style={{ color: T.black, ...numStyle }}>€{Math.round(lastCum / 1000).toLocaleString()}K</strong>.
+          </FindingBox>
+          <CumulativeArrChart data={data} />
+        </div>
+
+        {/* ===== Data quality ===== */}
+        <SectionBanner
+          tag="DATA QUALITY"
+          title="CRM hygiene — the second automation opportunity"
+          caption="Where Pleo's pre-cleaned columns disagree with the canonical re-derivation."
+          who="RevOps · Sales Ops"
+        />
+        <Table
+          headers={[
+            { key: 'field',     label: 'Field' },
+            { key: 'drift',     label: 'Drift / total', align: 'right', numeric: true },
+            { key: 'drift_pct', label: '% drift',       align: 'right' },
+          ]}
+          rows={data.drift.map(r => ({
+            ...r,
+            drift: `${r.drift_rows} / ${r.total}`,
+            drift_pct: r.drift_rows / r.total * 100,
+          }))}
+          formatters={{
+            drift_pct: (v) => v === 0 ? <Pill kind="positive">0%</Pill> : <Pill kind="neutral">{v.toFixed(1)}%</Pill>,
+          }}
+        />
+        <FindingBox>
+          <strong style={{ color: T.black }}>Why this matters.</strong>{' '}
+          The 11 distinct values in <code style={{ background: T.hairline, padding: '1px 6px', borderRadius: 4 }}>segment_raw</code>{' '}
+          for 3 canonical segments, plus the market label drift, mean the analyst time spent on label reconciliation is recurring waste.
+          Locking the CRM picklists eliminates it and improves forecast reliability.
+        </FindingBox>
+
+        {/* ===== Actions ===== */}
+        <SectionBanner
+          tag="RECOMMENDATIONS"
+          title="Monday actions"
+          caption="Specific, owned, time-bound. EUR values are conservative."
+          who="CRO · VP Sales · RevOps"
+        />
+        <Card style={{ padding: 0 }}>
+          {data.actions.map((a, i) => (
+            <div key={i} style={{
+              display: 'grid', gridTemplateColumns: '1fr 180px 160px 100px',
+              gap: 16, padding: '20px 24px',
+              alignItems: 'center',
+              borderTop: i > 0 ? `1px solid ${T.hairline}` : 'none',
+            }}>
+              <div>
+                <Pill kind={a.severity === 'red' ? 'negative' : 'neutral'}>Action</Pill>
+                <div style={{ fontSize: 14, marginTop: 8, color: T.textSec, lineHeight: 1.55 }}>{a.title}</div>
+              </div>
+              <div style={{ fontSize: 12, color: T.textMuted }}>{a.owner}</div>
+              <div style={{ ...numStyle, fontSize: 14, fontWeight: 600, color: T.black }}>{a.value}</div>
+              <div style={{ fontSize: 11, color: T.textMuted, textAlign: 'right',
+                            textTransform: 'uppercase', letterSpacing: '0.05em' }}>{a.when}</div>
+            </div>
+          ))}
+        </Card>
+
+        <footer style={{
+          marginTop: 64, paddingTop: 24, borderTop: `1px solid ${T.hairline}`,
+          fontSize: 11, color: T.textMuted, textTransform: 'uppercase', letterSpacing: '0.06em'
+        }}>
+          Daniel Amezquita · dbt + DuckDB + React · {data.hero.asOf}
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <ErrorBoundary><App /></ErrorBoundary>
+);
+
+</script>
+</body>
+</html>

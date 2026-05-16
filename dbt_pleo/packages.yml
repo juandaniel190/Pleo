@@ -1,0 +1,2 @@
+# No external packages — every macro this project uses is local and small.
+packages: []

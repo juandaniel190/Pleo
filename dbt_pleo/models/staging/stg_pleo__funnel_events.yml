@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: stg_pleo__funnel_events
+    description: Lead-to-close funnel events.
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]

@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: stg_pleo__opportunities
+    description: One row per opportunity record (duplicates preserved — dedup happens in int_opportunities_deduped).
