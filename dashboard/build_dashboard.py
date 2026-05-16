@@ -94,6 +94,31 @@ HTML_TEMPLATE = '''<!doctype html>
   }
   ::selection { background: #000000; color: #FFFFFF; }
 
+  /* ── Responsive layout classes ───────────────────── */
+  .grid-4       { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .body-wrap    { max-width: 1180px; margin: 0 auto; padding: 0 40px 80px; }
+  .hero-pad     { padding: 72px 40px 64px; }
+  .panel-pad    { padding: 32px 32px 36px; }
+  .tbl-scroll   { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 14px; }
+  .actions-row  {
+    display: grid; grid-template-columns: 1fr 180px 160px 100px;
+    gap: 16px; padding: 20px 24px; align-items: center;
+  }
+  @media (max-width: 768px) {
+    .grid-4      { grid-template-columns: repeat(2,1fr); }
+    .body-wrap   { padding: 0 16px 48px; }
+    .hero-pad    { padding: 40px 20px 36px; }
+    .panel-pad   { padding: 20px 16px 24px; }
+    .actions-row { grid-template-columns: 1fr; padding: 16px; gap: 6px; }
+    .hero-h1     { font-size: 28px !important; }
+    .hero-num    { font-size: 22px !important; }
+    .hero-para   { font-size: 13px !important; }
+    .sec-title   { font-size: 24px !important; }
+  }
+  @media (max-width: 480px) {
+    .grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  }
+
   /* Loading state shown until DuckDB-WASM has resolved every query. */
   #loader {
     position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
