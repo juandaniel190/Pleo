@@ -35,9 +35,29 @@ This is the palette I'm using to style the dashboard and any chart output. It's 
 
 ## Typography
 
-Pleo's marketing typography uses a sans-serif (Inter family is closest free equivalent). Dashboard uses:
-- Headings: `'Inter', -apple-system, BlinkMacSystemFont, sans-serif`, weight 600–700
-- Body: same family, weight 400
+Pleo's official Telescope typeface is **Switzer** (served via [Fontshare](https://api.fontshare.com)).
+Telescope type-scale tokens:
+
+| Token | Value |
+|---|---|
+| fontXSmall | 10px |
+| fontSmall | 12px |
+| fontMedium | 14px |
+| fontLarge | 16px |
+| fontXLarge | 18px |
+| font2XLarge | 20px |
+| font3XLarge | 24px |
+| font4XLarge | 32px |
+| font5XLarge | 48px |
+
+Weights: Regular 400 · Medium 500 · Semibold 600 · Bold 700
+Line heights: 1.4 (lineHeight1) · 1.6 (lineHeight2) · 1.7 (lineHeight3)
+
+Dashboard uses:
+- Hero H1: font5XLarge (48px), Bold
+- Section titles / KPI values: font4XLarge (32px), Semibold/Bold
+- Body / table cells: fontMedium (14px), Regular
+- Labels / uppercase tags: fontXSmall (10px) or fontSmall (12px)
 - Numerals (KPI cards): tabular-nums for alignment
 
 ## Usage rules in the dashboard

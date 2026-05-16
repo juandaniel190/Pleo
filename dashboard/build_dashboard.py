@@ -249,26 +249,27 @@ html = f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pleo RevOps — Weekly GTM Review</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/recharts@2.12.7/umd/Recharts.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
 <style>
-  /* Pleo Telescope · Inter throughout · cream page background. */
+  /* Pleo Telescope · Neue Haas Grotesk Display · shade100 background */
   * {{ box-sizing: border-box; }}
   html, body {{
     margin: 0; padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #F4EFE8; color: #000000;
+    font-family: "Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    background: #FAFAFA; color: #000000;
     -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }}
-  h1, h2, h3 {{ margin: 0; }}
+  h1, h2, h3 {{ margin: 0; font-weight: 400; }}
   table {{ border-collapse: collapse; }}
-  .recharts-cartesian-axis-tick text {{ font-family: 'Inter', sans-serif; }}
+  .recharts-cartesian-axis-tick text {{
+    font-family: "Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+  }}
   ::selection {{ background: #000000; color: #FFFFFF; }}
 </style>
 </head>

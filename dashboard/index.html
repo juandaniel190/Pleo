@@ -4,39 +4,40 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pleo RevOps — Weekly GTM Review</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/recharts@2.12.7/umd/Recharts.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
 <style>
-  /* Pleo Telescope · Inter throughout · cream page background. */
+  /* Pleo Telescope · Neue Haas Grotesk Display · shade100 background */
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #F4EFE8; color: #000000;
+    font-family: "Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    background: #FAFAFA; color: #000000;
     -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3 { margin: 0; }
+  h1, h2, h3 { margin: 0; font-weight: 400; }
   table { border-collapse: collapse; }
-  .recharts-cartesian-axis-tick text { font-family: 'Inter', sans-serif; }
+  .recharts-cartesian-axis-tick text {
+    font-family: "Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif;
+  }
   ::selection { background: #000000; color: #FFFFFF; }
 </style>
 </head>
 <body>
 <div id="root"></div>
-<script>window.DATA = {"hero": {"asOf": "14 May 2026", "q2Target": 310600, "q2Closed": 0, "q2Gap": 310600, "q2PipeGross": 854000, "q2PipeWeighted": 255350, "staleDeals": 34, "staleArr": 1341000, "staleWeighted": 383450, "staleAvgSilent": 76, "winRatePct": 22.0, "recoveryEur": 44154}, "trend": [{"quarter": "Q1 2024", "target_k": 480.0, "closed_k": 309.0}, {"quarter": "Q1 2025", "target_k": 480.0, "closed_k": 155.0}, {"quarter": "Q1 2026", "target_k": 480.0, "closed_k": 117.0}, {"quarter": "Q2 2024", "target_k": 480.0, "closed_k": 81.0}, {"quarter": "Q2 2025", "target_k": 480.0, "closed_k": 162.0}, {"quarter": "Q2 2026", "target_k": 310.6, "closed_k": 0.0}, {"quarter": "Q3 2024", "target_k": 480.0, "closed_k": 45.0}, {"quarter": "Q3 2025", "target_k": 480.0, "closed_k": 157.0}, {"quarter": "Q4 2024", "target_k": 480.0, "closed_k": 14.0}, {"quarter": "Q4 2025", "target_k": 480.0, "closed_k": 24.0}], "pipelineQuality": {"stalledDeals": 34, "stalledArr": 1341000, "slippedDeals": 9, "slippedArr": 405000, "avgCycle": 2.0, "aspEur": 59111}, "qualityFlags": [{"flag": "Stalled > 30d no activity", "deals": 34, "arr_keur": 1341.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Slipped close date", "deals": 9, "arr_keur": 405.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Deals > 90d in stage", "deals": 23, "arr_keur": 785.0, "flag_owner": "Sales lead", "severity": "amber"}, {"flag": "No activity ever logged", "deals": 0, "arr_keur": 0.0, "flag_owner": "RevOps", "severity": "gray"}], "aspBySource": [{"demand_source": "Partnerships", "won_deals": 5, "asp_eur": 93600.0, "total_keur": 468.0}, {"demand_source": "Marketing", "won_deals": 5, "asp_eur": 68000.0, "total_keur": 340.0}, {"demand_source": "SDR Outbound", "won_deals": 5, "asp_eur": 32200.0, "total_keur": 161.0}, {"demand_source": "AE Outbound", "won_deals": 3, "asp_eur": 31667.0, "total_keur": 95.0}], "velocity": [{"stage": "Initial Meeting", "avg_days": 82.7, "opps": 4}, {"stage": "Qualified", "avg_days": 78.7, "opps": 9}, {"stage": "Contracting", "avg_days": 78.6, "opps": 3}, {"stage": "Business Validation", "avg_days": 74.8, "opps": 11}, {"stage": "Discovery", "avg_days": 58.8, "opps": 10}, {"stage": "Negotiation", "avg_days": 58.4, "opps": 2}, {"stage": "Evaluation", "avg_days": 56.7, "opps": 8}], "topStale": [{"account_name": "Wise", "rep_name": "J. Patel", "market": "UK", "segment": "Enterprise", "stage": "Qualified", "arr_keur": 161.0, "days_silent": 85}, {"account_name": "Klarna", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Enterprise", "stage": "Evaluation", "arr_keur": 110.0, "days_silent": 43}, {"account_name": "Adyen", "rep_name": "F. Jacobs", "market": "NL", "segment": "Enterprise", "stage": "Initial Meeting", "arr_keur": 95.0, "days_silent": 103}, {"account_name": "Wolt", "rep_name": "N. Walsh", "market": "UK", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 59.0, "days_silent": 70}, {"account_name": "Wolt", "rep_name": "S. Andersen", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 58.0, "days_silent": 49}, {"account_name": "GetYourGuide", "rep_name": "N. Weber", "market": "DE", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 58.0, "days_silent": 101}, {"account_name": "Remote", "rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "stage": "Negotiation", "arr_keur": 57.0, "days_silent": 33}, {"account_name": "Omio", "rep_name": "J. Patel", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 53.0, "days_silent": 34}, {"account_name": "Jobandtalent", "rep_name": "O. Svensson", "market": "ES", "segment": "Mid-Market", "stage": "Initial Meeting", "arr_keur": 52.0, "days_silent": 62}, {"account_name": "Kry", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Mid-Market", "stage": "Qualified", "arr_keur": 49.0, "days_silent": 48}, {"account_name": "Factorial", "rep_name": "K. Nguyen", "market": "ES", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 43.0, "days_silent": 59}, {"account_name": "GetYourGuide", "rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "stage": "Evaluation", "arr_keur": 41.0, "days_silent": 89}], "staleBySegment": [{"market": "UK", "segment": "Mid-Market", "deals": 6, "arr_keur": 296.0}, {"market": "NL", "segment": "Mid-Market", "deals": 6, "arr_keur": 199.0}, {"market": "UK", "segment": "Enterprise", "deals": 1, "arr_keur": 161.0}, {"market": "ES", "segment": "Mid-Market", "deals": 4, "arr_keur": 151.0}, {"market": "DE", "segment": "Mid-Market", "deals": 4, "arr_keur": 141.0}, {"market": "DK", "segment": "Enterprise", "deals": 1, "arr_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "deals": 1, "arr_keur": 95.0}, {"market": "DK", "segment": "Mid-Market", "deals": 1, "arr_keur": 49.0}, {"market": "NL", "segment": "SMB", "deals": 2, "arr_keur": 30.0}, {"market": "SE", "segment": "SMB", "deals": 3, "arr_keur": 29.0}, {"market": "DK", "segment": "SMB", "deals": 2, "arr_keur": 28.0}, {"market": "UK", "segment": "SMB", "deals": 1, "arr_keur": 18.0}, {"market": "DE", "segment": "SMB", "deals": 1, "arr_keur": 17.0}, {"market": "ES", "segment": "SMB", "deals": 1, "arr_keur": 17.0}], "funnel": [{"stage": "Leads", "count": 14}, {"stage": "MQL", "count": 9}, {"stage": "SQL", "count": 8}, {"stage": "Demo", "count": 5}, {"stage": "Opp", "count": 1}, {"stage": "Won", "count": 1}], "funnelBySource": [{"demand_source": "SDR Outbound", "segment": "Mid-Market", "leads": 5.0, "opps": 1.0, "won": 4.0, "won_keur": 116.0, "lead_to_won": 80.0}, {"demand_source": "Marketing", "segment": "Mid-Market", "leads": 4.0, "opps": 5.0, "won": 2.0, "won_keur": 63.0, "lead_to_won": 50.0}, {"demand_source": "Marketing", "segment": "Enterprise", "leads": 2.0, "opps": 1.0, "won": 1.0, "won_keur": 87.0, "lead_to_won": 50.0}, {"demand_source": "AE Outbound", "segment": "Mid-Market", "leads": 13.0, "opps": 1.0, "won": 2.0, "won_keur": 74.0, "lead_to_won": 15.4}, {"demand_source": "Marketing", "segment": "SMB", "leads": 7.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "SDR Outbound", "segment": "SMB", "leads": 3.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "AE Outbound", "segment": "Enterprise", "leads": 2.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "Enterprise", "leads": 1.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "AE Outbound", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 1.0, "won_keur": 11.0, "lead_to_won": null}, {"demand_source": "SDR Outbound", "segment": "Enterprise", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "Partnerships", "segment": "Mid-Market", "leads": 0.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": null}], "slippageTrend": [{"snapshot_month": "2025-09-01", "deals_slipped": 0, "total_deals": 1, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-01-01", "deals_slipped": 0, "total_deals": 3, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-02-01", "deals_slipped": 1, "total_deals": 34, "slipped_keur": 13.0, "slip_rate": 2.9}, {"snapshot_month": "2026-03-01", "deals_slipped": 4, "total_deals": 43, "slipped_keur": 241.0, "slip_rate": 9.3}, {"snapshot_month": "2026-04-01", "deals_slipped": 8, "total_deals": 53, "slipped_keur": 183.0, "slip_rate": 15.1}, {"snapshot_month": "2026-05-01", "deals_slipped": 9, "total_deals": 47, "slipped_keur": 405.0, "slip_rate": 19.1}], "rep": [{"rep_name": "K. Nguyen", "market": "ES", "segment": "Enterprise", "team": "Team South", "tgt_eur": 24000.0, "won_eur": 0.0, "q1_att": 325, "q2_att": 0}, {"rep_name": "S. Muller", "market": "SE", "segment": "Mid-Market", "team": "Team Nordics", "tgt_eur": 4600.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 18000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "J. Patel", "market": "UK", "segment": "SMB", "team": "Team UKI", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Walsh", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "L. Dubois", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "O. Svensson", "market": "ES", "segment": "SMB", "team": "Team South", "tgt_eur": 8000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "I. Garcia", "market": "ES", "segment": "Mid-Market", "team": "Team South", "tgt_eur": 14000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "team": "Team DACH", "tgt_eur": 20000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "P. Van Berg", "market": "NL", "segment": "Enterprise", "team": "Team Benelux", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Weber", "market": "DE", "segment": "Enterprise", "team": "Team DACH", "tgt_eur": 32000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "F. Jacobs", "market": "NL", "segment": "Mid-Market", "team": "Team Benelux", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "A. Kowalski", "market": "DE", "segment": "SMB", "team": "Team DACH", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "S. Andersen", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 30000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "E. Lindqvist", "market": "SE", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "C. Rossi", "market": "DK", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}], "pipeByMarket": [{"market": "UK", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 296.0, "weighted_keur": 117.0, "stale_deals": 6, "stale_keur": 296.0}, {"market": "DE", "segment": "Mid-Market", "open_deals": 7, "arr_keur": 276.0, "weighted_keur": 160.0, "stale_deals": 4, "stale_keur": 141.0}, {"market": "UK", "segment": "Enterprise", "open_deals": 2, "arr_keur": 231.0, "weighted_keur": 53.0, "stale_deals": 1, "stale_keur": 161.0}, {"market": "NL", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 199.0, "weighted_keur": 29.0, "stale_deals": 6, "stale_keur": 199.0}, {"market": "ES", "segment": "Mid-Market", "open_deals": 5, "arr_keur": 177.0, "weighted_keur": 26.0, "stale_deals": 4, "stale_keur": 151.0}, {"market": "ES", "segment": "Enterprise", "open_deals": 1, "arr_keur": 167.0, "weighted_keur": 33.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "DK", "segment": "Enterprise", "open_deals": 1, "arr_keur": 110.0, "weighted_keur": 50.0, "stale_deals": 1, "stale_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "open_deals": 1, "arr_keur": 95.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 95.0}, {"market": "DE", "segment": "SMB", "open_deals": 4, "arr_keur": 51.0, "weighted_keur": 14.0, "stale_deals": 1, "stale_keur": 17.0}, {"market": "DK", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 49.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 49.0}, {"market": "SE", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 39.0, "weighted_keur": 2.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "UK", "segment": "SMB", "open_deals": 4, "arr_keur": 38.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 18.0}, {"market": "NL", "segment": "SMB", "open_deals": 2, "arr_keur": 30.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 30.0}, {"market": "SE", "segment": "SMB", "open_deals": 3, "arr_keur": 29.0, "weighted_keur": 6.0, "stale_deals": 3, "stale_keur": 29.0}, {"market": "DK", "segment": "SMB", "open_deals": 2, "arr_keur": 28.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 28.0}, {"market": "ES", "segment": "SMB", "open_deals": 1, "arr_keur": 17.0, "weighted_keur": 2.0, "stale_deals": 1, "stale_keur": 17.0}], "drift": [{"field": "Accounts \u2014 market label drift", "drift_rows": 2, "total": 40}, {"field": "Accounts \u2014 segment drift", "drift_rows": 0, "total": 40}, {"field": "Accounts \u2014 country drift", "drift_rows": 0, "total": 40}, {"field": "Opportunities \u2014 stage drift", "drift_rows": 0, "total": 129}, {"field": "Opportunities \u2014 demand source drift", "drift_rows": 0, "total": 129}], "actions": [{"title": "Manager touch on Wise (J. Patel, \u20ac161K, 85d silent)", "owner": "UK Sales Lead", "value": "\u20ac161K at-risk", "when": "This week", "severity": "red"}, {"title": "UK Mid-Market re-engagement sprint (6 stale deals, \u20ac296K)", "owner": "UK Sales Lead", "value": "~\u20ac10K recovered", "when": "45 days", "severity": "amber"}, {"title": "Automated weekly stale-deal alert (source already in fct_pipeline_health.is_stale)", "owner": "RevOps", "value": "+\u20ac44K recovered", "when": "45 days", "severity": "amber"}, {"title": "Lock CRM picklists on segment / market / demand_source / stage", "owner": "RevOps + Sales Ops", "value": "Analyst time + forecast trust", "when": "This sprint", "severity": "gray"}, {"title": "Open Q2 contingency review with Finance \u2014 flip RAG to RED", "owner": "CRO", "value": "\u20ac310K target", "when": "This week", "severity": "red"}], "cumulativeArr": [{"month": "2024-01-01", "new_arr_eur": 87000.0, "cumulative_arr_eur": 87000.0}, {"month": "2024-02-01", "new_arr_eur": 44000.0, "cumulative_arr_eur": 131000.0}, {"month": "2024-03-01", "new_arr_eur": 178000.0, "cumulative_arr_eur": 309000.0}, {"month": "2024-04-01", "new_arr_eur": 27000.0, "cumulative_arr_eur": 336000.0}, {"month": "2024-05-01", "new_arr_eur": 54000.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-08-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-09-01", "new_arr_eur": 45000.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-10-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-11-01", "new_arr_eur": 14000.0, "cumulative_arr_eur": 449000.0}, {"month": "2024-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 449000.0}, {"month": "2025-01-01", "new_arr_eur": 16000.0, "cumulative_arr_eur": 465000.0}, {"month": "2025-02-01", "new_arr_eur": 11000.0, "cumulative_arr_eur": 476000.0}, {"month": "2025-03-01", "new_arr_eur": 128000.0, "cumulative_arr_eur": 604000.0}, {"month": "2025-04-01", "new_arr_eur": 162000.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-08-01", "new_arr_eur": 108000.0, "cumulative_arr_eur": 874000.0}, {"month": "2025-09-01", "new_arr_eur": 49000.0, "cumulative_arr_eur": 923000.0}, {"month": "2025-10-01", "new_arr_eur": 24000.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-11-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2026-01-01", "new_arr_eur": 117000.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-02-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-03-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-04-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}]};</script>
+<script>window.DATA = {"hero": {"asOf": "14 May 2026", "q2Target": 310600, "q2Closed": 0, "q2Gap": 310600, "q2PipeGross": 854000, "q2PipeWeighted": 255350, "staleDeals": 34, "staleArr": 1341000, "staleWeighted": 383450, "staleAvgSilent": 76, "winRatePct": 22.0, "recoveryEur": 44154}, "trend": [{"quarter": "Q1 2024", "target_k": 480.0, "closed_k": 309.0}, {"quarter": "Q1 2025", "target_k": 480.0, "closed_k": 155.0}, {"quarter": "Q1 2026", "target_k": 480.0, "closed_k": 117.0}, {"quarter": "Q2 2024", "target_k": 480.0, "closed_k": 81.0}, {"quarter": "Q2 2025", "target_k": 480.0, "closed_k": 162.0}, {"quarter": "Q2 2026", "target_k": 310.6, "closed_k": 0.0}, {"quarter": "Q3 2024", "target_k": 480.0, "closed_k": 45.0}, {"quarter": "Q3 2025", "target_k": 480.0, "closed_k": 157.0}, {"quarter": "Q4 2024", "target_k": 480.0, "closed_k": 14.0}, {"quarter": "Q4 2025", "target_k": 480.0, "closed_k": 24.0}], "pipelineQuality": {"stalledDeals": 34, "stalledArr": 1341000, "slippedDeals": 9, "slippedArr": 405000, "avgCycle": 2.0, "aspEur": 59111}, "qualityFlags": [{"flag": "Stalled > 30d no activity", "deals": 34, "arr_keur": 1341.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Slipped close date", "deals": 9, "arr_keur": 405.0, "flag_owner": "Sales lead", "severity": "red"}, {"flag": "Deals > 90d in stage", "deals": 23, "arr_keur": 785.0, "flag_owner": "Sales lead", "severity": "amber"}, {"flag": "No activity ever logged", "deals": 0, "arr_keur": 0.0, "flag_owner": "RevOps", "severity": "gray"}], "aspBySource": [{"demand_source": "Partnerships", "won_deals": 5, "asp_eur": 93600.0, "total_keur": 468.0}, {"demand_source": "Marketing", "won_deals": 5, "asp_eur": 68000.0, "total_keur": 340.0}, {"demand_source": "SDR Outbound", "won_deals": 5, "asp_eur": 32200.0, "total_keur": 161.0}, {"demand_source": "AE Outbound", "won_deals": 3, "asp_eur": 31667.0, "total_keur": 95.0}], "velocity": [{"stage": "Initial Meeting", "avg_days": 82.7, "opps": 4}, {"stage": "Qualified", "avg_days": 78.7, "opps": 9}, {"stage": "Contracting", "avg_days": 78.6, "opps": 3}, {"stage": "Business Validation", "avg_days": 74.8, "opps": 11}, {"stage": "Discovery", "avg_days": 58.8, "opps": 10}, {"stage": "Negotiation", "avg_days": 58.4, "opps": 2}, {"stage": "Evaluation", "avg_days": 56.7, "opps": 8}], "topStale": [{"account_name": "Wise", "rep_name": "J. Patel", "market": "UK", "segment": "Enterprise", "stage": "Qualified", "arr_keur": 161.0, "days_silent": 85}, {"account_name": "Klarna", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Enterprise", "stage": "Evaluation", "arr_keur": 110.0, "days_silent": 43}, {"account_name": "Adyen", "rep_name": "F. Jacobs", "market": "NL", "segment": "Enterprise", "stage": "Initial Meeting", "arr_keur": 95.0, "days_silent": 103}, {"account_name": "Wolt", "rep_name": "N. Walsh", "market": "UK", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 59.0, "days_silent": 70}, {"account_name": "Wolt", "rep_name": "S. Andersen", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 58.0, "days_silent": 49}, {"account_name": "GetYourGuide", "rep_name": "N. Weber", "market": "DE", "segment": "Mid-Market", "stage": "Contracting", "arr_keur": 58.0, "days_silent": 101}, {"account_name": "Remote", "rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "stage": "Negotiation", "arr_keur": 57.0, "days_silent": 33}, {"account_name": "Omio", "rep_name": "J. Patel", "market": "UK", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 53.0, "days_silent": 34}, {"account_name": "Jobandtalent", "rep_name": "O. Svensson", "market": "ES", "segment": "Mid-Market", "stage": "Initial Meeting", "arr_keur": 52.0, "days_silent": 62}, {"account_name": "Kry", "rep_name": "E. Lindqvist", "market": "DK", "segment": "Mid-Market", "stage": "Qualified", "arr_keur": 49.0, "days_silent": 48}, {"account_name": "Factorial", "rep_name": "K. Nguyen", "market": "ES", "segment": "Mid-Market", "stage": "Discovery", "arr_keur": 43.0, "days_silent": 59}, {"account_name": "GetYourGuide", "rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "stage": "Evaluation", "arr_keur": 41.0, "days_silent": 89}], "staleBySegment": [{"market": "UK", "segment": "Mid-Market", "deals": 6, "arr_keur": 296.0}, {"market": "NL", "segment": "Mid-Market", "deals": 6, "arr_keur": 199.0}, {"market": "UK", "segment": "Enterprise", "deals": 1, "arr_keur": 161.0}, {"market": "ES", "segment": "Mid-Market", "deals": 4, "arr_keur": 151.0}, {"market": "DE", "segment": "Mid-Market", "deals": 4, "arr_keur": 141.0}, {"market": "DK", "segment": "Enterprise", "deals": 1, "arr_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "deals": 1, "arr_keur": 95.0}, {"market": "DK", "segment": "Mid-Market", "deals": 1, "arr_keur": 49.0}, {"market": "NL", "segment": "SMB", "deals": 2, "arr_keur": 30.0}, {"market": "SE", "segment": "SMB", "deals": 3, "arr_keur": 29.0}, {"market": "DK", "segment": "SMB", "deals": 2, "arr_keur": 28.0}, {"market": "UK", "segment": "SMB", "deals": 1, "arr_keur": 18.0}, {"market": "DE", "segment": "SMB", "deals": 1, "arr_keur": 17.0}, {"market": "ES", "segment": "SMB", "deals": 1, "arr_keur": 17.0}], "funnel": [{"stage": "Leads", "count": 14}, {"stage": "MQL", "count": 9}, {"stage": "SQL", "count": 8}, {"stage": "Demo", "count": 5}, {"stage": "Opp", "count": 1}, {"stage": "Won", "count": 1}], "funnelBySource": [{"demand_source": "SDR Outbound", "segment": "Mid-Market", "leads": 5.0, "opps": 1.0, "won": 4.0, "won_keur": 116.0, "lead_to_won": 80.0}, {"demand_source": "Marketing", "segment": "Mid-Market", "leads": 4.0, "opps": 5.0, "won": 2.0, "won_keur": 63.0, "lead_to_won": 50.0}, {"demand_source": "Marketing", "segment": "Enterprise", "leads": 2.0, "opps": 1.0, "won": 1.0, "won_keur": 87.0, "lead_to_won": 50.0}, {"demand_source": "AE Outbound", "segment": "Mid-Market", "leads": 13.0, "opps": 1.0, "won": 2.0, "won_keur": 74.0, "lead_to_won": 15.4}, {"demand_source": "Marketing", "segment": "SMB", "leads": 7.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "Enterprise", "leads": 1.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "AE Outbound", "segment": "Enterprise", "leads": 2.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "SDR Outbound", "segment": "SMB", "leads": 3.0, "opps": 1.0, "won": 0.0, "won_keur": null, "lead_to_won": 0.0}, {"demand_source": "Partnerships", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "AE Outbound", "segment": "SMB", "leads": 0.0, "opps": 2.0, "won": 1.0, "won_keur": 11.0, "lead_to_won": null}, {"demand_source": "Partnerships", "segment": "Mid-Market", "leads": 0.0, "opps": 0.0, "won": 0.0, "won_keur": null, "lead_to_won": null}, {"demand_source": "SDR Outbound", "segment": "Enterprise", "leads": 0.0, "opps": 2.0, "won": 0.0, "won_keur": null, "lead_to_won": null}], "slippageTrend": [{"snapshot_month": "2025-09-01", "deals_slipped": 0, "total_deals": 1, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-01-01", "deals_slipped": 0, "total_deals": 3, "slipped_keur": null, "slip_rate": 0.0}, {"snapshot_month": "2026-02-01", "deals_slipped": 1, "total_deals": 34, "slipped_keur": 13.0, "slip_rate": 2.9}, {"snapshot_month": "2026-03-01", "deals_slipped": 4, "total_deals": 43, "slipped_keur": 241.0, "slip_rate": 9.3}, {"snapshot_month": "2026-04-01", "deals_slipped": 8, "total_deals": 53, "slipped_keur": 183.0, "slip_rate": 15.1}, {"snapshot_month": "2026-05-01", "deals_slipped": 9, "total_deals": 47, "slipped_keur": 405.0, "slip_rate": 19.1}], "rep": [{"rep_name": "K. Nguyen", "market": "ES", "segment": "Enterprise", "team": "Team South", "tgt_eur": 24000.0, "won_eur": 0.0, "q1_att": 325, "q2_att": 0}, {"rep_name": "C. Rossi", "market": "DK", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "E. Lindqvist", "market": "SE", "segment": "Enterprise", "team": "Team Nordics", "tgt_eur": 26000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "A. Kowalski", "market": "DE", "segment": "SMB", "team": "Team DACH", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "L. Dubois", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "O. Svensson", "market": "ES", "segment": "SMB", "team": "Team South", "tgt_eur": 8000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "S. Muller", "market": "SE", "segment": "Mid-Market", "team": "Team Nordics", "tgt_eur": 4600.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "M. Eriksson", "market": "UK", "segment": "Mid-Market", "team": "Team UKI", "tgt_eur": 18000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "J. Patel", "market": "UK", "segment": "SMB", "team": "Team UKI", "tgt_eur": 10000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Walsh", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "T. Brauer", "market": "DE", "segment": "Mid-Market", "team": "Team DACH", "tgt_eur": 20000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "P. Van Berg", "market": "NL", "segment": "Enterprise", "team": "Team Benelux", "tgt_eur": 28000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "S. Andersen", "market": "UK", "segment": "Enterprise", "team": "Team UKI", "tgt_eur": 30000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "I. Garcia", "market": "ES", "segment": "Mid-Market", "team": "Team South", "tgt_eur": 14000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "N. Weber", "market": "DE", "segment": "Enterprise", "team": "Team DACH", "tgt_eur": 32000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}, {"rep_name": "F. Jacobs", "market": "NL", "segment": "Mid-Market", "team": "Team Benelux", "tgt_eur": 16000.0, "won_eur": 0.0, "q1_att": 0, "q2_att": 0}], "pipeByMarket": [{"market": "UK", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 296.0, "weighted_keur": 117.0, "stale_deals": 6, "stale_keur": 296.0}, {"market": "DE", "segment": "Mid-Market", "open_deals": 7, "arr_keur": 276.0, "weighted_keur": 160.0, "stale_deals": 4, "stale_keur": 141.0}, {"market": "UK", "segment": "Enterprise", "open_deals": 2, "arr_keur": 231.0, "weighted_keur": 53.0, "stale_deals": 1, "stale_keur": 161.0}, {"market": "NL", "segment": "Mid-Market", "open_deals": 6, "arr_keur": 199.0, "weighted_keur": 29.0, "stale_deals": 6, "stale_keur": 199.0}, {"market": "ES", "segment": "Mid-Market", "open_deals": 5, "arr_keur": 177.0, "weighted_keur": 26.0, "stale_deals": 4, "stale_keur": 151.0}, {"market": "ES", "segment": "Enterprise", "open_deals": 1, "arr_keur": 167.0, "weighted_keur": 33.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "DK", "segment": "Enterprise", "open_deals": 1, "arr_keur": 110.0, "weighted_keur": 50.0, "stale_deals": 1, "stale_keur": 110.0}, {"market": "NL", "segment": "Enterprise", "open_deals": 1, "arr_keur": 95.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 95.0}, {"market": "DE", "segment": "SMB", "open_deals": 4, "arr_keur": 51.0, "weighted_keur": 14.0, "stale_deals": 1, "stale_keur": 17.0}, {"market": "DK", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 49.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 49.0}, {"market": "SE", "segment": "Mid-Market", "open_deals": 1, "arr_keur": 39.0, "weighted_keur": 2.0, "stale_deals": 0, "stale_keur": 0.0}, {"market": "UK", "segment": "SMB", "open_deals": 4, "arr_keur": 38.0, "weighted_keur": 10.0, "stale_deals": 1, "stale_keur": 18.0}, {"market": "NL", "segment": "SMB", "open_deals": 2, "arr_keur": 30.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 30.0}, {"market": "SE", "segment": "SMB", "open_deals": 3, "arr_keur": 29.0, "weighted_keur": 6.0, "stale_deals": 3, "stale_keur": 29.0}, {"market": "DK", "segment": "SMB", "open_deals": 2, "arr_keur": 28.0, "weighted_keur": 7.0, "stale_deals": 2, "stale_keur": 28.0}, {"market": "ES", "segment": "SMB", "open_deals": 1, "arr_keur": 17.0, "weighted_keur": 2.0, "stale_deals": 1, "stale_keur": 17.0}], "drift": [{"field": "Accounts \u2014 market label drift", "drift_rows": 2, "total": 40}, {"field": "Accounts \u2014 segment drift", "drift_rows": 0, "total": 40}, {"field": "Accounts \u2014 country drift", "drift_rows": 0, "total": 40}, {"field": "Opportunities \u2014 stage drift", "drift_rows": 0, "total": 129}, {"field": "Opportunities \u2014 demand source drift", "drift_rows": 0, "total": 129}], "actions": [{"title": "Manager touch on Wise (J. Patel, \u20ac161K, 85d silent)", "owner": "UK Sales Lead", "value": "\u20ac161K at-risk", "when": "This week", "severity": "red"}, {"title": "UK Mid-Market re-engagement sprint (6 stale deals, \u20ac296K)", "owner": "UK Sales Lead", "value": "~\u20ac10K recovered", "when": "45 days", "severity": "amber"}, {"title": "Automated weekly stale-deal alert (source already in fct_pipeline_health.is_stale)", "owner": "RevOps", "value": "+\u20ac44K recovered", "when": "45 days", "severity": "amber"}, {"title": "Lock CRM picklists on segment / market / demand_source / stage", "owner": "RevOps + Sales Ops", "value": "Analyst time + forecast trust", "when": "This sprint", "severity": "gray"}, {"title": "Open Q2 contingency review with Finance \u2014 flip RAG to RED", "owner": "CRO", "value": "\u20ac310K target", "when": "This week", "severity": "red"}], "cumulativeArr": [{"month": "2024-01-01", "new_arr_eur": 87000.0, "cumulative_arr_eur": 87000.0}, {"month": "2024-02-01", "new_arr_eur": 44000.0, "cumulative_arr_eur": 131000.0}, {"month": "2024-03-01", "new_arr_eur": 178000.0, "cumulative_arr_eur": 309000.0}, {"month": "2024-04-01", "new_arr_eur": 27000.0, "cumulative_arr_eur": 336000.0}, {"month": "2024-05-01", "new_arr_eur": 54000.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-08-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 390000.0}, {"month": "2024-09-01", "new_arr_eur": 45000.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-10-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 435000.0}, {"month": "2024-11-01", "new_arr_eur": 14000.0, "cumulative_arr_eur": 449000.0}, {"month": "2024-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 449000.0}, {"month": "2025-01-01", "new_arr_eur": 16000.0, "cumulative_arr_eur": 465000.0}, {"month": "2025-02-01", "new_arr_eur": 11000.0, "cumulative_arr_eur": 476000.0}, {"month": "2025-03-01", "new_arr_eur": 128000.0, "cumulative_arr_eur": 604000.0}, {"month": "2025-04-01", "new_arr_eur": 162000.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-07-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 766000.0}, {"month": "2025-08-01", "new_arr_eur": 108000.0, "cumulative_arr_eur": 874000.0}, {"month": "2025-09-01", "new_arr_eur": 49000.0, "cumulative_arr_eur": 923000.0}, {"month": "2025-10-01", "new_arr_eur": 24000.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-11-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2025-12-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 947000.0}, {"month": "2026-01-01", "new_arr_eur": 117000.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-02-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-03-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-04-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-05-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}, {"month": "2026-06-01", "new_arr_eur": 0.0, "cumulative_arr_eur": 1064000.0}]};</script>
 <script type="text/babel" data-presets="react">
 // Pleo RevOps dashboard — React + Recharts, rendered at runtime via Babel.
 //
 // Design intent (per Daniel's direction):
 //   - Pleo Telescope palette (no Finstatement / monochrome).
 //   - Warm cream background like Pleo's marketing site.
-//   - Inter for everything (no monospace). Numbers use tabular-nums.
+//   - Switzer (Telescope official typeface). Numbers use tabular-nums.
 //   - Section cards live on a light grey panel; cards inside are white.
 //   - Pleo brand pastels (yellow / green / pink / purple) appear ONLY on
 //     specific data callouts (status pills, tiny accent dots, the won
@@ -73,29 +74,54 @@ class ErrorBoundary extends React.Component {
 // --- Design tokens (Pleo Telescope) ---------------------------------------
 
 const T = {
-  // Surfaces — warm cream page, light grey section panel, white cards
-  bg:         '#F4EFE8',  // cream — Pleo marketing-site background
-  panel:      '#ECE7DF',  // section grouping panel
+  // Surfaces — Telescope design tokens (light mode)
+  bg:         '#FAFAFA',  // shade100 — page background
+  panel:      '#F5F5F5',  // shade200 — section grouping panel
   card:       '#FFFFFF',  // card / table fill
-  hairline:   '#E5E0D8',  // subtle separator (used very sparingly)
+  hairline:   '#ECECEC',  // shade300 — borders & dividers
 
-  // Text
-  black:      '#000000',
-  textSec:    '#333333',  // Telescope shade700
-  textMuted:  '#737373',  // Telescope shade600
+  // Text — Telescope tokens
+  black:      '#000000',  // shade900
+  textSec:    '#333333',  // shade700
+  textMuted:  '#737373',  // shade600
 
-  // Status (used sparingly — only where it actually matters)
-  positive:   '#2c8354',  // Telescope green800
-  negative:   '#e91c1c',  // Telescope red700
+  // Status
+  positive:   '#2c8354',  // green800
+  negative:   '#e91c1c',  // red700
 
-  // Pleo brand pastels — reserved for tiny accents (avatar dots, "Won" bar, etc.)
-  pleoYellow: '#fcea88',
-  pleoGreen:  '#ace3bd',
-  pleoPink:   '#f39ca8',
-  pleoPurple: '#a69ae3',
+  // Pleo brand pastels — reserved for tiny accents only
+  pleoYellow: '#fcea88',  // yellow500
+  pleoGreen:  '#ace3bd',  // green500
+  pleoPink:   '#f39ca8',  // pink500
+  pleoPurple: '#a69ae3',  // purple500
 
-  // Chart neutrals
-  chartGrid:  '#E5E0D8',
+  // Chart
+  chartGrid:  '#ECECEC',  // shade300
+
+  // Telescope type scale
+  fontXSmall:   10,
+  fontSmall:    12,
+  fontMedium:   14,
+  fontLarge:    16,
+  fontXLarge:   18,
+  font2XLarge:  20,
+  font3XLarge:  24,
+  font4XLarge:  32,
+  font5XLarge:  48,
+
+  // Telescope font weights
+  fontWeightRegular:   400,
+  fontWeightMedium:    500,
+  fontWeightSemibold:  600,
+  fontWeightBold:      700,
+
+  // Telescope line heights
+  lineHeight1: 1.4,
+  lineHeight2: 1.6,
+  lineHeight3: 1.7,
+
+  // Font family — Pleo production stack
+  font: '"Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif',
 };
 
 const numStyle = { fontVariantNumeric: 'tabular-nums', fontFeatureSettings: '"tnum"' };
@@ -120,7 +146,7 @@ const Pill = ({ kind, children }) => {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
-      fontSize: 12, fontWeight: 500, color: c, ...numStyle,
+      fontSize: T.fontSmall, fontWeight: T.fontWeightRegular, color: c, ...numStyle,
     }}>
       <span style={{ width: 6, height: 6, borderRadius: 999, background: c, display: 'inline-block' }} />
       {children}
@@ -133,10 +159,10 @@ const KpiCard = ({ label, value, sub, emphasised }) => (
   <div style={{
     background: T.card, borderRadius: 14, padding: '22px 24px',
   }}>
-    <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-                  letterSpacing: '0.06em', fontWeight: 500, marginBottom: 14 }}>{label}</div>
-    <div style={{ ...numStyle, fontSize: 30, fontWeight: emphasised ? 700 : 600,
-                  color: T.black, lineHeight: 1.1, letterSpacing: '-0.02em' }}>{value}</div>
+    <div style={{ fontSize: T.fontXSmall, color: T.textMuted, textTransform: 'uppercase',
+                  letterSpacing: '0.06em', fontWeight: T.fontWeightRegular, marginBottom: 14 }}>{label}</div>
+    <div style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: emphasised ? T.fontWeightSemibold : T.fontWeightMedium,
+                  color: T.black, lineHeight: T.lineHeight1, letterSpacing: '-0.02em' }}>{value}</div>
     {sub && <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>{sub}</div>}
   </div>
 );
@@ -144,11 +170,11 @@ const KpiCard = ({ label, value, sub, emphasised }) => (
 const SectionBanner = ({ tag, title, caption, who }) => (
   <div style={{ marginTop: 64, marginBottom: 24 }}>
     <div style={{ fontSize: 10, color: T.textMuted, textTransform: 'uppercase',
-                  letterSpacing: '0.14em', fontWeight: 600, marginBottom: 8 }}>{tag}</div>
-    <h2 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: T.black,
-                 letterSpacing: '-0.02em', lineHeight: 1.2 }}>{title}</h2>
+                  letterSpacing: '0.14em', fontWeight: T.fontWeightRegular, marginBottom: 8 }}>{tag}</div>
+    <h2 style={{ margin: 0, fontSize: T.font4XLarge, fontWeight: T.fontWeightRegular, color: T.black,
+                 letterSpacing: '-0.02em', lineHeight: T.lineHeight1 }}>{title}</h2>
     {caption && (
-      <div style={{ fontSize: 14, color: T.textSec, marginTop: 10, lineHeight: 1.55, maxWidth: 760 }}>
+      <div style={{ fontSize: T.fontMedium, color: T.textSec, marginTop: 10, lineHeight: T.lineHeight2, maxWidth: 760 }}>
         {caption}
       </div>
     )}
@@ -163,7 +189,7 @@ const SectionBanner = ({ tag, title, caption, who }) => (
 
 const SectionH = ({ children, meta }) => (
   <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-                letterSpacing: '0.12em', fontWeight: 500, marginTop: 32, marginBottom: 14 }}>
+                letterSpacing: '0.12em', fontWeight: T.fontWeightRegular, marginTop: 32, marginBottom: 14 }}>
     {children}
     {meta && <span style={{ marginLeft: 10, color: T.textMuted, opacity: 0.7,
                             textTransform: 'none', letterSpacing: 0, fontWeight: 400 }}>{meta}</span>}
@@ -177,7 +203,7 @@ const FindingBox = ({ children }) => (
     padding: '14px 0 14px 20px',
     margin: '16px 0 4px',
     borderLeft: `2px solid ${T.hairline}`,
-    fontSize: 14, lineHeight: 1.6, color: T.textSec,
+    fontSize: T.fontMedium, lineHeight: T.lineHeight2, color: T.textSec,
   }}>{children}</div>
 );
 
@@ -193,8 +219,8 @@ const Table = ({ headers, rows, formatters }) => (
           {headers.map((h, i) => (
             <th key={i} style={{
               textAlign: h.align || 'left', padding: '14px 20px',
-              fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-              letterSpacing: '0.06em', fontWeight: 500,
+              fontSize: T.fontXSmall, color: T.textMuted, textTransform: 'uppercase',
+              letterSpacing: '0.06em', fontWeight: T.fontWeightRegular,
               borderBottom: `1px solid ${T.hairline}`,
             }}>{h.label}</th>
           ))}
@@ -231,21 +257,21 @@ function HeroSection({ data }) {
     <section style={{ background: T.black, color: '#FFFFFF',
                       padding: '72px 40px 64px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+        <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                       textTransform: 'uppercase', letterSpacing: '0.14em',
-                      fontWeight: 600, marginBottom: 12 }}>
+                      fontWeight: T.fontWeightRegular, marginBottom: 12 }}>
           Weekly GTM Performance Review · {h.asOf}
         </div>
-        <h1 style={{ margin: 0, fontSize: 44, fontWeight: 700, letterSpacing: '-0.03em',
+        <h1 style={{ margin: 0, fontSize: T.font5XLarge, fontWeight: T.fontWeightRegular, letterSpacing: '-0.03em',
                      lineHeight: 1.1, color: '#FFFFFF', marginBottom: 20 }}>
           Q2 2026 is behind plan.
         </h1>
-        <div style={{ ...numStyle, fontSize: 36, fontWeight: 600,
+        <div style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: T.fontWeightSemibold,
                       color: T.pleoYellow, lineHeight: 1.1, letterSpacing: '-0.02em',
                       marginBottom: 24 }}>
           €0 closed of {fmtEur(h.q2Target)}
         </div>
-        <p style={{ fontSize: 15, lineHeight: 1.65, maxWidth: 720, opacity: 0.78,
+        <p style={{ fontSize: T.fontLarge, lineHeight: T.lineHeight2, maxWidth: 720, opacity: 0.78,
                     margin: '0 0 40px', color: '#FFFFFF' }}>
           Six weeks into Q2, we have closed €0 of a ramp-adjusted {fmtEur(h.q2Target)} target.
           Pipeline scheduled to close in Q2 is {fmtEur(h.q2PipeGross)} gross / {fmtEur(h.q2PipeWeighted)}{' '}
@@ -262,10 +288,10 @@ function HeroSection({ data }) {
           ].map((k, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.06)',
                                   borderRadius: 12, padding: '20px 22px' }}>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+              <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                             textTransform: 'uppercase', letterSpacing: '0.06em',
-                            fontWeight: 600, marginBottom: 12 }}>{k.label}</div>
-              <div style={{ ...numStyle, fontSize: 26, fontWeight: 700, color: '#FFFFFF',
+                            fontWeight: T.fontWeightRegular, marginBottom: 12 }}>{k.label}</div>
+              <div style={{ ...numStyle, fontSize: T.font3XLarge, fontWeight: T.fontWeightMedium, color: '#FFFFFF',
                             lineHeight: 1.1, letterSpacing: '-0.02em' }}>{k.value}</div>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)',
                             marginTop: 10, lineHeight: 1.5 }}>{k.sub}</div>
@@ -677,7 +703,7 @@ function App() {
                 <div style={{ fontSize: 14, marginTop: 8, color: T.textSec, lineHeight: 1.55 }}>{a.title}</div>
               </div>
               <div style={{ fontSize: 12, color: T.textMuted }}>{a.owner}</div>
-              <div style={{ ...numStyle, fontSize: 14, fontWeight: 600, color: T.black }}>{a.value}</div>
+              <div style={{ ...numStyle, fontSize: T.fontMedium, fontWeight: T.fontWeightMedium, color: T.black }}>{a.value}</div>
               <div style={{ fontSize: 11, color: T.textMuted, textAlign: 'right',
                             textTransform: 'uppercase', letterSpacing: '0.05em' }}>{a.when}</div>
             </div>

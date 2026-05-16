@@ -3,7 +3,7 @@
 // Design intent (per Daniel's direction):
 //   - Pleo Telescope palette (no Finstatement / monochrome).
 //   - Warm cream background like Pleo's marketing site.
-//   - Inter for everything (no monospace). Numbers use tabular-nums.
+//   - Switzer (Telescope official typeface). Numbers use tabular-nums.
 //   - Section cards live on a light grey panel; cards inside are white.
 //   - Pleo brand pastels (yellow / green / pink / purple) appear ONLY on
 //     specific data callouts (status pills, tiny accent dots, the won
@@ -40,29 +40,54 @@ class ErrorBoundary extends React.Component {
 // --- Design tokens (Pleo Telescope) ---------------------------------------
 
 const T = {
-  // Surfaces — warm cream page, light grey section panel, white cards
-  bg:         '#F4EFE8',  // cream — Pleo marketing-site background
-  panel:      '#ECE7DF',  // section grouping panel
+  // Surfaces — Telescope design tokens (light mode)
+  bg:         '#FAFAFA',  // shade100 — page background
+  panel:      '#F5F5F5',  // shade200 — section grouping panel
   card:       '#FFFFFF',  // card / table fill
-  hairline:   '#E5E0D8',  // subtle separator (used very sparingly)
+  hairline:   '#ECECEC',  // shade300 — borders & dividers
 
-  // Text
-  black:      '#000000',
-  textSec:    '#333333',  // Telescope shade700
-  textMuted:  '#737373',  // Telescope shade600
+  // Text — Telescope tokens
+  black:      '#000000',  // shade900
+  textSec:    '#333333',  // shade700
+  textMuted:  '#737373',  // shade600
 
-  // Status (used sparingly — only where it actually matters)
-  positive:   '#2c8354',  // Telescope green800
-  negative:   '#e91c1c',  // Telescope red700
+  // Status
+  positive:   '#2c8354',  // green800
+  negative:   '#e91c1c',  // red700
 
-  // Pleo brand pastels — reserved for tiny accents (avatar dots, "Won" bar, etc.)
-  pleoYellow: '#fcea88',
-  pleoGreen:  '#ace3bd',
-  pleoPink:   '#f39ca8',
-  pleoPurple: '#a69ae3',
+  // Pleo brand pastels — reserved for tiny accents only
+  pleoYellow: '#fcea88',  // yellow500
+  pleoGreen:  '#ace3bd',  // green500
+  pleoPink:   '#f39ca8',  // pink500
+  pleoPurple: '#a69ae3',  // purple500
 
-  // Chart neutrals
-  chartGrid:  '#E5E0D8',
+  // Chart
+  chartGrid:  '#ECECEC',  // shade300
+
+  // Telescope type scale
+  fontXSmall:   10,
+  fontSmall:    12,
+  fontMedium:   14,
+  fontLarge:    16,
+  fontXLarge:   18,
+  font2XLarge:  20,
+  font3XLarge:  24,
+  font4XLarge:  32,
+  font5XLarge:  48,
+
+  // Telescope font weights
+  fontWeightRegular:   400,
+  fontWeightMedium:    500,
+  fontWeightSemibold:  600,
+  fontWeightBold:      700,
+
+  // Telescope line heights
+  lineHeight1: 1.4,
+  lineHeight2: 1.6,
+  lineHeight3: 1.7,
+
+  // Font family — Pleo production stack
+  font: '"Neue Haas Grotesk Display", system-ui, "Helvetica Neue", Arial, sans-serif',
 };
 
 const numStyle = { fontVariantNumeric: 'tabular-nums', fontFeatureSettings: '"tnum"' };
@@ -87,7 +112,7 @@ const Pill = ({ kind, children }) => {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
-      fontSize: 12, fontWeight: 500, color: c, ...numStyle,
+      fontSize: T.fontSmall, fontWeight: T.fontWeightRegular, color: c, ...numStyle,
     }}>
       <span style={{ width: 6, height: 6, borderRadius: 999, background: c, display: 'inline-block' }} />
       {children}
@@ -100,10 +125,10 @@ const KpiCard = ({ label, value, sub, emphasised }) => (
   <div style={{
     background: T.card, borderRadius: 14, padding: '22px 24px',
   }}>
-    <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-                  letterSpacing: '0.06em', fontWeight: 500, marginBottom: 14 }}>{label}</div>
-    <div style={{ ...numStyle, fontSize: 30, fontWeight: emphasised ? 700 : 600,
-                  color: T.black, lineHeight: 1.1, letterSpacing: '-0.02em' }}>{value}</div>
+    <div style={{ fontSize: T.fontXSmall, color: T.textMuted, textTransform: 'uppercase',
+                  letterSpacing: '0.06em', fontWeight: T.fontWeightRegular, marginBottom: 14 }}>{label}</div>
+    <div style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: emphasised ? T.fontWeightSemibold : T.fontWeightMedium,
+                  color: T.black, lineHeight: T.lineHeight1, letterSpacing: '-0.02em' }}>{value}</div>
     {sub && <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10, lineHeight: 1.5 }}>{sub}</div>}
   </div>
 );
@@ -111,11 +136,11 @@ const KpiCard = ({ label, value, sub, emphasised }) => (
 const SectionBanner = ({ tag, title, caption, who }) => (
   <div style={{ marginTop: 64, marginBottom: 24 }}>
     <div style={{ fontSize: 10, color: T.textMuted, textTransform: 'uppercase',
-                  letterSpacing: '0.14em', fontWeight: 600, marginBottom: 8 }}>{tag}</div>
-    <h2 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: T.black,
-                 letterSpacing: '-0.02em', lineHeight: 1.2 }}>{title}</h2>
+                  letterSpacing: '0.14em', fontWeight: T.fontWeightRegular, marginBottom: 8 }}>{tag}</div>
+    <h2 style={{ margin: 0, fontSize: T.font4XLarge, fontWeight: T.fontWeightRegular, color: T.black,
+                 letterSpacing: '-0.02em', lineHeight: T.lineHeight1 }}>{title}</h2>
     {caption && (
-      <div style={{ fontSize: 14, color: T.textSec, marginTop: 10, lineHeight: 1.55, maxWidth: 760 }}>
+      <div style={{ fontSize: T.fontMedium, color: T.textSec, marginTop: 10, lineHeight: T.lineHeight2, maxWidth: 760 }}>
         {caption}
       </div>
     )}
@@ -130,7 +155,7 @@ const SectionBanner = ({ tag, title, caption, who }) => (
 
 const SectionH = ({ children, meta }) => (
   <div style={{ fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-                letterSpacing: '0.12em', fontWeight: 500, marginTop: 32, marginBottom: 14 }}>
+                letterSpacing: '0.12em', fontWeight: T.fontWeightRegular, marginTop: 32, marginBottom: 14 }}>
     {children}
     {meta && <span style={{ marginLeft: 10, color: T.textMuted, opacity: 0.7,
                             textTransform: 'none', letterSpacing: 0, fontWeight: 400 }}>{meta}</span>}
@@ -144,7 +169,7 @@ const FindingBox = ({ children }) => (
     padding: '14px 0 14px 20px',
     margin: '16px 0 4px',
     borderLeft: `2px solid ${T.hairline}`,
-    fontSize: 14, lineHeight: 1.6, color: T.textSec,
+    fontSize: T.fontMedium, lineHeight: T.lineHeight2, color: T.textSec,
   }}>{children}</div>
 );
 
@@ -160,8 +185,8 @@ const Table = ({ headers, rows, formatters }) => (
           {headers.map((h, i) => (
             <th key={i} style={{
               textAlign: h.align || 'left', padding: '14px 20px',
-              fontSize: 11, color: T.textMuted, textTransform: 'uppercase',
-              letterSpacing: '0.06em', fontWeight: 500,
+              fontSize: T.fontXSmall, color: T.textMuted, textTransform: 'uppercase',
+              letterSpacing: '0.06em', fontWeight: T.fontWeightRegular,
               borderBottom: `1px solid ${T.hairline}`,
             }}>{h.label}</th>
           ))}
@@ -198,21 +223,21 @@ function HeroSection({ data }) {
     <section style={{ background: T.black, color: '#FFFFFF',
                       padding: '72px 40px 64px' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+        <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                       textTransform: 'uppercase', letterSpacing: '0.14em',
-                      fontWeight: 600, marginBottom: 12 }}>
+                      fontWeight: T.fontWeightRegular, marginBottom: 12 }}>
           Weekly GTM Performance Review · {h.asOf}
         </div>
-        <h1 style={{ margin: 0, fontSize: 44, fontWeight: 700, letterSpacing: '-0.03em',
+        <h1 style={{ margin: 0, fontSize: T.font5XLarge, fontWeight: T.fontWeightRegular, letterSpacing: '-0.03em',
                      lineHeight: 1.1, color: '#FFFFFF', marginBottom: 20 }}>
           Q2 2026 is behind plan.
         </h1>
-        <div style={{ ...numStyle, fontSize: 36, fontWeight: 600,
+        <div style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: T.fontWeightSemibold,
                       color: T.pleoYellow, lineHeight: 1.1, letterSpacing: '-0.02em',
                       marginBottom: 24 }}>
           €0 closed of {fmtEur(h.q2Target)}
         </div>
-        <p style={{ fontSize: 15, lineHeight: 1.65, maxWidth: 720, opacity: 0.78,
+        <p style={{ fontSize: T.fontLarge, lineHeight: T.lineHeight2, maxWidth: 720, opacity: 0.78,
                     margin: '0 0 40px', color: '#FFFFFF' }}>
           Six weeks into Q2, we have closed €0 of a ramp-adjusted {fmtEur(h.q2Target)} target.
           Pipeline scheduled to close in Q2 is {fmtEur(h.q2PipeGross)} gross / {fmtEur(h.q2PipeWeighted)}{' '}
@@ -229,10 +254,10 @@ function HeroSection({ data }) {
           ].map((k, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.06)',
                                   borderRadius: 12, padding: '20px 22px' }}>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)',
+              <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                             textTransform: 'uppercase', letterSpacing: '0.06em',
-                            fontWeight: 600, marginBottom: 12 }}>{k.label}</div>
-              <div style={{ ...numStyle, fontSize: 26, fontWeight: 700, color: '#FFFFFF',
+                            fontWeight: T.fontWeightRegular, marginBottom: 12 }}>{k.label}</div>
+              <div style={{ ...numStyle, fontSize: T.font3XLarge, fontWeight: T.fontWeightMedium, color: '#FFFFFF',
                             lineHeight: 1.1, letterSpacing: '-0.02em' }}>{k.value}</div>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)',
                             marginTop: 10, lineHeight: 1.5 }}>{k.sub}</div>
@@ -644,7 +669,7 @@ function App() {
                 <div style={{ fontSize: 14, marginTop: 8, color: T.textSec, lineHeight: 1.55 }}>{a.title}</div>
               </div>
               <div style={{ fontSize: 12, color: T.textMuted }}>{a.owner}</div>
-              <div style={{ ...numStyle, fontSize: 14, fontWeight: 600, color: T.black }}>{a.value}</div>
+              <div style={{ ...numStyle, fontSize: T.fontMedium, fontWeight: T.fontWeightMedium, color: T.black }}>{a.value}</div>
               <div style={{ fontSize: 11, color: T.textMuted, textAlign: 'right',
                             textTransform: 'uppercase', letterSpacing: '0.05em' }}>{a.when}</div>
             </div>
