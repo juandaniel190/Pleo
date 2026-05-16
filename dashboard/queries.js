@@ -117,12 +117,13 @@ async function buildHero(conn) {
 
 async function buildTrend(conn) {
   const r = await rows(conn, `
-    SELECT quarter,
-           round(sum(target_eur)/1000, 1) AS target_k,
-           round(sum(closed_arr_eur)/1000, 1) AS closed_k
+    SELECT right(quarter, 4) || ' ' || left(quarter, 2) AS quarter,
+           round(sum(target_eur)/1000, 1)               AS target_k,
+           round(sum(closed_arr_eur)/1000, 1)           AS closed_k
     FROM fct_quarterly_arr
     WHERE right(quarter, 4) IN ('2024','2025','2026')
-    GROUP BY 1 ORDER BY 1`);
+    GROUP BY right(quarter, 4) || ' ' || left(quarter, 2)
+    ORDER BY right(quarter, 4), left(quarter, 2)`);
   return r.map(x => ({ quarter: x.quarter, target_k: num(x.target_k), closed_k: num(x.closed_k) }));
 }
 

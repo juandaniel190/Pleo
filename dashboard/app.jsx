@@ -10,7 +10,17 @@
 //     funnel bar). Everything else is black / grey / white.
 //   - Less colour overall; the eye should land on the numbers that matter.
 
-const { useState, useMemo } = React;
+const { useState, useMemo, useEffect } = React;
+
+function useBreakpoint() {
+  const [w, setW] = useState(window.innerWidth);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+  return { isMobile: w < 768, isNarrow: w < 480 };
+}
 
 if (typeof Recharts === 'undefined') {
   document.getElementById('root').innerHTML =
@@ -137,8 +147,8 @@ const SectionBanner = ({ tag, title, caption, who }) => (
   <div style={{ marginTop: 64, marginBottom: 24 }}>
     <div style={{ fontSize: 10, color: T.textMuted, textTransform: 'uppercase',
                   letterSpacing: '0.14em', fontWeight: T.fontWeightRegular, marginBottom: 8 }}>{tag}</div>
-    <h2 style={{ margin: 0, fontSize: T.font4XLarge, fontWeight: T.fontWeightRegular, color: T.black,
-                 letterSpacing: '-0.02em', lineHeight: T.lineHeight1 }}>{title}</h2>
+    <h2 className="sec-title" style={{ margin: 0, fontSize: T.font4XLarge, fontWeight: T.fontWeightRegular,
+                 color: T.black, letterSpacing: '-0.02em', lineHeight: T.lineHeight1 }}>{title}</h2>
     {caption && (
       <div style={{ fontSize: T.fontMedium, color: T.textSec, marginTop: 10, lineHeight: T.lineHeight2, maxWidth: 760 }}>
         {caption}
@@ -178,7 +188,8 @@ const Card = ({ children, style }) => (
 );
 
 const Table = ({ headers, rows, formatters }) => (
-  <div style={{ background: T.card, borderRadius: 14, overflow: 'hidden' }}>
+  <div className="tbl-scroll">
+  <div style={{ background: T.card, minWidth: 480 }}>
     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
       <thead>
         <tr>
@@ -213,6 +224,7 @@ const Table = ({ headers, rows, formatters }) => (
       </tbody>
     </table>
   </div>
+  </div>
 );
 
 // --- Hero -----------------------------------------------------------------
@@ -220,32 +232,31 @@ const Table = ({ headers, rows, formatters }) => (
 function HeroSection({ data }) {
   const h = data.hero;
   return (
-    <section style={{ background: T.black, color: '#FFFFFF',
-                      padding: '72px 40px 64px' }}>
+    <section className="hero-pad" style={{ background: T.black, color: '#FFFFFF' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto' }}>
         <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                       textTransform: 'uppercase', letterSpacing: '0.14em',
                       fontWeight: T.fontWeightRegular, marginBottom: 12 }}>
           Weekly GTM Performance Review · {h.asOf}
         </div>
-        <h1 style={{ margin: 0, fontSize: T.font5XLarge, fontWeight: T.fontWeightRegular, letterSpacing: '-0.03em',
-                     lineHeight: 1.1, color: '#FFFFFF', marginBottom: 20 }}>
+        <h1 className="hero-h1" style={{ margin: 0, fontSize: T.font5XLarge, fontWeight: T.fontWeightRegular,
+                     letterSpacing: '-0.03em', lineHeight: 1.1, color: '#FFFFFF', marginBottom: 20 }}>
           Q2 2026 is behind plan.
         </h1>
-        <div style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: T.fontWeightSemibold,
+        <div className="hero-num" style={{ ...numStyle, fontSize: T.font4XLarge, fontWeight: T.fontWeightSemibold,
                       color: T.pleoYellow, lineHeight: 1.1, letterSpacing: '-0.02em',
                       marginBottom: 24 }}>
           €0 closed of {fmtEur(h.q2Target)}
         </div>
-        <p style={{ fontSize: T.fontLarge, lineHeight: T.lineHeight2, maxWidth: 720, opacity: 0.78,
-                    margin: '0 0 40px', color: '#FFFFFF' }}>
+        <p className="hero-para" style={{ fontSize: T.fontLarge, lineHeight: T.lineHeight2, maxWidth: 720,
+                    opacity: 0.78, margin: '0 0 40px', color: '#FFFFFF' }}>
           Six weeks into Q2, we have closed €0 of a ramp-adjusted {fmtEur(h.q2Target)} target.
           Pipeline scheduled to close in Q2 is {fmtEur(h.q2PipeGross)} gross / {fmtEur(h.q2PipeWeighted)}{' '}
           weighted — even if every weighted euro lands, we miss target by {fmtEur(h.q2Target - h.q2PipeWeighted)}.
           The biggest controllable lever this week is the {h.staleDeals} open deals worth {fmtEur(h.staleArr)} with
           no activity in 30+ days.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <div className="grid-4">
           {[
             { label: 'Q2 ARR pace',         value: fmtEur(h.q2Closed),         sub: `${fmtEur(h.q2Gap)} behind plan` },
             { label: 'Pipeline at risk',    value: fmtEur(h.staleArr),         sub: `${h.staleDeals} stale · ${h.staleAvgSilent}d avg silent` },
@@ -276,7 +287,7 @@ const TooltipLabel = { color: '#FFF' };
 const TooltipItem  = { color: '#FFF' };
 
 function TrendChart({ data }) {
-  const points = data.trend.filter(r => r.quarter >= 'Q1 2025');
+  const points = data.trend.filter(r => r.quarter >= '2025 Q1');
   return (
     <Card>
       <ResponsiveContainer width="100%" height={260}>
@@ -435,7 +446,7 @@ function App() {
     <div style={{ background: T.bg, color: T.black, minHeight: '100vh' }}>
       <HeroSection data={data} />
 
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 40px 80px' }}>
+      <div className="body-wrap">
 
         {/* ===== Trend ===== */}
         <SectionBanner
@@ -447,14 +458,14 @@ function App() {
         <TrendChart data={data} />
 
         {/* ===== Pipeline quality ===== */}
-        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+        <div className="panel-pad" style={{ background: T.panel, borderRadius: 20, marginTop: 56 }}>
           <SectionBanner
             tag="PIPELINE QUALITY"
             title="Stalled · slipped · velocity · ASP"
             caption="Where revenue is leaking before it gets to the bottom of the funnel."
             who="VP Sales · Marketing · RevOps"
           />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <div className="grid-4">
             <KpiCard label="Stalled"      value={`${data.pipelineQuality.stalledDeals} deals`} sub={`${fmtEur(data.pipelineQuality.stalledArr)} at risk`} emphasised />
             <KpiCard label="Slipped"      value={`${data.pipelineQuality.slippedDeals} deals`} sub={`${fmtEur(data.pipelineQuality.slippedArr)} moved last month`} />
             <KpiCard label="Median cycle" value={`${data.pipelineQuality.avgCycle} days`}      sub="Won · created → closed" />
@@ -545,7 +556,7 @@ function App() {
         />
 
         {/* ===== Funnel ===== */}
-        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+        <div className="panel-pad" style={{ background: T.panel, borderRadius: 20, marginTop: 56 }}>
           <SectionBanner
             tag="FUNNEL CONVERSION"
             title="By stage · trail 13W"
@@ -604,7 +615,7 @@ function App() {
         />
 
         {/* ===== Cumulative ARR (supporting) ===== */}
-        <div style={{ background: T.panel, borderRadius: 20, padding: '32px 32px 36px', marginTop: 56 }}>
+        <div className="panel-pad" style={{ background: T.panel, borderRadius: 20, marginTop: 56 }}>
           <SectionBanner
             tag="SUPPORTING · NO CHURN"
             title="Cumulative ARR book"
@@ -658,10 +669,7 @@ function App() {
         />
         <Card style={{ padding: 0 }}>
           {data.actions.map((a, i) => (
-            <div key={i} style={{
-              display: 'grid', gridTemplateColumns: '1fr 180px 160px 100px',
-              gap: 16, padding: '20px 24px',
-              alignItems: 'center',
+            <div key={i} className="actions-row" style={{
               borderTop: i > 0 ? `1px solid ${T.hairline}` : 'none',
             }}>
               <div>
