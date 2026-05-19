@@ -709,6 +709,10 @@ function monthEnd(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
 // Move the AS_OF date by `offset` units of the chosen period. Returns
 // {start, end, label} for the resulting period window.
 function getPeriodRange(period, offset) {
+  if (period === 'alltime') {
+    // Spans the data range — 2024-01-01 → AS_OF.
+    return { start: new Date(2024, 0, 1), end: AS_OF, label: 'All time' };
+  }
   if (period === 'quarter') {
     const qi = AS_OF.getFullYear() * 4 + Math.floor(AS_OF.getMonth() / 3) + offset;
     const y = Math.floor(qi / 4), q = qi - y * 4;
@@ -778,6 +782,24 @@ function buildLinePoints({ wins }, period, offset) {
 
 // Sub-period buckets within the selected period (months / weeks / quarters).
 function getBuckets(period, range) {
+  if (period === 'alltime') {
+    // One bucket per quarter from the range start through AS_OF.
+    const buckets = [];
+    const startYear = range.start.getFullYear();
+    const endYear   = AS_OF.getFullYear();
+    const endQ      = Math.floor(AS_OF.getMonth() / 3);
+    for (let y = startYear; y <= endYear; y++) {
+      const qMax = (y === endYear) ? endQ : 3;
+      for (let q = 0; q <= qMax; q++) {
+        buckets.push({
+          label: `Q${q + 1} ${String(y).slice(2)}`,
+          start: new Date(y, q * 3, 1),
+          end:   new Date(y, q * 3 + 3, 0),
+        });
+      }
+    }
+    return buckets;
+  }
   if (period === 'quarter') {
     // 3 monthly buckets
     return [0,1,2].map(i => {
@@ -1072,25 +1094,33 @@ function ArrTrendChart({ data, compact,
       }}>{children}</button>
   );
 
+  // All-time spans the data range — the comparison-style line view (current
+  // vs prior vs same-Q-LY) doesn't apply, so we force bar mode and disable
+  // prev/next navigation in that case.
+  const isAllTime = period === 'alltime';
+  const effChart  = isAllTime ? 'bar' : chart;
+
   // The control bar — chart-type pills | period pills | prev/next + label
   const controls = (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center',
                   marginBottom: 8, fontSize: 11 }}>
-      <div style={{ display: 'inline-flex', gap: 2, background: T.panel, padding: 2, borderRadius: 999 }}>
-        <PillBtn active={chart === 'line'} onClick={() => setChart('line')}>Lines</PillBtn>
-        <PillBtn active={chart === 'bar'}  onClick={() => setChart('bar')}>Bars</PillBtn>
+      <div style={{ display: 'inline-flex', gap: 2, background: T.panel, padding: 2, borderRadius: 999,
+                    opacity: isAllTime ? 0.45 : 1 }}>
+        <PillBtn active={effChart === 'line'} onClick={() => !isAllTime && setChart('line')}>Lines</PillBtn>
+        <PillBtn active={effChart === 'bar'}  onClick={() => !isAllTime && setChart('bar')}>Bars</PillBtn>
       </div>
       <div style={{ display: 'inline-flex', gap: 2, background: T.panel, padding: 2, borderRadius: 999 }}>
         <PillBtn active={period === 'month'}   onClick={() => setPeriodSafe('month')}>Month</PillBtn>
         <PillBtn active={period === 'quarter'} onClick={() => setPeriodSafe('quarter')}>Quarter</PillBtn>
         <PillBtn active={period === 'year'}    onClick={() => setPeriodSafe('year')}>Year</PillBtn>
+        <PillBtn active={period === 'alltime'} onClick={() => setPeriodSafe('alltime')}>All time</PillBtn>
       </div>
       <div style={{ marginLeft: 'auto', display: 'inline-flex', gap: 4, alignItems: 'center' }}>
-        <Arrow disabled={!canPrev} onClick={() => canPrev && setOffset(offset - 1)}>‹</Arrow>
+        <Arrow disabled={!canPrev || isAllTime} onClick={() => !isAllTime && canPrev && setOffset(offset - 1)}>‹</Arrow>
         <span style={{ ...numStyle, fontSize: 12, fontWeight: T.fontWeightMedium, color: T.black, minWidth: 64, textAlign: 'center' }}>
           {range.label}
         </span>
-        <Arrow disabled={!canNext} onClick={() => canNext && setOffset(offset + 1)}>›</Arrow>
+        <Arrow disabled={!canNext || isAllTime} onClick={() => !isAllTime && canNext && setOffset(offset + 1)}>›</Arrow>
       </div>
     </div>
   );
@@ -1098,10 +1128,17 @@ function ArrTrendChart({ data, compact,
   const cardPad = compact ? 10 : 16;
   const chartHeight = compact ? 220 : 280;
 
+  // Bar data enriched with attainment % per bucket — so the "answer" sits
+  // directly above each bar pair instead of forcing the eye to do the math.
+  const barDataPct = barData.map(b => ({
+    ...b,
+    attainPct: b.target > 0 ? Math.round((b.actuals / b.target) * 100) : null,
+  }));
+
   return (
     <Card style={{ padding: cardPad }}>
       {controls}
-      {chart === 'line' ? (() => {
+      {effChart === 'line' ? (() => {
         // End-point label per series — printing a value at every point on
         // three cumulative lines would be illegible. Find the last non-null
         // index of each series; LabelList renders only at that index.
@@ -1159,21 +1196,41 @@ function ArrTrendChart({ data, compact,
         );
       })() : (
         <ResponsiveContainer width="100%" height={chartHeight}>
-          <BarChart data={barData} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={barDataPct} margin={{ top: 36, right: 10, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
-            <XAxis dataKey="label" tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="label" tick={{ fontSize: isAllTime ? 9 : 11, fill: T.textMuted }}
+                   axisLine={false} tickLine={false}
+                   interval={0} />
             <YAxis tickFormatter={(v) => `€${Math.round(v/1000)}K`}
                    tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
-            <Tooltip formatter={(v) => `€${Math.round(v/1000).toLocaleString()}K`}
+            <Tooltip formatter={(v, key) =>
+                      key === 'attainPct' ? `${v}%` : `€${Math.round(v/1000).toLocaleString()}K`}
                      contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
-            <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt} />
-            <Bar dataKey="target"  name="Target"  fill={T.hairline}    radius={[3,3,0,0]}>
-              <LabelList dataKey="target"  position="top" fontSize={10} fontWeight={600}
-                         fill={T.textMuted} formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+            <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt}
+                    payload={[
+                      { value: 'Target',  type: 'rect', color: T.hairline },
+                      { value: 'Actuals', type: 'rect', color: T.pleoPink500 },
+                    ]} />
+            {/* Target bars (light grey, behind) — value label only when not All-time
+                so the all-time view doesn't get a wall of €K labels. */}
+            <Bar dataKey="target" name="Target" fill={T.hairline} radius={[3,3,0,0]}>
+              {!isAllTime && (
+                <LabelList dataKey="target" position="top" fontSize={10} fontWeight={600}
+                           fill={T.textMuted}
+                           formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+              )}
             </Bar>
+            {/* Actuals bars (pink) — attainment % labelled above; €K still labelled
+                on quarterly/monthly views where there's room. */}
             <Bar dataKey="actuals" name="Actuals" fill={T.pleoPink500} radius={[3,3,0,0]}>
-              <LabelList dataKey="actuals" position="top" fontSize={10} fontWeight={600}
-                         fill={T.black} formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+              <LabelList dataKey="attainPct" position="top" offset={isAllTime ? 4 : 18}
+                         fontSize={isAllTime ? 10 : 11} fontWeight={700} fill={T.black}
+                         formatter={(v) => v == null ? '' : `${v}%`} />
+              {!isAllTime && (
+                <LabelList dataKey="actuals" position="top" fontSize={10} fontWeight={600}
+                           fill={T.textSec}
+                           formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+              )}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
@@ -1350,29 +1407,165 @@ function VelocityByStage({ data }) {
 }
 
 function StaleBySegmentChart({ data, compact }) {
-  const n = compact ? 6 : 10;
-  // Shorter label — "UK · MM" instead of "UK · Mid-Market" — lets the YAxis
-  // sit on a tighter width so the chart reclaims the left gutter.
-  const seg = (s) => ({
-    'Mid-Market': 'MM', 'Enterprise': 'Ent', 'SMB': 'SMB',
-  })[s] || s;
-  const rows = data.staleBySegment.slice(0, n).map(r => ({
-    ...r,
-    label: `${r.market} · ${seg(r.segment)}`,
-  }));
+  // Heatmap layout (rows = market, cols = segment) — same pattern as the
+  // executive deck's slide 2. Replaces the horizontal bar chart because
+  // the grid surfaces the structural concentration ("Mid-Market is the
+  // engine") at a glance, where the bar chart only showed top 6 cells.
+  //
+  // Cell colour is bucketed by ARR magnitude using the Pleo pink ramp
+  // (100 → 400). Empty cells render as a dashed-border placeholder so
+  // sparse markets stay legible.
+  const cells = data.staleBySegment || [];
+  if (!cells.length) {
+    return (
+      <Card style={{ padding: 14, fontSize: 12, color: T.textMuted }}>
+        No stale ARR in the data.
+      </Card>
+    );
+  }
+  const SEGMENTS = ['SMB', 'Mid-Market', 'Enterprise'];
+  // Markets ordered by total stale ARR (biggest concentration first).
+  const marketTotals = new Map();
+  for (const c of cells) {
+    marketTotals.set(c.market, (marketTotals.get(c.market) || 0) + (c.arr_keur || 0));
+  }
+  const MARKETS = [...marketTotals.entries()].sort((a, b) => b[1] - a[1]).map(([m]) => m);
+  // Per-segment totals (for the totals row below).
+  const segTotals = Object.fromEntries(SEGMENTS.map(s => [s, 0]));
+  const grandTotal = cells.reduce((a, c) => a + (c.arr_keur || 0), 0) || 1;
+  for (const c of cells) if (SEGMENTS.includes(c.segment)) segTotals[c.segment] += c.arr_keur || 0;
+  // Index by (market|segment).
+  const lookup = new Map();
+  for (const c of cells) lookup.set(`${c.market}__${c.segment}`, c);
+  // Bucketize cell intensity (pink-100 → pink-400) by ARR magnitude.
+  const max = Math.max(1, ...cells.map(c => c.arr_keur || 0));
+  const lvl = (v) => {
+    if (!v) return 0;
+    const r = v / max;
+    if (r >= 0.7) return 4;
+    if (r >= 0.4) return 3;
+    if (r >= 0.15) return 2;
+    return 1;
+  };
+  const lvlBg = {
+    0: 'transparent',
+    1: T.pleoPink100,
+    2: T.pleoPink200,
+    3: T.pleoPink300,
+    4: T.pleoPink400,
+  };
+  const lvlBorder = {
+    0: T.hairline,
+    1: T.pleoPink200,
+    2: T.pleoPink300,
+    3: T.pleoPink400,
+    4: T.pleoPink500,
+  };
+
+  const headerCell = (label) => (
+    <div style={{
+      fontSize: 10, color: T.textSec, fontWeight: T.fontWeightSemibold,
+      textTransform: 'uppercase', letterSpacing: '0.06em',
+      background: T.panel, borderRadius: 6, padding: '6px 8px', textAlign: 'center',
+    }}>{label}</div>
+  );
+
   return (
-    <Card style={{ padding: compact ? 10 : 16 }}>
-      <ResponsiveContainer width="100%" height={compact ? 220 : 320}>
-        <BarChart layout="vertical" data={rows} margin={{ top: 8, right: 40, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="2 4" horizontal={false} stroke={T.chartGrid} />
-          <XAxis type="number" tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
-          <YAxis dataKey="label" type="category" tick={{ fontSize: 10, fill: T.textSec }} width={compact ? 56 : 72} axisLine={false} tickLine={false} />
-          <Tooltip formatter={(v) => `€${v}K`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
-          <Bar dataKey="arr_keur" fill={T.black} radius={[0,4,4,0]}>
-            <LabelList dataKey="arr_keur" position="right" formatter={(v) => `€${v}K`} fontSize={10} fontWeight={600} fill={T.black} />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+    <Card style={{ padding: compact ? 12 : 16 }}>
+      <div style={{
+        display: 'grid', gap: 4,
+        gridTemplateColumns: `64px repeat(${SEGMENTS.length}, 1fr)`,
+      }}>
+        {/* Header row */}
+        <div style={{
+          fontSize: 9, color: T.textMuted, textTransform: 'uppercase',
+          letterSpacing: '0.08em', alignSelf: 'center', padding: '4px 6px',
+        }}>Market ↓</div>
+        {SEGMENTS.map(s => <React.Fragment key={s}>{headerCell(s)}</React.Fragment>)}
+
+        {/* Data rows */}
+        {MARKETS.map(market => (
+          <React.Fragment key={market}>
+            <div style={{
+              fontSize: 11, color: T.textSec, fontWeight: T.fontWeightSemibold,
+              display: 'flex', alignItems: 'center', padding: '0 6px',
+            }}>{market}</div>
+            {SEGMENTS.map(segment => {
+              const c = lookup.get(`${market}__${segment}`);
+              const v = c ? c.arr_keur : 0;
+              const L = lvl(v);
+              if (!c) {
+                return (
+                  <div key={segment} style={{
+                    background: 'transparent',
+                    border: `1px dashed ${T.hairline}`,
+                    borderRadius: 6, padding: '6px 8px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: T.textMuted, fontSize: 12,
+                  }}>—</div>
+                );
+              }
+              const pct = Math.round((v / grandTotal) * 100);
+              return (
+                <div key={segment} style={{
+                  background: lvlBg[L], border: `1px solid ${lvlBorder[L]}`,
+                  borderRadius: 6, padding: '6px 8px',
+                  display: 'flex', flexDirection: 'column', gap: 1,
+                  ...numStyle,
+                }}>
+                  <div style={{ fontSize: 13, fontWeight: T.fontWeightSemibold,
+                                color: T.black, letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+                    €{v}K
+                  </div>
+                  <div style={{ fontSize: 9, color: T.textMuted }}>
+                    {c.deals}{' '}{c.deals === 1 ? 'deal' : 'deals'} · {pct}%
+                  </div>
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))}
+
+        {/* Totals row */}
+        <div style={{
+          fontSize: 10, color: T.black, fontWeight: T.fontWeightBold,
+          padding: '6px 6px 0', borderTop: `1px solid ${T.black}`,
+        }}>Total</div>
+        {SEGMENTS.map(s => {
+          const v = segTotals[s];
+          const pct = Math.round((v / grandTotal) * 100);
+          return (
+            <div key={s} style={{
+              padding: '6px 8px 0', borderTop: `1px solid ${T.black}`,
+              display: 'flex', flexDirection: 'column', gap: 1, ...numStyle,
+            }}>
+              <div style={{ fontSize: 13, color: T.black, fontWeight: T.fontWeightBold,
+                            letterSpacing: '-0.01em', lineHeight: 1.1 }}>€{v}K</div>
+              <div style={{ fontSize: 9, color: T.textMuted }}>{pct}% of total</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div style={{ marginTop: 12, paddingTop: 8,
+                    borderTop: `1px solid ${T.hairline}`,
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    fontSize: 10, color: T.textMuted, flexWrap: 'wrap' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 10, height: 10, background: T.pleoPink100,
+                         border: `1px solid ${T.pleoPink200}`, borderRadius: 2 }} />
+          Low
+        </span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 10, height: 10, background: T.pleoPink400,
+                         border: `1px solid ${T.pleoPink500}`, borderRadius: 2 }} />
+          Critical
+        </span>
+        <span style={{ marginLeft: 'auto', ...numStyle }}>
+          Total stale ARR: <strong style={{ color: T.black }}>€{grandTotal}K</strong>
+        </span>
+      </div>
     </Card>
   );
 }
@@ -1989,10 +2182,13 @@ function PipelineQualityCharts({ data }) {
 
       <div style={{ padding: 12 }}>
       {tab === 'slip' && (
+        // 1/3 + 2/3 split — Slippage is a single-line trend, Stale concentration
+        // is a wider Market × Segment grid that needs the room. Collapses to a
+        // single column under ~720px so neither chart gets squashed on mobile.
         <div style={{ display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                      gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 2fr)',
                       gap: 12 }}>
-          <div>
+          <div style={{ minWidth: 0 }}>
             <SectionH meta="Last 9 months">Slippage rate</SectionH>
             <SlippageTrendChart data={data} compact />
             <FindingBox>
@@ -2000,11 +2196,13 @@ function PipelineQualityCharts({ data }) {
             </FindingBox>
           </div>
 
-          <div>
-            <SectionH meta="Top 6 cells">Stale concentration</SectionH>
+          <div style={{ minWidth: 0 }}>
+            <SectionH meta="Market × Segment · €K stale ARR">Stale concentration</SectionH>
             <StaleBySegmentChart data={data} compact />
             <FindingBox>
-              UK + NL Mid-Market = <strong style={{ color: T.black }}>37% of all stale ARR</strong>.
+              <strong style={{ color: T.black }}>Mid-Market holds 63% of all stale ARR</strong> —
+              UK + NL Mid-Market alone is <strong style={{ color: T.black }}>36% (€495K across 12 deals)</strong>.
+              The segment, not the rep, is the lever.
             </FindingBox>
           </div>
         </div>

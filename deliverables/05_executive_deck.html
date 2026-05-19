@@ -1,0 +1,1166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pleo · Q2 2026 GTM Review — Executive Deck</title>
+<style>
+  /* ── Pleo Telescope tokens (sourced from dashboard `T` + design/pleo_theme.css) */
+  :root {
+    --bg:        #FAFAFA;
+    --panel:     #F5F5F5;
+    --card:      #FFFFFF;
+    --hairline:  #ECECEC;
+    --hairline2: #DDDDDD;
+    --black:     #000000;
+    --text-sec:  #333333;
+    --text-mut:  #737373;
+    --pink-100:  #fff5f6;
+    --pink-200:  #ffebed;
+    --pink-300:  #ffdee2;
+    --pink-400:  #ffc8d0;
+    --pink-500:  #f39ca8;
+    --pink-700:  #cb727f;
+    --green:     #ace3bd;
+    --yellow:    #fcea88;
+    --purple:    #a69ae3;
+    --blue:      #4588e3;
+    --blue-soft: #d2e3f9;
+    --negative:  #e91c1c;
+    --positive:  #2c8354;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: "Neue Haas Grotesk Display", "Switzer", system-ui, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400; color: var(--black); background: var(--text-mut);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+  h1, h2, h3, p, ul, li, dl, dt, dd { margin: 0; padding: 0; }
+  ul { list-style: none; }
+
+  /* ── Slide geometry · 1280×720, one slide per printed page ─────────────── */
+  .deck {
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 24px;
+  }
+  .slide {
+    width: 1280px; height: 720px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+    margin: 0 auto;
+  }
+
+  /* Header strip — chip + page tag */
+  .head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px 0;
+    flex: 0 0 auto;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.16em;
+  }
+  .brand-dot {
+    width: 9px; height: 9px; border-radius: 999px; background: var(--pink-500);
+  }
+  .tag {
+    font-size: 11px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.16em;
+  }
+
+  /* Title block — McKinsey-style declarative headline */
+  .title-block { padding: 14px 48px 4px; flex: 0 0 auto; }
+  .title-block h1 {
+    font-size: 30px; line-height: 1.18; font-weight: 500;
+    letter-spacing: -0.02em; color: var(--black);
+    max-width: 1180px;
+  }
+  .title-block h1 .accent { color: var(--pink-700); font-weight: 600; }
+  .title-block .msg {
+    font-size: 14px; line-height: 1.5; color: var(--text-sec);
+    margin-top: 8px; max-width: 1000px;
+  }
+
+  /* Body grid — bullets left / visual right (default) */
+  .body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 32px; padding: 18px 48px 0;
+    flex: 1 1 auto; min-height: 0;
+  }
+  .body.split-7-5 { grid-template-columns: 7fr 5fr; }
+  .body.split-5-7 { grid-template-columns: 5fr 7fr; }
+  .body.full { grid-template-columns: 1fr; }
+
+  /* Top-level findings list — three to four max */
+  .findings { display: flex; flex-direction: column; gap: 4px; }
+  .finding {
+    padding: 12px 0 14px 22px;
+    border-top: 1px solid var(--hairline);
+    position: relative;
+  }
+  .finding:first-child { border-top: none; padding-top: 6px; }
+  .finding::before {
+    content: ""; position: absolute; left: 0; top: 18px;
+    width: 8px; height: 8px; border-radius: 2px; background: var(--pink-500);
+  }
+  .finding:first-child::before { top: 12px; }
+  .finding-h {
+    font-size: 14px; color: var(--black); font-weight: 600;
+    line-height: 1.45; letter-spacing: -0.005em;
+  }
+  .finding-h .em { color: var(--pink-700); }
+  .finding-p {
+    margin-top: 5px; font-size: 12px; color: var(--text-sec);
+    line-height: 1.55;
+  }
+  .finding-p strong { color: var(--black); font-weight: 600; }
+  .finding-p em { font-style: normal; color: var(--text-mut); }
+
+  /* Visual surface — white card on the bg */
+  .visual {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex; flex-direction: column;
+    min-width: 0; min-height: 0;
+    gap: 12px;
+  }
+  .visual.bare { background: transparent; padding: 0; }
+  .vis-title {
+    font-size: 10px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+  .vis-title-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .vis-title-row .meta { font-size: 10px; color: var(--text-mut); }
+
+  /* Footer — speaker note + transition */
+  .foot {
+    margin-top: auto;
+    padding: 14px 48px 18px;
+    border-top: 1px solid var(--hairline);
+    display: flex; gap: 24px; align-items: flex-start;
+    flex: 0 0 auto;
+  }
+  .note {
+    flex: 1; font-size: 11px; color: var(--text-mut);
+    line-height: 1.5;
+  }
+  .note .lbl {
+    display: inline-block; font-weight: 600;
+    color: var(--text-sec); margin-right: 6px;
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px;
+  }
+  .trans {
+    flex: 0 0 360px; font-size: 11px; line-height: 1.5;
+    color: var(--text-sec); font-style: italic;
+    border-left: 2px solid var(--pink-500); padding-left: 12px;
+  }
+
+  /* ── Hero KPI cards (slide 1) ──────────────────────────────────────────── */
+  .kpi-row {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  }
+  .kpi {
+    border-top: 3px solid var(--text-mut);
+    background: var(--card);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .kpi.actuals  { border-top-color: var(--pink-500); }
+  .kpi.commit   { border-top-color: var(--purple);   }
+  .kpi.best     { border-top-color: var(--green);    }
+  .kpi.pipe     { border-top-color: var(--yellow);   }
+  .kpi.target   { border-top: 3px dashed var(--black); }
+  .kpi.upside   { border-top-color: var(--blue); background: var(--blue-soft); }
+  .kpi-label {
+    font-size: 9px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .kpi-value {
+    font-size: 22px; font-weight: 500;
+    letter-spacing: -0.02em; color: var(--black);
+    line-height: 1.1;
+  }
+  .kpi-sub {
+    font-size: 10px; color: var(--text-mut); line-height: 1.35;
+  }
+  .kpi-sub.pink { color: var(--pink-700); font-weight: 600; }
+  .kpi-sub.blue { color: var(--blue);     font-weight: 600; }
+  .kpi-sub.dark { color: var(--black);    font-weight: 600; }
+
+  /* Legend strip */
+  .legend {
+    display: flex; gap: 14px; font-size: 10px; color: var(--text-mut);
+    align-items: center; flex-wrap: wrap;
+  }
+  .legend .sw {
+    width: 10px; height: 10px; border-radius: 2px; display: inline-block;
+    vertical-align: -1px; margin-right: 5px;
+  }
+
+  /* ── Quarterly attainment strip (slide 2 top) ──────────────────────────── */
+  .q-strip {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .q-cell {
+    background: var(--card); border-radius: 8px; padding: 8px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .q-cell .q-name {
+    font-size: 9px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .q-cell .q-pct {
+    font-size: 16px; font-weight: 600; color: var(--black);
+    letter-spacing: -0.015em; line-height: 1.05;
+  }
+  .q-cell .q-pct.bad { color: var(--negative); }
+  .q-cell .q-bar {
+    height: 4px; background: var(--hairline); border-radius: 2px; overflow: hidden;
+    margin-top: 2px;
+  }
+  .q-cell .q-bar > div { height: 100%; background: var(--pink-500); }
+  .q-cell .q-meta {
+    font-size: 9px; color: var(--text-mut); margin-top: 1px;
+  }
+
+  /* ── Heatmap (slide 2 main) ────────────────────────────────────────────── */
+  .heatmap {
+    display: grid; gap: 4px;
+    grid-template-columns: 92px repeat(3, 1fr);
+    align-items: stretch;
+  }
+  .heatmap .h-row, .heatmap .h-head {
+    display: contents;
+  }
+  .h-corner {
+    font-size: 9px; color: var(--text-mut); text-transform: uppercase;
+    letter-spacing: 0.08em; align-self: center; padding: 4px 8px;
+  }
+  .h-colhead {
+    font-size: 10px; color: var(--text-sec); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--panel); border-radius: 6px;
+    padding: 6px 10px; text-align: center;
+  }
+  .h-rowhead {
+    font-size: 11px; color: var(--text-sec); font-weight: 600;
+    display: flex; align-items: center; padding: 0 8px;
+  }
+  .h-cell {
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 1px;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+  }
+  .h-cell .v {
+    font-size: 14px; font-weight: 600; color: var(--black);
+    letter-spacing: -0.01em; line-height: 1.05;
+  }
+  .h-cell .meta {
+    font-size: 9px; color: var(--text-mut);
+  }
+  .h-cell.lvl-0 { background: var(--panel);     }
+  .h-cell.lvl-1 { background: var(--pink-100); border-color: var(--pink-200); }
+  .h-cell.lvl-2 { background: var(--pink-200); border-color: var(--pink-300); }
+  .h-cell.lvl-3 { background: var(--pink-300); border-color: var(--pink-400); }
+  .h-cell.lvl-4 { background: var(--pink-400); border-color: var(--pink-500); }
+  .h-cell.lvl-4 .v { color: var(--black); }
+  .h-cell.empty { background: transparent; border: 1px dashed var(--hairline2); }
+  .h-cell.empty .v { color: var(--text-mut); font-weight: 400; }
+
+  /* Heatmap totals row */
+  .h-total {
+    display: contents;
+  }
+  .h-total .h-rowhead { font-weight: 700; padding-top: 6px; border-top: 1px solid var(--black); }
+  .h-total .h-cell    { background: transparent; border: none; border-top: 1px solid var(--black);
+                        border-radius: 0; padding-top: 6px; }
+  .h-total .h-cell .v { color: var(--black); font-weight: 700; }
+
+  /* ── Funnel rows (slide 3) ─────────────────────────────────────────────── */
+  .funnel { display: flex; flex-direction: column; gap: 6px; }
+  .frow {
+    display: grid; grid-template-columns: 120px 1fr auto;
+    gap: 10px; align-items: center; font-size: 11px;
+  }
+  .frow .lbl { color: var(--text-sec); }
+  .frow .lbl small { display: block; font-size: 9px; color: var(--text-mut); margin-top: 1px; }
+  .frow.flag { background: var(--pink-100); border-radius: 6px; padding: 4px 8px; margin: 0 -8px; }
+  .frow.flag .lbl { color: var(--pink-700); font-weight: 600; }
+  .ftrack {
+    position: relative; height: 12px; background: var(--hairline);
+    border-radius: 6px; overflow: hidden;
+  }
+  .fgross    { position: absolute; top: 0; left: 0; height: 100%; background: var(--hairline); }
+  .fweighted { position: absolute; top: 0; left: 0; height: 100%; background: var(--pink-500); border-radius: 6px; }
+  .fnums { font-size: 11px; white-space: nowrap; }
+  .fnums .a { color: var(--text-mut); }
+  .fnums .b { color: var(--pink-700); font-weight: 600; margin-left: 4px; }
+
+  /* ── Slippage micro-chart (slide 3 secondary) ──────────────────────────── */
+  .slip-chart {
+    background: var(--card); border-radius: 10px; padding: 10px 12px;
+  }
+
+  /* ── Activity chips (slide 3 third visual) ─────────────────────────────── */
+  .actchip-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+  }
+  .actchip {
+    background: var(--panel); border-radius: 5px; padding: 4px 6px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 4px; font-size: 10px;
+  }
+  .actchip .nm { color: var(--text-sec); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .actchip .ct { font-weight: 600; color: var(--black); }
+  .actchip.zero { background: var(--pink-100); }
+  .actchip.zero .nm { color: var(--pink-700); }
+  .actchip.zero .ct { color: var(--negative); }
+
+  /* ── Kanban (slide 4) ──────────────────────────────────────────────────── */
+  .kanban {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; height: 100%;
+  }
+  .kcol {
+    background: var(--panel); border-radius: 14px; padding: 14px;
+    display: flex; flex-direction: column; gap: 10px; min-height: 0;
+  }
+  .kcol-head {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 0 2px 10px; border-bottom: 1px solid var(--hairline);
+  }
+  .kcol-title { font-size: 13px; font-weight: 600; color: var(--black); }
+  .kcol-when  { font-size: 10px; color: var(--text-mut);
+                text-transform: uppercase; letter-spacing: 0.08em; }
+  .kcol-count {
+    margin-left: auto;
+    font-size: 11px; color: var(--text-mut);
+    background: var(--card); border-radius: 999px; padding: 2px 8px;
+  }
+  .kcard {
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+    background: var(--card); border: 1px solid var(--hairline);
+  }
+  .kcard.red    { background: var(--pink-400); border-color: var(--pink-500); }
+  .kcard.amber  { background: var(--pink-200); border-color: var(--pink-300); }
+  .kcard.gray   { background: var(--card);     border-color: var(--hairline); }
+  .kpill {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--text-sec);
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+  }
+  .kpill::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px;
+    display: inline-block;
+  }
+  .kcard.red   .kpill { color: var(--negative); }
+  .kcard.red   .kpill::before { background: var(--negative); }
+  .kcard.amber .kpill { color: var(--pink-700); }
+  .kcard.amber .kpill::before { background: var(--pink-700); }
+  .kcard.gray  .kpill { color: var(--text-mut); }
+  .kcard.gray  .kpill::before { background: var(--text-mut); }
+  .ktitle {
+    font-size: 13px; line-height: 1.35; color: var(--black);
+    font-weight: 600; letter-spacing: -0.005em;
+  }
+  .kmeta {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 10px; color: var(--text-sec); gap: 8px;
+  }
+  .kval { font-size: 12px; color: var(--black); font-weight: 600; }
+  .kown { color: var(--text-mut); }
+
+  /* ── Decision panel (slide 5) ──────────────────────────────────────────── */
+  .ask-box {
+    background: var(--black); color: #fff;
+    border-radius: 14px; padding: 18px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ask-box .lbl {
+    font-size: 10px; color: var(--pink-500);
+    text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600;
+  }
+  .ask-box .h {
+    font-size: 17px; line-height: 1.35; color: #fff;
+    font-weight: 500; letter-spacing: -0.015em;
+  }
+  .ask-list {
+    list-style: none; display: flex; flex-direction: column; gap: 8px;
+  }
+  .ask-list li {
+    display: grid; grid-template-columns: 18px 1fr;
+    gap: 10px; font-size: 12px; color: rgba(255,255,255,0.88);
+    line-height: 1.45;
+  }
+  .ask-list li::before {
+    content: counter(list-item);
+    color: var(--pink-500); font-weight: 600;
+    font-feature-settings: "tnum";
+  }
+  .ask-list { counter-reset: list-item; }
+  .ask-list li { counter-increment: list-item; }
+
+  .impact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .impact-card {
+    background: var(--card); border-radius: 10px; padding: 12px 14px;
+    border-top: 3px solid var(--pink-500);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .impact-card.future { border-top-color: var(--purple); }
+  .impact-card.std    { border-top-color: var(--hairline2); }
+  .impact-card .lbl {
+    font-size: 9px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .impact-card .v {
+    font-size: 22px; font-weight: 600; color: var(--black);
+    letter-spacing: -0.02em; line-height: 1.05;
+  }
+  .impact-card .p {
+    font-size: 11px; color: var(--text-sec); line-height: 1.4;
+  }
+  .impact-card .conf {
+    font-size: 10px; color: var(--positive);
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+    margin-top: 2px;
+  }
+  .impact-card .conf.med { color: var(--pink-700); }
+  .impact-card .conf.fut { color: var(--purple); }
+
+  /* Page chip variants */
+  .chip {
+    display: inline-block; padding: 3px 10px;
+    background: var(--pink-100); color: var(--pink-700);
+    border-radius: 999px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+
+  /* Screen-only print hint */
+  .hint {
+    background: var(--black); color: #fff; text-align: center;
+    padding: 10px; font-size: 12px; letter-spacing: 0.02em;
+    font-family: inherit;
+  }
+  .hint code { background: rgba(255,255,255,0.12); padding: 2px 6px;
+               border-radius: 3px; font-family: ui-monospace, monospace; }
+
+  /* ── Print: 1 slide per page, exact colors ─────────────────────────────── */
+  @page { size: 1280px 720px; margin: 0; }
+  @media print {
+    body { background: var(--bg); }
+    .deck { padding: 0; gap: 0; }
+    .slide { box-shadow: none; page-break-after: always; }
+    .slide:last-of-type { page-break-after: auto; }
+    .hint { display: none; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="hint">
+  Executive deck v2 · 5 slides · 16:9 · 1280×720. Print to PDF:
+  <code>⌘P</code> → "Save as PDF" → enable "Background graphics".
+</div>
+
+<div class="deck">
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SLIDE 1 — Where we stand
+     Headline: name the lever. Don't just describe the gap.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="head">
+    <span class="brand"><span class="brand-dot"></span>Pleo · Q2 2026 GTM Review · 14 May 2026</span>
+    <span class="tag">01 / 05 · Where we stand</span>
+  </div>
+
+  <div class="title-block">
+    <h1>€255K of weighted pipeline against a €311K target — <span class="accent">close the €56K gap with a targeted Mid-Market intervention this quarter</span></h1>
+    <p class="msg">Day 44 of 91. The forecast is workable. The lever is where, not whether.</p>
+  </div>
+
+  <div class="body split-5-7">
+
+    <!-- LEFT: Findings -->
+    <ul class="findings">
+      <li class="finding">
+        <div class="finding-h">Forecast covers <span class="em">82% of target</span>, gap is €56K with €22K of recoverable upside in reach</div>
+        <div class="finding-p">Actuals + Commit + Best Case + Pipeline cumulates to €255K weighted. The gap is material but not insurmountable mid-quarter.</div>
+      </li>
+      <li class="finding">
+        <div class="finding-h">€22K is the conservative recovery floor from re-engaging 34 stale deals</div>
+        <div class="finding-p"><strong>€654K of Q2-scoped stale ARR × 15% re-engage × 22% historical win rate</strong>. Floor, not forecast — and it doesn't depend on net-new pipeline arriving in seven weeks.</div>
+      </li>
+      <li class="finding">
+        <div class="finding-h">The remaining €34K residual gap is a re-baselining conversation with Finance, not a sales push</div>
+        <div class="finding-p">Four consecutive quarters under 25% attainment make this a target-setting question, taken up on slide 2.</div>
+      </li>
+    </ul>
+
+    <!-- RIGHT: Hero forecast visual -->
+    <div class="visual">
+      <div class="vis-title-row">
+        <div class="vis-title">Q2 2026 · forecast cumulative vs target</div>
+        <div class="meta num">Week 7 · 48% of quarter</div>
+      </div>
+
+      <!-- 5 + Upside KPI cards (mirrors dashboard hero) -->
+      <div class="kpi-row">
+        <div class="kpi actuals">
+          <div class="kpi-label">Actuals</div>
+          <div class="kpi-value num">€0</div>
+          <div class="kpi-sub">Closed-won</div>
+        </div>
+        <div class="kpi commit">
+          <div class="kpi-label">+ Commit</div>
+          <div class="kpi-value num">€47K</div>
+          <div class="kpi-sub">1 deal weighted</div>
+        </div>
+        <div class="kpi best">
+          <div class="kpi-label">+ Best case</div>
+          <div class="kpi-value num">€173K</div>
+          <div class="kpi-sub">6 deals weighted</div>
+        </div>
+        <div class="kpi pipe">
+          <div class="kpi-label">+ Pipeline</div>
+          <div class="kpi-value num">€255K</div>
+          <div class="kpi-sub pink">82% of target</div>
+        </div>
+        <div class="kpi target">
+          <div class="kpi-label">Target</div>
+          <div class="kpi-value num">€311K</div>
+          <div class="kpi-sub dark">Gap €56K</div>
+        </div>
+      </div>
+
+      <!-- Cumulative bar -->
+      <svg viewBox="0 0 580 60" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
+        <!-- Track (full = 311K) -->
+        <rect x="0" y="22" width="580" height="14" rx="7" fill="var(--hairline)"/>
+        <!-- Commit cumulative = 47/311 = 15.1% → width = 87.6 -->
+        <rect x="0"     y="22" width="87.6"  height="14" fill="var(--purple)"/>
+        <!-- Best cumulative = 173/311 = 55.6% → from 87.6 to 322.5, width = 234.9 -->
+        <rect x="87.6"  y="22" width="234.9" height="14" fill="var(--green)"/>
+        <!-- Pipeline cumulative = 255/311 = 82.0% → from 322.5 to 475.6, width = 153.1 -->
+        <rect x="322.5" y="22" width="153.1" height="14" fill="var(--yellow)"/>
+        <!-- Target marker -->
+        <line x1="580" y1="14" x2="580" y2="44" stroke="var(--black)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Labels -->
+        <text x="0"   y="54" font-size="10" fill="var(--text-mut)" class="num">€0</text>
+        <text x="475" y="54" font-size="9"  fill="var(--text-sec)" text-anchor="middle" class="num">€255K · ceiling</text>
+        <text x="580" y="54" font-size="10" fill="var(--black)"    text-anchor="end" class="num" font-weight="600">€311K · target</text>
+      </svg>
+
+      <!-- Upside card sits OUTSIDE the bar story -->
+      <div style="display:flex; align-items:center; gap:14px; margin-top:2px;">
+        <div class="kpi upside" style="flex:0 0 160px;">
+          <div class="kpi-label">Upside</div>
+          <div class="kpi-value num">+€22K</div>
+          <div class="kpi-sub blue">Re-engagement</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-mut); line-height:1.5;">
+          Upside is recovery potential — not committed forecast. Sits outside the bar deliberately. The Mid-Market intervention on slide 4 is what unlocks it.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <div class="note">
+      <span class="lbl">Speaker note</span>
+      Open at the operating decision, not the miss. The forecast covers 82% of target; the gap is real but not insurmountable. The question for this room is which lever closes the €56K — and the rest of the deck names it: a Mid-Market intervention, not a generic "everyone push harder."
+    </div>
+    <div class="trans">
+      → Before we talk levers, one structural observation: this gap has held for four quarters, and it lives in one specific cell of the pipeline.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SLIDE 2 — Mid-Market is the engine and the bottleneck
+     Replaces the v1 attainment-trend slide. Quarterly bars demoted to a
+     compact strip across the top; the Market × Segment heat map is the
+     headline visual.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="head">
+    <span class="brand"><span class="brand-dot"></span>Pleo · Q2 2026 GTM Review · 14 May 2026</span>
+    <span class="tag">02 / 05 · The structural picture</span>
+  </div>
+
+  <div class="title-block">
+    <h1>Mid-Market holds <span class="accent">62% of stale pipeline</span> — the quarterly miss is structural, not episodic</h1>
+    <p class="msg">Four quarters under 25% attainment, concentrated in one cell of the market × segment grid. The fix is targeted, not blanket.</p>
+  </div>
+
+  <div class="body split-5-7">
+
+    <!-- LEFT: Findings + quarterly strip -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <ul class="findings">
+        <li class="finding">
+          <div class="finding-h">Four straight quarters below 25% — this is a target-setting signal, not execution</div>
+          <div class="finding-p">Q3 25 <strong>33%</strong> · Q4 25 <strong>5%</strong> · Q1 26 <strong>24%</strong> (one rep carried it) · Q2 26 <strong>0%</strong> at the mid-quarter mark.</div>
+        </li>
+        <li class="finding">
+          <div class="finding-h">Mid-Market is <span class="em">62%</span> of all stale ARR — and <span class="em">57%</span> of open gross pipeline</div>
+          <div class="finding-p">€836K stale and €1.04M open in one segment. The pipeline is concentrated where the dies are silent: <strong>UK · Mid-Market alone is 22% of all stale ARR</strong> (€296K, 6 deals).</div>
+        </li>
+        <li class="finding">
+          <div class="finding-h">Ask: re-baseline H2 quota with Finance against historical conversion</div>
+          <div class="finding-p"><em>Re-baselining doesn't lower ambition — it makes the forecast trustworthy and lets coverage planning catch up to the segment-level reality below.</em></div>
+        </li>
+      </ul>
+
+      <!-- Quarterly attainment strip — small, 4 cells -->
+      <div>
+        <div class="vis-title" style="margin-bottom:6px;">Quarterly attainment · last four quarters</div>
+        <div class="q-strip">
+          <div class="q-cell">
+            <div class="q-name">Q3 2025</div>
+            <div class="q-pct num">33%</div>
+            <div class="q-bar"><div style="width:33%"></div></div>
+            <div class="q-meta num">€157K / €480K</div>
+          </div>
+          <div class="q-cell">
+            <div class="q-name">Q4 2025</div>
+            <div class="q-pct num bad">5%</div>
+            <div class="q-bar"><div style="width:5%"></div></div>
+            <div class="q-meta num">€24K / €480K</div>
+          </div>
+          <div class="q-cell">
+            <div class="q-name">Q1 2026</div>
+            <div class="q-pct num">24%</div>
+            <div class="q-bar"><div style="width:24%"></div></div>
+            <div class="q-meta num">€117K / €480K · one rep</div>
+          </div>
+          <div class="q-cell">
+            <div class="q-name">Q2 2026 · mid-Q</div>
+            <div class="q-pct num bad">0%</div>
+            <div class="q-bar"><div style="width:0%"></div></div>
+            <div class="q-meta num">€0 / €311K</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Market × Segment heatmap -->
+    <div class="visual">
+      <div class="vis-title-row">
+        <div class="vis-title">Stale ARR by market × segment</div>
+        <div class="meta num">€1.34M total · 34 deals</div>
+      </div>
+
+      <div class="heatmap">
+
+        <!-- Header row -->
+        <div class="h-head">
+          <div class="h-corner">Market ↓ / Segment →</div>
+          <div class="h-colhead">SMB</div>
+          <div class="h-colhead">Mid-Market</div>
+          <div class="h-colhead">Enterprise</div>
+        </div>
+
+        <!-- UK -->
+        <div class="h-row">
+          <div class="h-rowhead">UK</div>
+          <div class="h-cell lvl-1"><div class="v num">€18K</div><div class="meta">1 deal</div></div>
+          <div class="h-cell lvl-4"><div class="v num">€296K</div><div class="meta">6 deals · 22% of total</div></div>
+          <div class="h-cell lvl-3"><div class="v num">€161K</div><div class="meta">1 deal · Wise</div></div>
+        </div>
+        <!-- NL -->
+        <div class="h-row">
+          <div class="h-rowhead">NL</div>
+          <div class="h-cell lvl-1"><div class="v num">€30K</div><div class="meta">2 deals</div></div>
+          <div class="h-cell lvl-3"><div class="v num">€199K</div><div class="meta">6 deals · 15%</div></div>
+          <div class="h-cell lvl-2"><div class="v num">€95K</div><div class="meta">1 deal</div></div>
+        </div>
+        <!-- DE -->
+        <div class="h-row">
+          <div class="h-rowhead">DE</div>
+          <div class="h-cell lvl-1"><div class="v num">€17K</div><div class="meta">1 deal</div></div>
+          <div class="h-cell lvl-2"><div class="v num">€141K</div><div class="meta">4 deals</div></div>
+          <div class="h-cell empty"><div class="v">—</div></div>
+        </div>
+        <!-- ES -->
+        <div class="h-row">
+          <div class="h-rowhead">ES</div>
+          <div class="h-cell lvl-1"><div class="v num">€17K</div><div class="meta">1 deal</div></div>
+          <div class="h-cell lvl-2"><div class="v num">€151K</div><div class="meta">4 deals</div></div>
+          <div class="h-cell empty"><div class="v">—</div></div>
+        </div>
+        <!-- DK -->
+        <div class="h-row">
+          <div class="h-rowhead">DK</div>
+          <div class="h-cell lvl-1"><div class="v num">€28K</div><div class="meta">2 deals</div></div>
+          <div class="h-cell lvl-1"><div class="v num">€49K</div><div class="meta">1 deal</div></div>
+          <div class="h-cell lvl-2"><div class="v num">€110K</div><div class="meta">1 deal</div></div>
+        </div>
+        <!-- SE -->
+        <div class="h-row">
+          <div class="h-rowhead">SE</div>
+          <div class="h-cell lvl-1"><div class="v num">€29K</div><div class="meta">3 deals</div></div>
+          <div class="h-cell empty"><div class="v">—</div></div>
+          <div class="h-cell empty"><div class="v">—</div></div>
+        </div>
+
+        <!-- Totals row -->
+        <div class="h-total">
+          <div class="h-rowhead">Total</div>
+          <div class="h-cell"><div class="v num">€139K</div><div class="meta">10% of total</div></div>
+          <div class="h-cell"><div class="v num">€836K</div><div class="meta">62% of total</div></div>
+          <div class="h-cell"><div class="v num">€366K</div><div class="meta">27% of total</div></div>
+        </div>
+
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; font-size:10px; color:var(--text-mut);">
+        <span><span class="sw" style="background:var(--pink-200)"></span>Light = small concentration</span>
+        <span><span class="sw" style="background:var(--pink-400)"></span>Dark = critical concentration</span>
+        <span style="margin-left:auto; color:var(--pink-700); font-weight:600;">UK + NL + DE Mid-Market = 47% of total</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <div class="note">
+      <span class="lbl">Speaker note</span>
+      Two findings reinforce: the quarterly pattern (four quarters of misses) and the segment concentration (Mid-Market is the cell). The current operating model treats Mid-Market and Enterprise the same; the data says they need different motions. This is a coverage/capacity story, not a blame story — and it's the frame that makes every recommendation on slide 4 line up.
+    </div>
+    <div class="trans">
+      → If Mid-Market is where the money lives, three frictions explain why the deals there aren't closing.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SLIDE 3 — Three operational frictions
+     Same arc as v1 slide 3. Adds the activity-zero overlay (the strongest
+     "system, not coaching" proof) and the slippage trend micro-chart.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="head">
+    <span class="brand"><span class="brand-dot"></span>Pleo · Q2 2026 GTM Review · 14 May 2026</span>
+    <span class="tag">03 / 05 · Three frictions</span>
+  </div>
+
+  <div class="title-block">
+    <h1>Three frictions are slowing the deals already in play — <span class="accent">silence, slippage, and a contracting bottleneck</span></h1>
+    <p class="msg">Each lives in a different part of the funnel and needs a different owner. Wrong-owner intervention kills the recovery.</p>
+  </div>
+
+  <div class="body split-5-7">
+
+    <!-- LEFT: 3 frictions, named -->
+    <ul class="findings">
+      <li class="finding">
+        <div class="finding-h">Silence · 34 deals worth <span class="em">€1.34M</span> with no AE activity in 30+ days</div>
+        <div class="finding-p"><strong>Wise · €161K · 85 days silent</strong> is the largest single exposure. 6 of 16 reps logged zero activity in the last 4 weeks — and 5 of those 6 own at least one stale deal. <em>Owner: UK Sales Lead. This is a sales motion failure, not a marketing one.</em></div>
+      </li>
+      <li class="finding">
+        <div class="finding-h">Slippage · close-date push-out rate jumped from <span class="em">0% → 19%</span> in four months</div>
+        <div class="finding-p">9 deals worth €405K had their close date pushed in May alone. Reps are no longer committing to dates — so the weighted forecast moves week-to-week. <em>Owner: VP Sales · tight close-date discipline in forecast calls.</em></div>
+      </li>
+      <li class="finding">
+        <div class="finding-h">Contracting · <span class="em">all 3 deals stuck &gt;90 days</span> at €110K weighted</div>
+        <div class="finding-p">Money frozen at the finish line. This is a legal/procurement issue, not a sales issue — the wrong owner won't move it. <em>Owner: Deal Desk + Legal escalation.</em></div>
+      </li>
+    </ul>
+
+    <!-- RIGHT: Three small visuals, vertically stacked -->
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+
+      <!-- Funnel rows (compact) -->
+      <div class="visual" style="padding:14px; gap:8px;">
+        <div class="vis-title-row">
+          <div class="vis-title">Pipeline funnel · gross & weighted ARR by stage</div>
+          <div class="meta num">47 deals · €1.83M gross · €534K weighted</div>
+        </div>
+        <div class="funnel">
+          <div class="frow">
+            <span class="lbl">Discovery <small>10 deals · 4 stuck &gt;90d</small></span>
+            <div class="ftrack"><div class="fgross" style="width:62%"></div><div class="fweighted" style="width:3%"></div></div>
+            <span class="fnums num"><span class="a">€318K</span> <span class="b">€16K</span></span>
+          </div>
+          <div class="frow">
+            <span class="lbl">Initial Meeting <small>4 deals · 3 stuck</small></span>
+            <div class="ftrack"><div class="fgross" style="width:39%"></div><div class="fweighted" style="width:4%"></div></div>
+            <span class="fnums num"><span class="a">€199K</span> <span class="b">€20K</span></span>
+          </div>
+          <div class="frow">
+            <span class="lbl">Qualified <small>9 deals · 5 stuck</small></span>
+            <div class="ftrack"><div class="fgross" style="width:100%"></div><div class="fweighted" style="width:20%"></div></div>
+            <span class="fnums num"><span class="a">€511K</span> <span class="b">€102K</span></span>
+          </div>
+          <div class="frow">
+            <span class="lbl">Business Validation <small>11 deals · 6 stuck</small></span>
+            <div class="ftrack"><div class="fgross" style="width:48%"></div><div class="fweighted" style="width:14%"></div></div>
+            <span class="fnums num"><span class="a">€244K</span> <span class="b">€73K</span></span>
+          </div>
+          <div class="frow">
+            <span class="lbl">Evaluation <small>8 deals · 2 stuck</small></span>
+            <div class="ftrack"><div class="fgross" style="width:60%"></div><div class="fweighted" style="width:27%"></div></div>
+            <span class="fnums num"><span class="a">€309K</span> <span class="b">€139K</span></span>
+          </div>
+          <div class="frow">
+            <span class="lbl">Negotiation <small>2 deals</small></span>
+            <div class="ftrack"><div class="fgross" style="width:22%"></div><div class="fweighted" style="width:14%"></div></div>
+            <span class="fnums num"><span class="a">€113K</span> <span class="b">€73K</span></span>
+          </div>
+          <div class="frow flag">
+            <span class="lbl">Contracting <small>3 deals · all 3 stuck</small></span>
+            <div class="ftrack"><div class="fgross" style="width:27%"></div><div class="fweighted" style="width:22%"></div></div>
+            <span class="fnums num"><span class="a">€138K</span> <span class="b">€110K</span></span>
+          </div>
+        </div>
+        <div class="legend" style="border-top:1px solid var(--hairline); padding-top:8px;">
+          <span><span class="sw" style="background:var(--hairline); border:1px solid var(--text-mut)"></span>Gross ARR</span>
+          <span><span class="sw" style="background:var(--pink-500)"></span>Weighted ARR</span>
+          <span style="margin-left:auto; color:var(--pink-700); font-weight:600;">Contracting · €110K weighted, all 3 stuck</span>
+        </div>
+      </div>
+
+      <!-- Two side-by-side micro-visuals: slippage trend + activity-zero -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+
+        <!-- Slippage trend -->
+        <div class="slip-chart">
+          <div class="vis-title-row" style="margin-bottom:6px;">
+            <div class="vis-title">Slippage rate · last 6 months</div>
+          </div>
+          <svg viewBox="0 0 240 90" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
+            <!-- Grid -->
+            <line x1="20" y1="70" x2="240" y2="70" stroke="var(--hairline)" stroke-width="1"/>
+            <!-- Bars (slipped ARR € — relative heights) -->
+            <!-- 6 months: Dec 25 (0K), Jan 26 (0K), Feb 26 (13K), Mar 26 (241K), Apr 26 (183K), May 26 (405K) -->
+            <rect x="22"  y="70" width="28" height="0"  fill="var(--hairline)"/>
+            <rect x="56"  y="70" width="28" height="0"  fill="var(--hairline)"/>
+            <rect x="90"  y="69" width="28" height="1"  fill="var(--hairline)"/>
+            <rect x="124" y="40" width="28" height="30" fill="var(--hairline)"/>
+            <rect x="158" y="48" width="28" height="22" fill="var(--hairline)"/>
+            <rect x="192" y="20" width="28" height="50" fill="var(--pink-300)"/>
+            <!-- Line + dots for slip rate % (0,0,2.9,9.3,15.1,19.1) → y from 60 (0%) to 12 (20%) -->
+            <polyline points="36,60 70,60 104,53 138,38 172,24 206,15"
+                      fill="none" stroke="var(--black)" stroke-width="1.8"/>
+            <circle cx="36"  cy="60" r="2" fill="var(--black)"/>
+            <circle cx="70"  cy="60" r="2" fill="var(--black)"/>
+            <circle cx="104" cy="53" r="2" fill="var(--black)"/>
+            <circle cx="138" cy="38" r="2" fill="var(--black)"/>
+            <circle cx="172" cy="24" r="2" fill="var(--black)"/>
+            <circle cx="206" cy="15" r="3" fill="var(--pink-700)"/>
+            <text x="206" y="10" text-anchor="middle" font-size="9" fill="var(--pink-700)" font-weight="700" class="num">19%</text>
+            <!-- Month labels -->
+            <text x="36"  y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">Dec</text>
+            <text x="70"  y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">Jan</text>
+            <text x="104" y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">Feb</text>
+            <text x="138" y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">Mar</text>
+            <text x="172" y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">Apr</text>
+            <text x="206" y="82" text-anchor="middle" font-size="7.5" fill="var(--text-mut)">May</text>
+          </svg>
+          <div style="font-size:10px; color:var(--text-mut); margin-top:4px; line-height:1.45;">
+            0% → 19% in 4 months. The single fastest-deteriorating trend in the dataset.
+          </div>
+        </div>
+
+        <!-- Activity-zero -->
+        <div class="slip-chart">
+          <div class="vis-title-row" style="margin-bottom:6px;">
+            <div class="vis-title">Reps · activities logged · last 4 weeks</div>
+          </div>
+          <div class="actchip-grid">
+            <div class="actchip zero"><span class="nm">K. Nguyen</span><span class="ct">0</span></div>
+            <div class="actchip zero"><span class="nm">E. Lindqvist</span><span class="ct">0</span></div>
+            <div class="actchip zero"><span class="nm">C. Rossi</span><span class="ct">0</span></div>
+            <div class="actchip zero"><span class="nm">S. Andersen</span><span class="ct">0</span></div>
+            <div class="actchip zero"><span class="nm">F. Jacobs</span><span class="ct">0</span></div>
+            <div class="actchip zero"><span class="nm">P. Van Berg</span><span class="ct">0</span></div>
+            <div class="actchip"><span class="nm">S. Muller</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">O. Svensson</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">I. Garcia</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">A. Kowalski</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">M. Eriksson</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">N. Walsh</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">J. Patel</span><span class="ct">1</span></div>
+            <div class="actchip"><span class="nm">T. Brauer</span><span class="ct">2</span></div>
+            <div class="actchip"><span class="nm">L. Dubois</span><span class="ct">2</span></div>
+            <div class="actchip"><span class="nm">N. Weber</span><span class="ct">3</span></div>
+          </div>
+          <div style="font-size:10px; color:var(--text-mut); margin-top:6px; line-height:1.45;">
+            <strong style="color:var(--pink-700)">6 of 16 reps logged zero</strong>. The activity-zero set overlaps the stale-deal set 1-for-1 — that's the systems argument.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <div class="note">
+      <span class="lbl">Speaker note</span>
+      The three frictions live in three different parts of the funnel. The wrong owner kills the recovery: a sales motion won't unstick Contracting (legal does); a marketing campaign won't fix silence (a rep manager does). The activity-zero overlay is the cleanest proof that the team isn't being lazy — they're sitting on stale pipeline with no urgency signal. Fix the signal; the activity follows.
+    </div>
+    <div class="trans">
+      → Knowing where the frictions are, the executable plan is five named actions across two time horizons.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SLIDE 4 — The 45-day plan
+     Collapses v1's 3 columns to 2 — removes the middle-column gap that
+     made v1 feel under-filled. CRM picklist lock folds into "This sprint."
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="head">
+    <span class="brand"><span class="brand-dot"></span>Pleo · Q2 2026 GTM Review · 14 May 2026</span>
+    <span class="tag">04 / 05 · The 45-day plan</span>
+  </div>
+
+  <div class="title-block">
+    <h1><span class="accent">Five named actions, two time horizons</span> — Mid-Market is the lens through which all five align</h1>
+    <p class="msg">Decide today; assign owners before leaving the room. The plan compounds: Q2 capture, Q3 protection, H2 structural reset.</p>
+  </div>
+
+  <div class="body full">
+    <div class="kanban">
+
+      <!-- Column 1 — This week -->
+      <div class="kcol">
+        <div class="kcol-head">
+          <span class="kcol-title">This week</span>
+          <span class="kcol-when">Decide by Friday</span>
+          <span class="kcol-count num">2 actions</span>
+        </div>
+
+        <div class="kcard red">
+          <span class="kpill">Urgent · Q2 capture</span>
+          <div class="ktitle">Manager touch on Wise · J. Patel · UK Enterprise</div>
+          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
+            €161K · 85 days silent · largest single exposure. UK Sales Lead picks up the phone, not the AE. If we lose Wise this quarter we eat a 50% additional gap.
+          </div>
+          <div class="kmeta">
+            <span class="kval">€161K at-risk</span>
+            <span class="kown">UK Sales Lead</span>
+          </div>
+        </div>
+
+        <div class="kcard red">
+          <span class="kpill">Urgent · Forecast trust</span>
+          <div class="ktitle">Open Q2 contingency review with Finance — flip RAG to RED</div>
+          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
+            The €34K residual gap after weighted-pipe and upside lands is a re-baselining conversation, not a sales push. Open the H2 quota dialogue now.
+          </div>
+          <div class="kmeta">
+            <span class="kval">€311K target</span>
+            <span class="kown">CRO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2 — 45 days -->
+      <div class="kcol">
+        <div class="kcol-head">
+          <span class="kcol-title">This sprint · 45 days</span>
+          <span class="kcol-when">Owned and tracked weekly</span>
+          <span class="kcol-count num">3 actions</span>
+        </div>
+
+        <div class="kcard amber">
+          <span class="kpill">Mid-Market intervention</span>
+          <div class="ktitle">UK + NL Mid-Market re-engagement sprint — 12 stale deals, €495K</div>
+          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
+            Block AE diaries for opp reviews on the 12 cells representing 37% of all stale ARR. Manager-led, deal-by-deal, exit criteria locked at each stage.
+          </div>
+          <div class="kmeta">
+            <span class="kval">~€12K Q2 capture</span>
+            <span class="kown">UK + Benelux Sales Leads</span>
+          </div>
+        </div>
+
+        <div class="kcard amber">
+          <span class="kpill">Automation</span>
+          <div class="ktitle">Weekly stale-deal alert + Contracting escalation</div>
+          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
+            Auto-flag every open opp with no activity ≥30 days. Separate flow auto-escalates stuck-at-Contracting deals to Deal Desk + Legal. Source already in <code style="font-size:10px; background:var(--card); padding:1px 4px; border-radius:3px;">fct_pipeline_health.is_stale</code>.
+          </div>
+          <div class="kmeta">
+            <span class="kval">+€22K recovered</span>
+            <span class="kown">RevOps</span>
+          </div>
+        </div>
+
+        <div class="kcard gray">
+          <span class="kpill">Process</span>
+          <div class="ktitle">Lock CRM picklists · segment / market / source / stage</div>
+          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
+            <code style="font-size:10px; background:var(--panel); padding:1px 4px; border-radius:3px;">segment_raw</code> has 11 values for 3 canonical segments. Lock it now; unlock the H2 re-baseline conversation with Finance using clean data.
+          </div>
+          <div class="kmeta">
+            <span class="kval">Forecast trust</span>
+            <span class="kown">RevOps + Sales Ops</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="note">
+      <span class="lbl">Speaker note</span>
+      Resist a sixth action — every micro-insight in the dashboard could be one, and we've deliberately chosen the five with the highest leverage. The Mid-Market sprint is the central bet; the other four set it up (urgent), unblock it (Contracting escalation), automate it (stale alert), and clean its base data (picklist lock). The decision in this meeting is who owns each line and what success looks like in 45 days.
+    </div>
+    <div class="trans">
+      → Five actions in 45 days deliver ~€22K of capture, protect €1.34M of Q3 pipeline, and reset the forecast. The slide-5 ask names what we need from this room to make that real.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SLIDE 5 — The ask
+     Re-framed from v1's impact-led ending. Decision is the headline; impact
+     is supporting detail.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="head">
+    <span class="brand"><span class="brand-dot"></span>Pleo · Q2 2026 GTM Review · 14 May 2026</span>
+    <span class="tag">05 / 05 · The ask</span>
+  </div>
+
+  <div class="title-block">
+    <h1>Decision asked of this room: <span class="accent">sign off on the five actions and open the H2 re-baseline with Finance</span></h1>
+    <p class="msg">Q2 capture is modest. The compounding wins are forecast trust, a Mid-Market motion that scales, and a sourcing mix the company can plan against.</p>
+  </div>
+
+  <div class="body split-7-5">
+
+    <!-- LEFT: Impact cards + sourcing strategic recommendation -->
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="lbl">Q2 · 45 days</div>
+          <div class="v num">+€22K</div>
+          <div class="p">Recovered ARR from re-engaging 34 stale deals. <strong>Conservative floor</strong> (€654K × 15% × 22%).</div>
+          <div class="conf">High confidence</div>
+        </div>
+        <div class="impact-card">
+          <div class="lbl">Q3 · rolling</div>
+          <div class="v num">€1.34M</div>
+          <div class="p">Stale pipeline kept in the forecast instead of silently rolling out. <strong>This is the real prize</strong> — capture is small, protection is large.</div>
+          <div class="conf med">Medium confidence</div>
+        </div>
+        <div class="impact-card future">
+          <div class="lbl">This sprint</div>
+          <div class="v">Forecast trust</div>
+          <div class="p">CRM picklist lock removes recurring reconciliation cost and gives Finance a clean baseline for the H2 re-quota conversation.</div>
+          <div class="conf">High confidence</div>
+        </div>
+        <div class="impact-card future">
+          <div class="lbl">Next plan cycle</div>
+          <div class="v">Sourcing re-mix</div>
+          <div class="p">Partnerships ASP <strong>€93K</strong> vs SDR/AE Outbound <strong>€32K</strong>. Capacity should shift toward inbound + partnerships. <em>Standing recommendation — separate analysis.</em></div>
+          <div class="conf fut">Future cycle</div>
+        </div>
+      </div>
+
+      <!-- ASP bar — small, supporting the sourcing card -->
+      <div class="visual" style="padding:12px 14px; gap:8px;">
+        <div class="vis-title-row">
+          <div class="vis-title">ASP by demand source · all-time closed-won</div>
+          <div class="meta num">18 deals total</div>
+        </div>
+        <svg viewBox="0 0 560 70" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
+          <!-- Bars · scaled to max 93.6K → 220px width -->
+          <text x="0"   y="14" font-size="10" fill="var(--text-sec)">Partnerships</text>
+          <rect x="100" y="6"  width="220" height="12" rx="2" fill="var(--pink-500)"/>
+          <text x="328" y="16" font-size="10" fill="var(--black)" class="num" font-weight="600">€93K · 5 deals</text>
+
+          <text x="0"   y="32" font-size="10" fill="var(--text-sec)">Marketing</text>
+          <rect x="100" y="24" width="160" height="12" rx="2" fill="var(--pink-300)"/>
+          <text x="268" y="34" font-size="10" fill="var(--black)" class="num" font-weight="600">€68K · 5 deals</text>
+
+          <text x="0"   y="50" font-size="10" fill="var(--text-mut)">SDR Outbound</text>
+          <rect x="100" y="42" width="76"  height="12" rx="2" fill="var(--hairline)"/>
+          <text x="184" y="52" font-size="10" fill="var(--text-sec)" class="num">€32K · 5 deals</text>
+
+          <text x="0"   y="68" font-size="10" fill="var(--text-mut)">AE Outbound</text>
+          <rect x="100" y="60" width="74"  height="12" rx="2" fill="var(--hairline)"/>
+          <text x="182" y="70" font-size="10" fill="var(--text-sec)" class="num">€32K · 3 deals</text>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: The Ask -->
+    <div class="ask-box">
+      <div class="lbl">Decision · sign-off today</div>
+      <div class="h">Five actions, two horizons, owners assigned before this meeting ends.</div>
+
+      <ol class="ask-list">
+        <li>UK Sales Lead picks up the phone on Wise — this week.</li>
+        <li>CRO opens H2 quota re-baseline with Finance — this week.</li>
+        <li>UK + NL Sales Leads run the Mid-Market re-engagement sprint — 45 days.</li>
+        <li>RevOps ships the stale-deal alert + Contracting escalation — 45 days.</li>
+        <li>RevOps + Sales Ops lock CRM picklists — this sprint.</li>
+      </ol>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 10px; margin-top: 4px;">
+        <div style="font-size:10px; color:var(--pink-500); text-transform:uppercase; letter-spacing:0.16em; font-weight:600; margin-bottom:6px;">Standing recommendation</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.85); line-height:1.5;">
+          Move SDR capacity toward Partnerships / Marketing for next plan cycle. Separate analysis — not asked of this meeting.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <div class="note">
+      <span class="lbl">Speaker note</span>
+      Don't oversell the €22K — it's a conservative floor. The real prize is system-level: a trustworthy forecast, a Mid-Market motion that scales, and a sourcing mix that lets the company plan against a target it can actually hit. Close the room on the five actions — that's the answer the CRO needs to walk into the board meeting with.
+    </div>
+    <div class="trans">
+      → Thank you. The dashboard at <code style="font-size:10px;">dashboard/index.html</code> is the live source for every number in this deck.
+    </div>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>
