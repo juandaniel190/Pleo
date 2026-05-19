@@ -431,6 +431,7 @@ async function buildPipelineOpenRaw(conn) {
   const r = await rows(conn, `
     SELECT cast(close_date AS varchar) AS close_date,
            market, segment, rep_id, rep_name,
+           stage, stage_age_days,
            forecast_category, is_stale,
            arr_eur, weighted_arr_eur
     FROM fct_pipeline_health
@@ -438,6 +439,7 @@ async function buildPipelineOpenRaw(conn) {
   return r.map(x => ({
     close_date: x.close_date, market: x.market, segment: x.segment,
     rep_id: x.rep_id, rep_name: x.rep_name,
+    stage: x.stage, stage_age_days: num(x.stage_age_days) || 0,
     forecast_category: x.forecast_category, is_stale: !!x.is_stale,
     arr: num(x.arr_eur), weighted: num(x.weighted_arr_eur),
   }));
