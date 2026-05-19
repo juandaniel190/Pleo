@@ -98,19 +98,31 @@ HTML_TEMPLATE = '''<!doctype html>
   ::selection { background: #000000; color: #FFFFFF; }
 
   /* ── Responsive layout classes ───────────────────── */
-  /* Edge-to-edge layout: the dashboard takes the full viewport width with a
-     12px gutter on each side, no max-width clamp. */
+  /* Centered safe-area layout: content lives inside a max-width container
+     with comfortable horizontal padding on the sides. Hero spans full width
+     (dark background flush to viewport edges), but hero content respects
+     the same safe-area padding so cards align with the body sections. */
   .grid-4       { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-  .body-wrap    { width: 100%; margin: 0; padding: 0 12px 32px; }
-  .hero-wrap    { width: 100%; margin: 0; }
-  .hero-pad     { padding: 24px 12px 20px; }
-  .panel-pad    { padding: 16px 16px 20px; }
+  /* Padding lives on the *inner* wrappers so the hero's dark background
+     bleeds edge-to-edge while its content respects the safe-area gutters
+     and aligns with the body sections at exactly the same horizontal axis. */
+  .body-wrap    { width: 100%; max-width: 1440px; margin: 0 auto;
+                  padding: 0 40px 48px; }
+  .hero-wrap    { width: 100%; max-width: 1440px; margin: 0 auto;
+                  padding: 32px 40px 28px; }
+  .hero-pad     { padding: 0; }
+  .panel-pad    { padding: 20px 24px 24px; }
   .tbl-scroll   { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+  @media (max-width: 1024px) {
+    .body-wrap   { padding: 0 24px 40px; }
+    .hero-wrap   { padding: 28px 24px 24px; }
+    .panel-pad   { padding: 18px 20px 22px; }
+  }
   @media (max-width: 768px) {
     .grid-4      { grid-template-columns: repeat(2,1fr); }
-    .body-wrap   { padding: 0 12px 32px; }
-    .hero-pad    { padding: 24px 12px 20px; }
-    .panel-pad   { padding: 14px 12px 16px; }
+    .body-wrap   { padding: 0 16px 32px; }
+    .hero-wrap   { padding: 24px 16px 20px; }
+    .panel-pad   { padding: 14px 14px 18px; }
     .hero-h1     { font-size: 26px !important; }
     .hero-num    { font-size: 20px !important; }
     .hero-para   { font-size: 13px !important; }

@@ -27,19 +27,31 @@
   ::selection { background: #000000; color: #FFFFFF; }
 
   /* ── Responsive layout classes ───────────────────── */
-  /* Edge-to-edge layout: the dashboard takes the full viewport width with a
-     12px gutter on each side, no max-width clamp. */
+  /* Centered safe-area layout: content lives inside a max-width container
+     with comfortable horizontal padding on the sides. Hero spans full width
+     (dark background flush to viewport edges), but hero content respects
+     the same safe-area padding so cards align with the body sections. */
   .grid-4       { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-  .body-wrap    { width: 100%; margin: 0; padding: 0 12px 32px; }
-  .hero-wrap    { width: 100%; margin: 0; }
-  .hero-pad     { padding: 24px 12px 20px; }
-  .panel-pad    { padding: 16px 16px 20px; }
+  /* Padding lives on the *inner* wrappers so the hero's dark background
+     bleeds edge-to-edge while its content respects the safe-area gutters
+     and aligns with the body sections at exactly the same horizontal axis. */
+  .body-wrap    { width: 100%; max-width: 1440px; margin: 0 auto;
+                  padding: 0 40px 48px; }
+  .hero-wrap    { width: 100%; max-width: 1440px; margin: 0 auto;
+                  padding: 32px 40px 28px; }
+  .hero-pad     { padding: 0; }
+  .panel-pad    { padding: 20px 24px 24px; }
   .tbl-scroll   { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+  @media (max-width: 1024px) {
+    .body-wrap   { padding: 0 24px 40px; }
+    .hero-wrap   { padding: 28px 24px 24px; }
+    .panel-pad   { padding: 18px 20px 22px; }
+  }
   @media (max-width: 768px) {
     .grid-4      { grid-template-columns: repeat(2,1fr); }
-    .body-wrap   { padding: 0 12px 32px; }
-    .hero-pad    { padding: 24px 12px 20px; }
-    .panel-pad   { padding: 14px 12px 16px; }
+    .body-wrap   { padding: 0 16px 32px; }
+    .hero-wrap   { padding: 24px 16px 20px; }
+    .panel-pad   { padding: 14px 14px 18px; }
     .hero-h1     { font-size: 26px !important; }
     .hero-num    { font-size: 20px !important; }
     .hero-para   { font-size: 13px !important; }
@@ -152,6 +164,12 @@ const T = {
   pleoPink400:  '#ffc8d0',  // mid (red action card · current period card)
   pleoPink500:  '#f39ca8',  // main accent (hero callout, AI border, chart current)
   pleoPink700:  '#cb727f',  // deeper, used very rarely
+  // Pleo Telescope · the rest of the brand palette. Sourced from
+  // `design/pleo_brand.md` / `design/pleo_theme.css`. Pink stays the main
+  // brand colour; these complementary tones differentiate the forecast bar
+  // segments without inventing a new ramp.
+  pleoBlue:     '#4588e3',  // info / blue700 — for Upside (sits outside bar)
+  pleoBlueSoft: '#d2e3f9',  // soft tint companion (not currently used)
   chartGrid:  '#ECECEC',
   fontXSmall:   10, fontSmall: 12, fontMedium: 14, fontLarge: 16,
   fontXLarge:   18, font2XLarge: 20, font3XLarge: 24, font4XLarge: 32, font5XLarge: 48,
@@ -254,13 +272,13 @@ const Card = ({ children, style }) => (
   <div style={{ background: T.card, borderRadius: 12, padding: 12, ...style }}>{children}</div>
 );
 
-const Table = ({ headers, rows, formatters, totals, dense }) => {
+const Table = ({ headers, rows, formatters, totals, dense, minWidth }) => {
   const cellPad = dense ? '8px 10px' : '12px 20px';
   const headPad = dense ? '10px 10px' : '14px 20px';
   const fontSz  = dense ? 12 : 14;
   return (
     <div className="tbl-scroll">
-    <div style={{ background: T.card, minWidth: dense ? 320 : 480, borderRadius: 14, overflow: 'hidden' }}>
+    <div style={{ background: T.card, minWidth: minWidth ?? (dense ? 320 : 480), borderRadius: 14, overflow: 'hidden' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: fontSz }}>
         <thead>
           <tr>
@@ -320,19 +338,133 @@ const Table = ({ headers, rows, formatters, totals, dense }) => {
 
 function HeroSection({ data }) {
   const h = data.hero;
-  const pct = h.q2Target > 0 ? Math.round(h.q2Closed / h.q2Target * 100) : 0;
-  const weightedPctOfTarget = h.q2Target > 0 ? Math.round(h.q2PipeWeighted / h.q2Target * 100) : 0;
+  const f = data.forecast;
+
+  // Cumulative forecast levels — Commit ≤ Best ≤ Pipeline ≤ Target.
+  const target   = h.q2Target;
+  const actuals  = f.closedWon;
+  const commit   = actuals  + f.committedWeighted;
+  const bestCase = commit   + f.bestCaseWeighted;
+  const pipeline = bestCase + f.pipelineWeighted;
+
+  // Use display-rounded (K) values to compute the gap so the cards reconcile:
+  // if Pipeline shows €255K and Target shows €311K, the gap must show €56K
+  // (not €55K, which is what raw subtraction would give due to rounding drift).
+  const targetK   = Math.round(target   / 1000);
+  const pipelineK = Math.round(pipeline / 1000);
+  const gapK      = Math.max(0, targetK - pipelineK);
+
+  // Pipeline as % of target, rounded for display.
+  const pctVsTarget = target > 0 ? Math.round(pipeline / target * 100) : 0;
+
+  // Bar segment widths as % of target. Total filled = pctVsTarget; the
+  // remainder of the bar's width is the gap (rendered as the unfilled track).
+  const w = (v) => Math.max(0, (v / target) * 100);
+
+  // Each KPI is a card with a coloured top stripe — same pattern as the
+  // body's Stalled/Slipped/Coverage/ASP KPI tiles. The stripe colour matches
+  // the segment's colour in the cumulative bar below, so the cards literally
+  // are the bar's legend. All colours are sourced from the Pleo Telescope
+  // palette (T tokens); pink stays the main brand colour.
+  //
+  // Bar segments (left → right, cumulative):
+  //   Actuals   → pink   (main brand, most-certain revenue)
+  //   Commit    → purple (committed forecast category)
+  //   Best case → green  (upside within forecast)
+  //   Pipeline  → yellow (least-certain forecast)
+  // Target has no segment — it's the right edge of the bar (dashed marker).
+  // Upside sits OUTSIDE the bar entirely — it's recovery potential, not
+  // booked or forecast revenue.
+  const forecastCards = [
+    { label: 'Actuals',   value: actuals,  sub: 'Closed-won so far',     stripe: T.pleoPink500 },
+    { label: 'Commit',    value: commit,   sub: '+ Committed weighted',  stripe: T.pleoPurple  },
+    { label: 'Best case', value: bestCase, sub: '+ Best case weighted',  stripe: T.pleoGreen   },
+    // Pipeline carries a secondary metric — pipeline value + achievement %
+    // render side-by-side at the same size. Pink (the achievement colour)
+    // doubles as the visual anchor for "performance vs target".
+    { label: 'Pipeline',  value: pipeline, sub: 'weighted',  stripe: T.pleoYellow,
+      secondary: { value: `${pctVsTarget}%`, sub: 'vs target', color: T.pleoPink500 } },
+    { label: 'Target',    value: target,
+      sub: gapK > 0 ? `Gap €${gapK}K to close` : 'Ceiling clears target',
+      stripe: '#FFFFFF', stripeDashed: true, subAccent: 'white' },
+  ];
+  const upsideCard = {
+    label: 'Upside', value: h.recoveryEur,
+    sub: 'Stale re-engagement', stripe: T.pleoBlue, subAccent: 'blue',
+  };
+
+  // Card renderer — dark-hero variant of the body's KpiCard. Subtle white
+  // tint as fill, coloured top stripe acts as the legend swatch. If `secondary`
+  // is provided, the card renders two same-size numbers side-by-side (e.g.,
+  // Pipeline shows €255K + 82%, each with its own caption underneath).
+  const HeroKpi = ({ k }) => {
+    const subColor =
+      k.subAccent === 'pink'  ? T.pleoPink500 :
+      k.subAccent === 'blue'  ? T.pleoBlue    :
+      k.subAccent === 'white' ? '#FFFFFF'     :
+      'rgba(255,255,255,0.6)';
+    const Cell = ({ value, sub, color, subColor }) => (
+      <div style={{ minWidth: 0 }}>
+        <div style={{ ...numStyle, fontSize: T.font3XLarge, color: color || '#FFFFFF',
+                      fontWeight: T.fontWeightMedium, lineHeight: 1.05,
+                      letterSpacing: '-0.02em' }}>
+          {value}
+        </div>
+        <div style={{ fontSize: 11, color: subColor,
+                      marginTop: 6, lineHeight: 1.4,
+                      fontWeight: T.fontWeightRegular }}>
+          {sub}
+        </div>
+      </div>
+    );
+    return (
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        borderRadius: 12,
+        padding: '14px 16px',
+        borderTop: k.stripeDashed
+          ? `3px dashed ${k.stripe}`
+          : `3px solid ${k.stripe}`,
+      }}>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)',
+                      textTransform: 'uppercase', letterSpacing: '0.1em',
+                      fontWeight: T.fontWeightRegular, marginBottom: 8 }}>
+          {k.label}
+        </div>
+        {k.secondary ? (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto',
+                        columnGap: 12, alignItems: 'baseline' }}>
+            <Cell value={fmtEur(k.value)} sub={k.sub}
+                  color="#FFFFFF" subColor="rgba(255,255,255,0.6)" />
+            <Cell value={k.secondary.value} sub={k.secondary.sub}
+                  color={k.secondary.color} subColor={k.secondary.color} />
+          </div>
+        ) : (
+          <Cell value={fmtEur(k.value)} sub={k.sub}
+                color="#FFFFFF" subColor={subColor} />
+        )}
+      </div>
+    );
+  };
+
   return (
-    <section style={{ background: T.black, color: '#FFFFFF', padding: '24px 12px 20px' }}>
-      <div style={{ width: '100%' }}>
+    <section className="hero-pad" style={{ background: T.black, color: '#FFFFFF' }}>
+      <div className="hero-wrap">
 
         <div style={{ display: 'flex', justifyContent: 'space-between',
-                      alignItems: 'flex-end', flexWrap: 'wrap', gap: 24, marginBottom: 20 }}>
+                      alignItems: 'flex-end', flexWrap: 'wrap', gap: 24, marginBottom: 24 }}>
           <div>
             <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
                           textTransform: 'uppercase', letterSpacing: '0.14em',
-                          fontWeight: T.fontWeightRegular, marginBottom: 8 }}>
-              Weekly GTM Review · {h.asOf}
+                          fontWeight: T.fontWeightRegular, marginBottom: 8,
+                          display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'baseline' }}>
+              <span>Weekly GTM Review · {h.asOf}</span>
+              {/* Quarter progress — same numbers as the PaceInsights tile below.
+                  Helps frame everything else: "we're at week 7 of the quarter,
+                  this is what's been done so far". */}
+              <span style={{ color: 'rgba(255,255,255,0.75)' }}>
+                Week 7 · 48% · Quarter progress
+              </span>
             </div>
             <h1 className="hero-h1" style={{ margin: 0, fontSize: T.font4XLarge,
                          fontWeight: T.fontWeightRegular, letterSpacing: '-0.02em',
@@ -355,39 +487,73 @@ function HeroSection({ data }) {
             <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.45)',
                            textTransform: 'uppercase', letterSpacing: '0.1em',
                            marginRight: 8 }}>refreshed weekly</span>
-            Even if all weighted pipeline ({fmtEur(h.q2PipeWeighted)}) lands, we miss target by{' '}
-            {fmtEur(h.q2Target - h.q2PipeWeighted)}. Biggest lever this week:{' '}
-            re-engage the {h.staleDeals} stale deals ({fmtEur(h.staleArr)}).
+            Even if all weighted pipeline (€{pipelineK}K) lands, we miss target by €{gapK}K.
+            Biggest lever this week: re-engage the {h.staleDeals} stale deals ({fmtEur(h.staleArr)})
+            — recovery upside +{fmtEur(h.recoveryEur)}.
           </div>
         </div>
 
-        <div className="grid-4">
-          {[
-            { label: 'Q2 ARR pace',
-              value: fmtEur(h.q2Closed),
-              sub:   `${fmtPct(pct)} · ${fmtEur(h.q2Gap)} behind plan` },
-            { label: 'Pipeline at risk',
-              value: fmtEur(h.staleArr),
-              sub:   `${h.staleDeals} stale · ${h.staleAvgSilent}d avg silent` },
-            { label: 'Q2 weighted pipeline',
-              value: fmtEur(h.q2PipeWeighted),
-              sub:   `${fmtPct(weightedPctOfTarget)} of target · forecast detail in section below` },
-            { label: 'Recovery upside',
-              value: `+${fmtEur(h.recoveryEur)}`,
-              sub:   `Stale × 15% × ${h.winRatePct}% win rate · 45 days` },
-          ].map((k, i) => (
-            <div key={i} style={{ background: 'rgba(255,255,255,0.06)',
-                                  borderRadius: 12, padding: '16px 18px' }}>
-              <div style={{ fontSize: T.fontXSmall, color: 'rgba(255,255,255,0.55)',
-                            textTransform: 'uppercase', letterSpacing: '0.06em',
-                            fontWeight: T.fontWeightRegular, marginBottom: 8 }}>{k.label}</div>
-              <div style={{ ...numStyle, fontSize: T.font2XLarge, fontWeight: T.fontWeightMedium,
-                            color: '#FFFFFF', lineHeight: 1.1, letterSpacing: '-0.02em' }}>{k.value}</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)',
-                            marginTop: 6, lineHeight: 1.4 }}>{k.sub}</div>
+        {/* ── Forecast block + Upside, side by side ─────────────────────────
+            Two-part layout:
+              · Left  (flex 5): 5 forecast cards in a row + cumulative bar
+                                that ends flush with the Target card.
+              · Right (flex 1): the Upside card alone — visually separated
+                                because it's NOT part of the cumulative.
+            On narrow viewports the two halves stack. */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16,
+                      alignItems: 'flex-start' }}>
+
+          {/* Forecast block */}
+          <div style={{ flex: '5 1 540px', display: 'flex',
+                        flexDirection: 'column', gap: 12, minWidth: 0 }}>
+            <div style={{ display: 'grid',
+                          gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
+                          gap: 12 }}>
+              {forecastCards.map((k, i) => <HeroKpi key={i} k={k} />)}
             </div>
-          ))}
+
+            {/* Cumulative bar.
+                  Width: 90% of the forecast block — pulling the bar in by
+                  half a card-width on the right shifts its end to roughly
+                  the center of the Target card, so the target line sits
+                  directly under the Target label.
+                  Track: a light grey tint so the unfilled remainder (the
+                  gap to target) is clearly visible as a separate volume,
+                  not just empty space.
+                  Target marker: a thicker, full-height vertical white line
+                  with a small cap top and bottom — unmistakably "this is
+                  the target". */}
+            <div style={{ position: 'relative', width: '90%', paddingTop: 6, paddingBottom: 6 }}>
+              <div style={{ position: 'relative', height: 12, borderRadius: 6,
+                            background: 'rgba(255,255,255,0.18)',
+                            overflow: 'hidden', display: 'flex' }}>
+                {actuals > 0 && (
+                  <div title={`Actuals: ${fmtEur(actuals)}`}
+                       style={{ width: `${w(actuals)}%`, background: T.pleoPink500 }} />
+                )}
+                <div title={`+ Commit: ${fmtEur(f.committedWeighted)}`}
+                     style={{ width: `${w(f.committedWeighted)}%`, background: T.pleoPurple }} />
+                <div title={`+ Best case: ${fmtEur(f.bestCaseWeighted)}`}
+                     style={{ width: `${w(f.bestCaseWeighted)}%`, background: T.pleoGreen }} />
+                <div title={`+ Pipeline: ${fmtEur(f.pipelineWeighted)}`}
+                     style={{ width: `${w(f.pipelineWeighted)}%`, background: T.pleoYellow }} />
+              </div>
+              {/* Target marker — solid white vertical bar extending above
+                  and below the track. Caps reinforce that this is a tick. */}
+              <div style={{ position: 'absolute', right: -1, top: 0, bottom: 0,
+                            width: 3, background: '#FFFFFF', borderRadius: 1.5,
+                            pointerEvents: 'none' }} />
+            </div>
+          </div>
+
+          {/* Upside — single card sitting outside the bar. flex:1 makes it
+              roughly the same width as one forecast card on wide viewports. */}
+          <div style={{ flex: '1 1 160px', minWidth: 140 }}>
+            <HeroKpi k={upsideCard} />
+          </div>
+
         </div>
+
       </div>
     </section>
   );
@@ -774,40 +940,65 @@ function ArrTrendChart({ data, compact }) {
   return (
     <Card style={{ padding: cardPad }}>
       {controls}
-      {chart === 'line' ? (
+      {chart === 'line' ? (() => {
+        // End-point label per series — printing a value at every point on
+        // three cumulative lines would be illegible. Find the last non-null
+        // index of each series; LabelList renders only at that index.
+        const lastIdx = { current: -1, prior: -1, sameLY: -1 };
+        linePts.points.forEach((p, i) => {
+          if (p.current != null) lastIdx.current = i;
+          if (p.prior   != null) lastIdx.prior   = i;
+          if (p.sameLY  != null) lastIdx.sameLY  = i;
+        });
+        const endpointLabel = (key, color) => (props) => {
+          if (props.index !== lastIdx[key] || props.value == null) return null;
+          return (
+            <text x={props.x + 6} y={props.y} dy={4}
+                  fill={color} fontSize={11} fontWeight={600}
+                  style={{ fontFamily: T.font }}>
+              €{Math.round(props.value / 1000)}K
+            </text>
+          );
+        };
+        return (
+          <ResponsiveContainer width="100%" height={chartHeight}>
+            <LineChart data={linePts.points} margin={{ top: 6, right: 36, left: -10, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+              <XAxis dataKey="day" type="number" domain={[1, 'dataMax']}
+                     ticks={getLineXTicks(period, range)}
+                     tickFormatter={(v) => getLineXLabel(v, period, range)}
+                     tick={{ fontSize: 10, fill: T.textMuted }}
+                     axisLine={false} tickLine={false} />
+              <YAxis tickFormatter={(v) => `€${Math.round(v/1000)}K`}
+                     tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+              <Tooltip formatter={(v) => v == null ? '—' : `€${Math.round(v/1000).toLocaleString()}K`}
+                       labelFormatter={(d) => `Day ${d}`}
+                       contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+              <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt} />
+              {linePts.labels.sameLY && (
+                <Line dataKey="sameLY" name={linePts.labels.sameLY} stroke={T.black}
+                      strokeWidth={1.5} strokeDasharray="4 4" dot={false} connectNulls={false}>
+                  <LabelList content={endpointLabel('sameLY', T.black)} />
+                </Line>
+              )}
+              <Line dataKey="prior"   name={linePts.labels.prior}   stroke={T.textMuted}
+                    strokeWidth={2}   dot={false} connectNulls={false}>
+                <LabelList content={endpointLabel('prior', T.textMuted)} />
+              </Line>
+              <Line dataKey="current" name={linePts.labels.current} stroke={T.pleoPink500}
+                    strokeWidth={3}   dot={false} connectNulls={false}>
+                <LabelList content={endpointLabel('current', T.pleoPink500)} />
+              </Line>
+              {isCurrent && period !== 'year' && (
+                <ReferenceLine x={Math.round((AS_OF - range.start) / 86400000) + 1}
+                               stroke={T.textMuted} strokeDasharray="4 4" />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        );
+      })() : (
         <ResponsiveContainer width="100%" height={chartHeight}>
-          <LineChart data={linePts.points} margin={{ top: 6, right: 10, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
-            <XAxis dataKey="day" type="number" domain={[1, 'dataMax']}
-                   ticks={getLineXTicks(period, range)}
-                   tickFormatter={(v) => getLineXLabel(v, period, range)}
-                   tick={{ fontSize: 10, fill: T.textMuted }}
-                   axisLine={false} tickLine={false} />
-            <YAxis tickFormatter={(v) => `€${Math.round(v/1000)}K`}
-                   tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
-            <Tooltip formatter={(v) => v == null ? '—' : `€${Math.round(v/1000).toLocaleString()}K`}
-                     labelFormatter={(d) => `Day ${d}`}
-                     contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
-            <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt} />
-            {/* Comparison series first (drawn underneath), then the current
-                period on top in Pleo pink so the eye lands on "us". */}
-            {linePts.labels.sameLY && (
-              <Line dataKey="sameLY" name={linePts.labels.sameLY} stroke={T.black}
-                    strokeWidth={1.5} strokeDasharray="4 4" dot={false} connectNulls={false} />
-            )}
-            <Line dataKey="prior"   name={linePts.labels.prior}   stroke={T.textMuted}
-                  strokeWidth={2}   dot={false} connectNulls={false} />
-            <Line dataKey="current" name={linePts.labels.current} stroke={T.pleoPink500}
-                  strokeWidth={3}   dot={false} connectNulls={false} />
-            {isCurrent && period !== 'year' && (
-              <ReferenceLine x={Math.round((AS_OF - range.start) / 86400000) + 1}
-                             stroke={T.textMuted} strokeDasharray="4 4" />
-            )}
-          </LineChart>
-        </ResponsiveContainer>
-      ) : (
-        <ResponsiveContainer width="100%" height={chartHeight}>
-          <BarChart data={barData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+          <BarChart data={barData} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
             <XAxis dataKey="label" tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
             <YAxis tickFormatter={(v) => `€${Math.round(v/1000)}K`}
@@ -815,8 +1006,14 @@ function ArrTrendChart({ data, compact }) {
             <Tooltip formatter={(v) => `€${Math.round(v/1000).toLocaleString()}K`}
                      contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
             <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt} />
-            <Bar dataKey="target"  name="Target"  fill={T.hairline}    radius={[3,3,0,0]} />
-            <Bar dataKey="actuals" name="Actuals" fill={T.pleoPink500} radius={[3,3,0,0]} />
+            <Bar dataKey="target"  name="Target"  fill={T.hairline}    radius={[3,3,0,0]}>
+              <LabelList dataKey="target"  position="top" fontSize={10} fontWeight={600}
+                         fill={T.textMuted} formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+            </Bar>
+            <Bar dataKey="actuals" name="Actuals" fill={T.pleoPink500} radius={[3,3,0,0]}>
+              <LabelList dataKey="actuals" position="top" fontSize={10} fontWeight={600}
+                         fill={T.black} formatter={(v) => v ? `€${Math.round(v/1000)}K` : ''} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       )}
@@ -955,11 +1152,14 @@ function AspBySource({ data, compact }) {
   return (
     <Card style={{ padding: compact ? 10 : 16 }}>
       <ResponsiveContainer width="100%" height={compact ? 200 : 250}>
-        <BarChart data={rows} margin={{ top: 20, right: 8, left: -10, bottom: 0 }}>
+        {/* Y-axis hidden — the data labels above each bar carry the value,
+            so the axis ticks were redundant noise. Left margin pulled in
+            now that the axis is gone, giving more room for the bars. */}
+        <BarChart data={rows} margin={{ top: 20, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
           <XAxis dataKey="demand_source" tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false}
                  tickFormatter={(v) => compact ? v.replace(' Outbound', ' OB').replace('Partnerships', 'Partner') : v} />
-          <YAxis tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          <YAxis hide />
           <Tooltip formatter={(v) => `€${v}K ASP`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
           <Bar dataKey="asp_keur" fill={T.black} radius={[4,4,0,0]}>
             <LabelList dataKey="asp_keur" position="top" formatter={(v) => `€${v}K`} fontSize={10} fontWeight={600} fill={T.black} />
@@ -990,14 +1190,22 @@ function VelocityByStage({ data }) {
 
 function StaleBySegmentChart({ data, compact }) {
   const n = compact ? 6 : 10;
-  const rows = data.staleBySegment.slice(0, n).map(r => ({ ...r, label: `${r.market} · ${r.segment}` }));
+  // Shorter label — "UK · MM" instead of "UK · Mid-Market" — lets the YAxis
+  // sit on a tighter width so the chart reclaims the left gutter.
+  const seg = (s) => ({
+    'Mid-Market': 'MM', 'Enterprise': 'Ent', 'SMB': 'SMB',
+  })[s] || s;
+  const rows = data.staleBySegment.slice(0, n).map(r => ({
+    ...r,
+    label: `${r.market} · ${seg(r.segment)}`,
+  }));
   return (
     <Card style={{ padding: compact ? 10 : 16 }}>
       <ResponsiveContainer width="100%" height={compact ? 220 : 320}>
-        <BarChart layout="vertical" data={rows} margin={{ top: 8, right: 50, left: compact ? 70 : 100, bottom: 0 }}>
+        <BarChart layout="vertical" data={rows} margin={{ top: 8, right: 40, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="2 4" horizontal={false} stroke={T.chartGrid} />
           <XAxis type="number" tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
-          <YAxis dataKey="label" type="category" tick={{ fontSize: 10, fill: T.textSec }} width={compact ? 70 : 100} axisLine={false} tickLine={false} />
+          <YAxis dataKey="label" type="category" tick={{ fontSize: 10, fill: T.textSec }} width={compact ? 56 : 72} axisLine={false} tickLine={false} />
           <Tooltip formatter={(v) => `€${v}K`} contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
           <Bar dataKey="arr_keur" fill={T.black} radius={[0,4,4,0]}>
             <LabelList dataKey="arr_keur" position="right" formatter={(v) => `€${v}K`} fontSize={10} fontWeight={600} fill={T.black} />
@@ -1091,6 +1299,369 @@ function OutcomeSplit({ data }) {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Marketing Funnel & Deal Outcomes · filterable, side-by-side ────────────
+// One component, two charts, one shared period selector. The funnel chart
+// sums monthly lead/MQL/SQL/Demo events in the selected period; the outcomes
+// chart counts opps created in the same period and the outcomes they ended
+// up at (Won / Lost / Open Active / Open Stale).
+//
+// Outcomes render as a vertical stacked column with cards stacked to the
+// right — same numbers as the previous horizontal version, but the side-
+// by-side layout makes the call-out cards easier to scan.
+function MarketingAndOutcomes({ data, compact }) {
+  const [period, setPeriod] = useState('quarter');
+  const [offset, setOffset] = useState(0);
+  const [expanded, setExpanded] = useState(new Set()); // demand-source pivot
+  const isAll = period === 'all';
+  const setPeriodSafe = (p) => {
+    setPeriod(p); setOffset(0); setExpanded(new Set());
+  };
+  const toggleSource = (name) => {
+    const next = new Set(expanded);
+    next.has(name) ? next.delete(name) : next.add(name);
+    setExpanded(next);
+  };
+
+  // ── Funnel + outcomes aggregation (shared filter state) ─────────────────
+  const range = !isAll ? getPeriodRange(period, offset) : null;
+  const inRange = (mstr) => {
+    if (isAll) return true;
+    const md = parseISODate(mstr);
+    return md >= range.start && md <= range.end;
+  };
+  const monthly = data.sankeyMonthly || [];
+  const filtered = monthly.filter(r => inRange(r.month));
+  const sum = (k) => filtered.reduce((a, r) => a + (r[k] || 0), 0);
+  const s = {
+    leads: sum('leads'), mqls: sum('mqls'), sqls: sum('sqls'), demos: sum('demos'),
+    won:   sum('won'),   lost: sum('lost'),
+    active: sum('active'), stale: sum('stale'),
+  };
+
+  // ── Source × segment aggregation (same filter) ──────────────────────────
+  // Sum per (source, segment) over the rows in the period, then aggregate
+  // parents from their children so totals are consistent.
+  //
+  // IMPORTANT: leads / opps come from the funnel-events fact, but Won /
+  // Won ARR come from fct_opportunities (data.oppsWonMonthly). The two
+  // facts drift in the synthetic dataset — funnel.won records "win events"
+  // that don't always have a matching row in fct_opportunities. Reading
+  // wins from the opp fact reconciles this column with the hero, the
+  // Performance table, and the pace chart.
+  const sourceMonthly = data.funnelBySourceMonthly || [];
+  const sourceFiltered = sourceMonthly.filter(r => inRange(r.month));
+  const childMap = new Map(); // key = source|segment
+  for (const r of sourceFiltered) {
+    const k = `${r.demand_source}__${r.segment}`;
+    if (!childMap.has(k)) childMap.set(k, {
+      demand_source: r.demand_source, segment: r.segment,
+      leads: 0, opps: 0, won: 0, won_arr_eur: 0,
+    });
+    const e = childMap.get(k);
+    e.leads += r.leads || 0;
+    e.opps  += r.opps  || 0;
+    // funnel.won / funnel.won_arr_eur intentionally NOT accumulated here
+  }
+
+  // Overlay reconciled wins from fct_opportunities for the same period.
+  // Creates missing (source, segment) keys if a win exists with no
+  // corresponding funnel-event row.
+  const oppsMonthly = data.oppsWonMonthly || [];
+  const oppsFiltered = oppsMonthly.filter(r => inRange(r.month));
+  for (const r of oppsFiltered) {
+    const k = `${r.demand_source}__${r.segment}`;
+    if (!childMap.has(k)) childMap.set(k, {
+      demand_source: r.demand_source, segment: r.segment,
+      leads: 0, opps: 0, won: 0, won_arr_eur: 0,
+    });
+    const e = childMap.get(k);
+    e.won         += r.won || 0;
+    e.won_arr_eur += r.won_arr_eur || 0;
+  }
+  const bySource = {};
+  for (const c of childMap.values()) {
+    (bySource[c.demand_source] = bySource[c.demand_source] || []).push(c);
+  }
+  const sourceParents = Object.entries(bySource).map(([source, children]) => {
+    const psum = (k) => children.reduce((a, r) => a + (r[k] || 0), 0);
+    const leads = psum('leads'), won = psum('won');
+    return {
+      name:        source,
+      segment:     '—',
+      leads, opps: psum('opps'), won,
+      won_keur:    Math.round(psum('won_arr_eur') / 1000),
+      lead_to_won: leads > 0 ? Math.round(won / leads * 1000) / 10 : null,
+      kind:        'parent',
+      children:    children.map(c => ({
+        ...c,
+        won_keur:    Math.round((c.won_arr_eur || 0) / 1000),
+        lead_to_won: c.leads > 0 ? Math.round(c.won / c.leads * 1000) / 10 : null,
+      })),
+    };
+  });
+  sourceParents.sort((a, b) => (b.lead_to_won ?? -1) - (a.lead_to_won ?? -1));
+  const sourceVisible = [];
+  for (const p of sourceParents) {
+    sourceVisible.push(p);
+    if (expanded.has(p.name)) {
+      for (const c of p.children) sourceVisible.push({ ...c, kind: 'child' });
+    }
+  }
+  const bestSource = sourceParents.find(p => p.lead_to_won != null);
+
+  // Period bounds — same idea as PerformanceTabs.
+  const minOffset = period === 'quarter' ? -8 : period === 'month' ? -28 : -2;
+  const canPrev = !isAll && offset > minOffset;
+  const canNext = !isAll && offset < 0;
+
+  const PillBtn = ({ active, onClick, children }) => (
+    <button onClick={onClick}
+      style={{
+        border: 'none', cursor: 'pointer', borderRadius: 999,
+        padding: compact ? '5px 12px' : '6px 14px', fontSize: 11,
+        fontFamily: T.font,
+        fontWeight: active ? T.fontWeightSemibold : T.fontWeightRegular,
+        background: active ? T.black : 'transparent',
+        color:      active ? '#FFF'   : T.textMuted,
+        transition: 'all 150ms ease-out',
+      }}>{children}</button>
+  );
+  const Arrow = ({ disabled, onClick, children }) => (
+    <button onClick={onClick} disabled={disabled}
+      style={{
+        border: 'none', background: 'transparent',
+        cursor: disabled ? 'default' : 'pointer',
+        color: disabled ? T.hairline : T.textMuted, fontSize: 14,
+        width: 24, height: 24, borderRadius: 999, padding: 0,
+      }}>{children}</button>
+  );
+
+  // ── Funnel bar chart ─────────────────────────────────────────────────────
+  const funnelRows = [
+    { stage: 'Leads', count: s.leads },
+    { stage: 'MQL',   count: s.mqls  },
+    { stage: 'SQL',   count: s.sqls  },
+    { stage: 'Demo',  count: s.demos },
+  ].map((r, i, all) => {
+    const prev = i > 0 ? all[i-1].count : null;
+    return { ...r, conv: (prev && prev > 0) ? Math.round(r.count / prev * 100) : null };
+  });
+
+  // ── Outcomes vertical bar ────────────────────────────────────────────────
+  // Pleo brand palette only. Order = bottom → top in the bar, which matches
+  // the natural funnel: Won (the goal, bottom) up to Lost (the final state).
+  const outcomes = [
+    { key: 'Won',    value: s.won,    fill: T.pleoPink500 },
+    { key: 'Active', value: s.active, fill: T.pleoGreen   },
+    { key: 'Stale',  value: s.stale,  fill: T.pleoYellow  },
+    { key: 'Lost',   value: s.lost,   fill: T.pleoPurple  },
+  ];
+  const totalOpps = outcomes.reduce((a, o) => a + o.value, 0);
+
+  const periodLabel = isAll ? 'All time' : range.label;
+
+  return (
+    // White surface wraps the whole section: filter toolbar at the top,
+    // hairline divider, then the three sub-sections (funnel · outcomes ·
+    // source × segment table). All three respond to the same filter.
+    <div style={{ background: T.card, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center',
+                    gap: 8, padding: '10px 12px',
+                    borderBottom: `1px solid ${T.hairline}` }}>
+        <div style={{ display: 'inline-flex', gap: 2, background: T.panel,
+                      padding: 2, borderRadius: 999 }}>
+          <PillBtn active={period === 'month'}   onClick={() => setPeriodSafe('month')}>Month</PillBtn>
+          <PillBtn active={period === 'quarter'} onClick={() => setPeriodSafe('quarter')}>Quarter</PillBtn>
+          <PillBtn active={period === 'year'}    onClick={() => setPeriodSafe('year')}>Year</PillBtn>
+          <PillBtn active={period === 'all'}     onClick={() => setPeriodSafe('all')}>All time</PillBtn>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'inline-flex', gap: 4, alignItems: 'center' }}>
+          <Arrow disabled={!canPrev} onClick={() => canPrev && setOffset(offset - 1)}>‹</Arrow>
+          <span style={{ ...numStyle, fontSize: 12, fontWeight: T.fontWeightMedium,
+                         color: T.black, minWidth: 80, textAlign: 'center' }}>
+            {periodLabel}
+          </span>
+          <Arrow disabled={!canNext} onClick={() => canNext && setOffset(offset + 1)}>›</Arrow>
+        </div>
+      </div>
+
+      <div style={{ padding: 12 }}>
+      {/* Side-by-side charts. Auto-fit so they stack on narrow viewports. */}
+      <div style={{ display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: 12 }}>
+
+        {/* ── Marketing funnel ──────────────────────────────────────────── */}
+        <div>
+          <SectionH meta="Funnel events">Marketing funnel</SectionH>
+          <Card style={{ padding: 10 }}>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={funnelRows} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+                <XAxis dataKey="stage" tick={{ fontSize: 11, fill: T.textMuted }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
+                <Bar dataKey="count" fill={T.black} radius={[4,4,0,0]}>
+                  <LabelList dataKey="count" position="top" fontSize={11} fontWeight={600} fill={T.black} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <div style={{ fontSize: 10, color: T.textMuted, marginTop: 10,
+                          display: 'flex', justifyContent: 'space-around',
+                          flexWrap: 'wrap', gap: 6 }}>
+              {funnelRows.slice(1).map((r, i) => (
+                <span key={i}>{funnelRows[i].stage} → {r.stage}: <strong style={{ color: T.black }}>{r.conv == null ? '—' : `${r.conv}%`}</strong></span>
+              ))}
+            </div>
+          </Card>
+          <FindingBox>
+            {s.leads === 0 ? (
+              <>No funnel events in this period.</>
+            ) : (
+              <>
+                Top-of-funnel volume: <strong style={{ color: T.black }}>{s.leads.toLocaleString()} leads</strong>{' '}
+                → {s.demos.toLocaleString()} demos.
+                {' '}Biggest leak between{' '}
+                {(() => {
+                  const drops = funnelRows.slice(1)
+                    .map((r, i) => ({ pair: `${funnelRows[i].stage} → ${r.stage}`, conv: r.conv ?? 100 }))
+                    .filter(d => d.conv != null);
+                  if (!drops.length) return 'stages';
+                  const min = drops.reduce((a, b) => b.conv < a.conv ? b : a);
+                  return <strong style={{ color: T.black }}>{min.pair}</strong>;
+                })()}.
+              </>
+            )}
+          </FindingBox>
+        </div>
+
+        {/* ── Outcomes vertical bar + side cards ────────────────────────── */}
+        <div>
+          <SectionH meta={`${totalOpps} opps created`}>Deal outcomes</SectionH>
+          <Card style={{ padding: 14 }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'stretch',
+                          minHeight: 220 }}>
+              {/* Vertical stacked column — same data as the previous horizontal
+                  bar, just rotated. Bottom = Won (the goal), top = Lost. */}
+              <div style={{
+                width: 48,
+                display: 'flex', flexDirection: 'column-reverse',
+                background: T.panel, borderRadius: 8, overflow: 'hidden',
+              }}>
+                {outcomes.map((o, i) => (
+                  <div key={i}
+                       title={`${o.key}: ${o.value} (${totalOpps > 0 ? Math.round(o.value/totalOpps*100) : 0}%)`}
+                       style={{ flex: o.value || 0.001, background: o.fill,
+                                minHeight: o.value > 0 ? 2 : 0 }} />
+                ))}
+              </div>
+              {/* Cards stacked beside the bar — rendered top-down in REVERSE
+                  outcomes order so each card sits next to its bar band:
+                  Lost (top) · Stale · Active · Won (bottom). */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column',
+                            justifyContent: 'space-between', gap: 6 }}>
+                {[...outcomes].reverse().map((o, i) => {
+                  const pct = totalOpps > 0 ? Math.round(o.value/totalOpps*100) : 0;
+                  return (
+                    <div key={i} style={{
+                      background: T.panel, borderRadius: 8, padding: '8px 10px',
+                      display: 'grid', gridTemplateColumns: 'auto 1fr auto',
+                      gap: 10, alignItems: 'center',
+                    }}>
+                      <span style={{ width: 8, height: 8, borderRadius: 2, background: o.fill }} />
+                      <span style={{ fontSize: 11, color: T.textSec,
+                                     fontWeight: T.fontWeightMedium }}>{o.key}</span>
+                      <span style={{ ...numStyle, fontSize: 13, color: T.black,
+                                     fontWeight: T.fontWeightSemibold }}>
+                        {o.value} · {pct}%
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </Card>
+          <FindingBox>
+            {totalOpps === 0 ? (
+              <>No opportunities created in this period.</>
+            ) : (
+              <>
+                <strong style={{ color: T.black }}>
+                  {Math.round((s.lost / totalOpps) * 100)}% of deals are lost
+                </strong>{' '}and{' '}
+                {Math.round((s.stale / totalOpps) * 100)}% are silently stale.
+                Combined leakage is the biggest single drag on attainment.
+              </>
+            )}
+          </FindingBox>
+        </div>
+
+      </div>
+
+      {/* ── 3rd section: By demand source × segment ──────────────────────────
+          Same period filter as the two charts above. Click a source row to
+          expand its segments. One insight below names the highest-converting
+          source for the selected period. */}
+      <div style={{ marginTop: 16 }}>
+        <SectionH meta="Click a source to expand by segment">By demand source × segment</SectionH>
+        <Table
+          dense
+          headers={[
+            { key: 'name',  label: 'Source / Segment' },
+            { key: 'leads', label: 'Leads', align: 'right', numeric: true },
+            { key: 'opps',  label: 'Opps',  align: 'right', numeric: true },
+            { key: 'won',   label: 'Won',   align: 'right', numeric: true, bold: true },
+            { key: 'won_keur',    label: 'Won ARR', align: 'right', numeric: true },
+            { key: 'lead_to_won', label: 'L→W',     align: 'right' },
+          ]}
+          rows={sourceVisible}
+          formatters={{
+            name: (v, r) => {
+              if (r.kind === 'child') return (
+                <span style={{ paddingLeft: 16, color: T.textMuted, fontWeight: T.fontWeightRegular }}>
+                  ↳ {r.segment}
+                </span>
+              );
+              const open = expanded.has(v);
+              return (
+                <button onClick={() => toggleSource(v)}
+                  style={{
+                    border: 'none', background: 'transparent', padding: 0, cursor: 'pointer',
+                    fontFamily: T.font, fontSize: 'inherit', color: T.black,
+                    fontWeight: T.fontWeightSemibold,
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                  }}>
+                  <span style={{ display: 'inline-block', width: 10, color: T.textMuted, fontSize: 10 }}>
+                    {open ? '▾' : '▸'}
+                  </span>
+                  {v}
+                </button>
+              );
+            },
+            won_keur:    (v) => v ? `€${v}K` : '—',
+            lead_to_won: (v) =>
+              v == null ? '—' :
+              <Pill kind={v >= 20 ? 'positive' : v >= 10 ? 'neutral' : 'negative'}>{v}%</Pill>,
+          }}
+        />
+        <FindingBox>
+          {sourceParents.length === 0 || !bestSource ? (
+            <>No funnel events in this period.</>
+          ) : (
+            <>
+              <strong style={{ color: T.black }}>{bestSource.name}</strong> leads the period on
+              conversion — <strong style={{ color: T.black }}>{bestSource.lead_to_won}%</strong>{' '}
+              lead-to-won — driving €{bestSource.won_keur}K closed-won ARR from{' '}
+              {bestSource.leads.toLocaleString()} leads.
+            </>
+          )}
+        </FindingBox>
+      </div>
       </div>
     </div>
   );
@@ -1213,6 +1784,114 @@ function FunnelChart({ data, compact }) {
   );
 }
 
+// Pipeline-quality chart pair, tabbed so two related cuts share one slot.
+// Tab 1 (default): the existing Slippage-rate + Stale-concentration grid.
+// Tab 2: Velocity (minimal table) + ASP (existing bar chart). Velocity is
+// presented as a table because the data is short and dense, and Velocity by
+// Stage is best read as numbers — the avg-days values and stuck-deal counts
+// matter more than the shape.
+function PipelineQualityCharts({ data }) {
+  const [tab, setTab] = useState('slip');
+  const tabs = [
+    { key: 'slip', label: 'Slippage & Stale'  },
+    { key: 'vel',  label: 'Velocity & ASP' },
+  ];
+  const TabBtn = ({ k, children }) => (
+    <button onClick={() => setTab(k)}
+      style={{
+        border: 'none', cursor: 'pointer', borderRadius: 999,
+        padding: '6px 14px', fontSize: 12, fontFamily: T.font,
+        fontWeight: tab === k ? T.fontWeightSemibold : T.fontWeightRegular,
+        background: tab === k ? T.black : 'transparent',
+        color:      tab === k ? '#FFF'   : T.textMuted,
+        transition: 'all 150ms ease-out',
+      }}>{children}</button>
+  );
+
+  // Velocity table — sorted desc by avg_days so the worst stage tops the list.
+  const velocityRows = [...(data.velocity || [])]
+    .sort((a, b) => (b.avg_days || 0) - (a.avg_days || 0));
+
+  return (
+    // Tab strip + content share one white surface — full-width toolbar at
+    // the top, hairline divider, content below. Filters now read as part of
+    // the chart card instead of floating on the panel above it.
+    <div style={{ background: T.card, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center',
+                    padding: '10px 12px',
+                    borderBottom: `1px solid ${T.hairline}` }}>
+        <div style={{ display: 'inline-flex', gap: 2, background: T.panel,
+                      padding: 2, borderRadius: 999 }}>
+          {tabs.map(t => <TabBtn key={t.key} k={t.key}>{t.label}</TabBtn>)}
+        </div>
+      </div>
+
+      <div style={{ padding: 12 }}>
+      {tab === 'slip' && (
+        <div style={{ display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                      gap: 12 }}>
+          <div>
+            <SectionH meta="Last 9 months">Slippage rate</SectionH>
+            <SlippageTrendChart data={data} compact />
+            <FindingBox>
+              Slip rate has gone from <strong style={{ color: T.black }}>0% to 19%</strong> in four months.
+            </FindingBox>
+          </div>
+
+          <div>
+            <SectionH meta="Top 6 cells">Stale concentration</SectionH>
+            <StaleBySegmentChart data={data} compact />
+            <FindingBox>
+              UK + NL Mid-Market = <strong style={{ color: T.black }}>37% of all stale ARR</strong>.
+            </FindingBox>
+          </div>
+        </div>
+      )}
+
+      {tab === 'vel' && (
+        <div style={{ display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                      gap: 12 }}>
+          <div>
+            <SectionH meta="Open opps · avg days in current stage">Velocity</SectionH>
+            {/* Minimal table — just stage, avg days, open deal count.
+                minWidth=0 lets it shrink to fit narrow columns; the
+                inner table still distributes its 3 columns evenly. */}
+            <Table
+              dense
+              minWidth={0}
+              headers={[
+                { key: 'stage',    label: 'Stage',  bold: true },
+                { key: 'avg_days', label: 'Avg days', align: 'right', numeric: true },
+                { key: 'opps',     label: 'Open',     align: 'right', numeric: true },
+              ]}
+              rows={velocityRows}
+              formatters={{
+                avg_days: (v) => v == null ? '—' : `${Math.round(v)}d`,
+              }}
+            />
+            <FindingBox>
+              Initial Meeting and Qualified stages average <strong style={{ color: T.black }}>80+ days</strong>{' '}
+              — many open deals have already spent their entire allotted cycle in one early stage.
+            </FindingBox>
+          </div>
+
+          <div>
+            <SectionH meta="Closed-won · all-time">ASP by demand source</SectionH>
+            <AspBySource data={data} compact />
+            <FindingBox>
+              <strong style={{ color: T.black }}>Partnerships and Marketing</strong>{' '}
+              produce 2–3× larger contracts (€93K and €68K vs €32K for SDR / AE Outbound).
+            </FindingBox>
+          </div>
+        </div>
+      )}
+      </div>
+    </div>
+  );
+}
+
 function SlippageTrendChart({ data, compact }) {
   // Show only YYYY-MM from the date string in compact mode.
   const trend = compact
@@ -1221,15 +1900,20 @@ function SlippageTrendChart({ data, compact }) {
   return (
     <Card style={{ padding: compact ? 10 : 16 }}>
       <ResponsiveContainer width="100%" height={compact ? 220 : 260}>
-        <ComposedChart data={trend} margin={{ top: 8, right: 20, left: -10, bottom: 0 }}>
+        <ComposedChart data={trend} margin={{ top: 16, right: 8, left: -10, bottom: 0 }}>
           <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
           <XAxis dataKey="snapshot_month" tick={{ fontSize: 9, fill: T.textMuted }} axisLine={false} tickLine={false} />
           <YAxis yAxisId="left" tickFormatter={(v) => `€${v}K`} tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
-          <YAxis yAxisId="right" orientation="right" tickFormatter={(v) => `${v}%`} tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+          {/* Right axis is hidden — slip-rate values are shown as inline data
+              labels above each line point so the chart reads cleaner. */}
+          <YAxis yAxisId="right" orientation="right" hide />
           <Tooltip contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem} />
           <Legend wrapperStyle={{ fontSize: 11 }} formatter={legendBlackFmt} />
           <Bar  yAxisId="left"  dataKey="slipped_keur" name="Slipped ARR" fill={T.hairline} radius={[3,3,0,0]} />
-          <Line yAxisId="right" dataKey="slip_rate"   name="Slip rate %" stroke={T.black} strokeWidth={2} dot={{ r: 2.5, fill: T.black }} />
+          <Line yAxisId="right" dataKey="slip_rate"   name="Slip rate %" stroke={T.black} strokeWidth={2} dot={{ r: 2.5, fill: T.black }}>
+            <LabelList dataKey="slip_rate" position="top" formatter={(v) => `${Math.round(v)}%`}
+                       fontSize={10} fontWeight={600} fill={T.black} />
+          </Line>
         </ComposedChart>
       </ResponsiveContainer>
     </Card>
@@ -1237,6 +1921,195 @@ function SlippageTrendChart({ data, compact }) {
 }
 
 // --- Performance tabbed table --------------------------------------------
+
+// ── ActivitySection · weekly stacked + per-rep, with shared filter ─────────
+// Wraps both activity charts so a single period selector (Month / Quarter /
+// Year / All time + prev/next) controls them simultaneously. Aggregates the
+// raw (week × rep × type) rows in `data.activityRaw` into the two views.
+function ActivitySection({ data }) {
+  const [period, setPeriod] = useState('quarter');
+  const [offset, setOffset] = useState(0);
+  const isAll = period === 'all';
+  const setPeriodSafe = (p) => { setPeriod(p); setOffset(0); };
+
+  const range = !isAll ? getPeriodRange(period, offset) : null;
+  const minOffset = period === 'quarter' ? -8 : period === 'month' ? -28 : -2;
+  const canPrev = !isAll && offset > minOffset;
+  const canNext = !isAll && offset < 0;
+
+  const raw = data.activityRaw || [];
+  const inRange = (wstr) => {
+    if (isAll) return true;
+    const wd = parseISODate(wstr);
+    return wd >= range.start && wd <= range.end;
+  };
+  const filtered = raw.filter(r => inRange(r.week));
+
+  // Weekly stacked: pivot (week × type) → wide rows {week, Email, Call, ...}
+  const weeklyMap = new Map();
+  for (const r of filtered) {
+    if (!weeklyMap.has(r.week)) weeklyMap.set(r.week, { week: r.week });
+    const w = weeklyMap.get(r.week);
+    w[r.type] = (w[r.type] || 0) + r.cnt;
+  }
+  const weekly = Array.from(weeklyMap.values())
+                      .sort((a, b) => a.week.localeCompare(b.week));
+
+  // Per-rep aggregation. Keep every rep so reps with zero activity in the
+  // period still appear (so the "zero-activity reps" insight stays honest).
+  const repMap = new Map();
+  for (const r of raw) {
+    if (!repMap.has(r.rep_id)) repMap.set(r.rep_id, {
+      rep_id: r.rep_id, rep_name: r.rep_name, activities: 0,
+    });
+  }
+  for (const r of filtered) {
+    if (!repMap.has(r.rep_id)) repMap.set(r.rep_id, {
+      rep_id: r.rep_id, rep_name: r.rep_name, activities: 0,
+    });
+    repMap.get(r.rep_id).activities += r.cnt;
+  }
+  const perRep = Array.from(repMap.values())
+                      .sort((a, b) => a.activities - b.activities ||
+                                       a.rep_name.localeCompare(b.rep_name));
+  const zeros = perRep.filter(r => r.activities === 0).length;
+  const periodLabel = isAll ? 'All time' : range.label;
+
+  const TYPES = [
+    { key: 'Email',    fill: T.pleoBlueSoft },
+    { key: 'Call',     fill: T.pleoYellow   },
+    { key: 'LinkedIn', fill: T.pleoPurple   },
+    { key: 'Meeting',  fill: T.pleoGreen    },
+    { key: 'Demo',     fill: T.pleoPink500  },
+  ];
+
+  const PillBtn = ({ active, onClick, children }) => (
+    <button onClick={onClick}
+      style={{
+        border: 'none', cursor: 'pointer', borderRadius: 999,
+        padding: '5px 12px', fontSize: 11, fontFamily: T.font,
+        fontWeight: active ? T.fontWeightSemibold : T.fontWeightRegular,
+        background: active ? T.black : 'transparent',
+        color:      active ? '#FFF'   : T.textMuted,
+        transition: 'all 150ms ease-out',
+      }}>{children}</button>
+  );
+  const Arrow = ({ disabled, onClick, children }) => (
+    <button onClick={onClick} disabled={disabled}
+      style={{
+        border: 'none', background: 'transparent',
+        cursor: disabled ? 'default' : 'pointer',
+        color: disabled ? T.hairline : T.textMuted, fontSize: 14,
+        width: 24, height: 24, borderRadius: 999, padding: 0,
+      }}>{children}</button>
+  );
+
+  const max = Math.max(1, ...perRep.map(r => r.activities));
+
+  return (
+    <div style={{ background: T.card, borderRadius: 12, overflow: 'hidden' }}>
+      {/* Shared filter toolbar */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center',
+                    gap: 8, padding: '10px 12px',
+                    borderBottom: `1px solid ${T.hairline}` }}>
+        <div style={{ display: 'inline-flex', gap: 2, background: T.panel,
+                      padding: 2, borderRadius: 999 }}>
+          <PillBtn active={period === 'month'}   onClick={() => setPeriodSafe('month')}>Month</PillBtn>
+          <PillBtn active={period === 'quarter'} onClick={() => setPeriodSafe('quarter')}>Quarter</PillBtn>
+          <PillBtn active={period === 'year'}    onClick={() => setPeriodSafe('year')}>Year</PillBtn>
+          <PillBtn active={period === 'all'}     onClick={() => setPeriodSafe('all')}>All time</PillBtn>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'inline-flex', gap: 4, alignItems: 'center' }}>
+          <Arrow disabled={!canPrev} onClick={() => canPrev && setOffset(offset - 1)}>‹</Arrow>
+          <span style={{ ...numStyle, fontSize: 12, fontWeight: T.fontWeightMedium,
+                         color: T.black, minWidth: 80, textAlign: 'center' }}>
+            {periodLabel}
+          </span>
+          <Arrow disabled={!canNext} onClick={() => canNext && setOffset(offset + 1)}>›</Arrow>
+        </div>
+      </div>
+
+      <div style={{ padding: 12 }}>
+        {/* Volume chart — X-axis shows one tick per calendar month using
+            month-name labels (e.g., "May 26"), same pattern as the historical
+            pace chart. Removes the dense "MM-DD" wall of dates. */}
+        {(() => {
+          const MONTHS = ['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const monthTicks = [];
+          const seen = new Set();
+          for (const w of weekly) {
+            const yyyymm = (w.week || '').substring(0, 7);
+            if (seen.has(yyyymm)) continue;
+            seen.add(yyyymm);
+            monthTicks.push(w.week);
+          }
+          const tickFmt = (v) => {
+            if (!v) return '';
+            const [y, m] = v.split('-');
+            return `${MONTHS[parseInt(m, 10)]} ${y.slice(2)}`;
+          };
+          return (
+            <>
+              <SectionH meta="Stacked by activity type">Activity volume</SectionH>
+              <div style={{ background: T.card }}>
+                <ResponsiveContainer width="100%" height={220}>
+                  <BarChart data={weekly} margin={{ top: 8, right: 10, left: -10, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="2 4" vertical={false} stroke={T.chartGrid} />
+                    <XAxis dataKey="week" tick={{ fontSize: 10, fill: T.textMuted }}
+                           axisLine={false} tickLine={false}
+                           ticks={monthTicks} tickFormatter={tickFmt} />
+                    <YAxis tick={{ fontSize: 10, fill: T.textMuted }} axisLine={false} tickLine={false} />
+                    <Tooltip contentStyle={TooltipBox} labelStyle={TooltipLabel} itemStyle={TooltipItem}
+                             labelFormatter={(v) => {
+                               const [y, m, d] = (v || '').split('-');
+                               return `${MONTHS[parseInt(m, 10)]} ${parseInt(d, 10)}, ${y}`;
+                             }} />
+                    <Legend wrapperStyle={{ fontSize: 10 }} formatter={legendBlackFmt} />
+                    {TYPES.map(t => (
+                      <Bar key={t.key} dataKey={t.key} stackId="a" fill={t.fill} />
+                    ))}
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          );
+        })()}
+
+        {/* Per-rep — same horizontal bars as before, but filtered + sorted */}
+        <SectionH meta={`${perRep.length} reps · ${zeros} with zero activity`}>Activity by rep</SectionH>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {perRep.map((r, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12 }}>
+              <span style={{ width: 100, color: T.textSec, whiteSpace: 'nowrap',
+                             overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {r.rep_name}
+              </span>
+              <div style={{ flex: 1, height: 6, background: T.hairline,
+                            borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{
+                  width: `${(r.activities / max) * 100}%`, height: '100%',
+                  background: r.activities === 0 ? T.negative
+                            : r.activities < 2  ? T.pleoPink400
+                            : T.black,
+                }} />
+              </div>
+              <span style={{ ...numStyle, width: 32, textAlign: 'right',
+                             color: T.black, fontWeight: T.fontWeightMedium }}>
+                {r.activities}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <FindingBox>
+          <strong style={{ color: T.black }}>
+            {zeros} of {perRep.length} reps logged zero activities
+          </strong>{' '}in this period — strongly correlates with the stale-pipeline concentration in Pipeline Quality.
+        </FindingBox>
+      </div>
+    </div>
+  );
+}
 
 // ── Activity volume — weekly stacked + per-rep last 4w ─────────────────────
 function ActivityWeeklyChart({ data, compact }) {
@@ -1250,14 +2123,15 @@ function ActivityWeeklyChart({ data, compact }) {
   for (const [, v] of byWeek) rows.push(v);
   rows.sort((a, b) => a.week.localeCompare(b.week));
 
-  // Each activity type gets a different shade of grey + the won-style pink for
-  // the "Demo" type, which is the highest-intent activity.
+  // Pleo brand palette. Pink reserved for Demos (highest-intent activity);
+  // other touch types use the remaining brand colours so each band reads
+  // distinctly in the stack.
   const TYPES = [
-    { key: 'Email',    fill: '#DDDDDD' },
-    { key: 'Call',     fill: '#BBBBBB' },
-    { key: 'LinkedIn', fill: '#999999' },
-    { key: 'Meeting',  fill: '#555555' },
-    { key: 'Demo',     fill: T.pleoPink500 },
+    { key: 'Email',    fill: T.pleoBlueSoft },
+    { key: 'Call',     fill: T.pleoYellow   },
+    { key: 'LinkedIn', fill: T.pleoPurple   },
+    { key: 'Meeting',  fill: T.pleoGreen    },
+    { key: 'Demo',     fill: T.pleoPink500  },
   ];
 
   return (
@@ -1445,7 +2319,15 @@ function PerformanceTabs({ data, compact }) {
   );
 
   // Group attainment by tab dimension. For Rep we also need market/segment.
+  // Weighted pipeline is split by forecast_category (Committed / Best Case /
+  // Pipeline) so the table mirrors the hero's cumulative stack:
+  //   bestCase column = actuals + committed + best_case   (cumulative through Best)
+  //   pipeline column = actuals + committed + best + pipe (cumulative — total)
+  // Upside is the recovery potential from STALE open deals scheduled to close
+  // in the same period: stale_arr × 0.15 × winRate. Stale by rep is included
+  // because `is_stale` now flows through from fct_pipeline_health.
   const dimKey = tab === 'byRegion' ? 'market' : 'rep_id';
+  const winRate = (data.hero.winRatePct || 0) / 100;
   const rowsMap = new Map();
   for (const r of attainmentInRange) {
     const key = r[dimKey];
@@ -1455,7 +2337,8 @@ function PerformanceTabs({ data, compact }) {
         name:    tab === 'byRep' ? r.rep_name : key,
         subline: tab === 'byRep' ? `${r.market} · ${r.segment}` : '',
         rep_id:  tab === 'byRep' ? r.rep_id : null,
-        actuals: 0, target: 0, weighted: 0,
+        actuals: 0, target: 0,
+        committed_w: 0, best_w: 0, pipeline_w: 0, stale_arr: 0,
       });
     }
     const e = rowsMap.get(key);
@@ -1465,7 +2348,12 @@ function PerformanceTabs({ data, compact }) {
   for (const p of pipeInRange) {
     const key = tab === 'byRegion' ? p.market : p.rep_id;
     if (!key || !rowsMap.has(key)) continue;
-    rowsMap.get(key).weighted += p.weighted;
+    const e = rowsMap.get(key);
+    const cat = p.forecast_category;
+    if      (cat === 'Committed') e.committed_w += p.weighted;
+    else if (cat === 'Best Case') e.best_w      += p.weighted;
+    else if (cat === 'Pipeline')  e.pipeline_w  += p.weighted;
+    if (p.is_stale) e.stale_arr += p.arr;
   }
   const rows = Array.from(rowsMap.values()).sort((a, b) => b.target - a.target);
 
@@ -1480,7 +2368,9 @@ function PerformanceTabs({ data, compact }) {
     if (!r.market || !r.segment) continue;
     const k = `${r.market}__${r.segment}`;
     if (!childCellsMap.has(k)) childCellsMap.set(k, {
-      market: r.market, segment: r.segment, actuals: 0, target: 0, weighted: 0,
+      market: r.market, segment: r.segment,
+      actuals: 0, target: 0,
+      committed_w: 0, best_w: 0, pipeline_w: 0, stale_arr: 0,
     });
     const e = childCellsMap.get(k);
     e.actuals += r.actuals;
@@ -1489,7 +2379,13 @@ function PerformanceTabs({ data, compact }) {
   for (const p of pipeInRange) {
     if (!p.market || !p.segment) continue;
     const k = `${p.market}__${p.segment}`;
-    if (childCellsMap.has(k)) childCellsMap.get(k).weighted += p.weighted;
+    if (!childCellsMap.has(k)) continue;
+    const e = childCellsMap.get(k);
+    const cat = p.forecast_category;
+    if      (cat === 'Committed') e.committed_w += p.weighted;
+    else if (cat === 'Best Case') e.best_w      += p.weighted;
+    else if (cat === 'Pipeline')  e.pipeline_w  += p.weighted;
+    if (p.is_stale) e.stale_arr += p.arr;
   }
   const childCells = Array.from(childCellsMap.values());
 
@@ -1500,41 +2396,63 @@ function PerformanceTabs({ data, compact }) {
       childCells
         .filter(p => p[parentKey] === r.name)
         .forEach(p => visible.push({
-          name:     p[childKey],
-          actuals:  p.actuals, target: p.target, weighted: p.weighted,
-          kind:     'child',
+          name:        p[childKey],
+          actuals:     p.actuals, target: p.target,
+          committed_w: p.committed_w, best_w: p.best_w,
+          pipeline_w:  p.pipeline_w,  stale_arr: p.stale_arr,
+          kind:        'child',
         }));
     }
   });
 
   // Totals row — sum the parent rows.
   const sum = (k) => rows.reduce((a, r) => a + (r[k] || 0), 0);
-  const totActual = sum('actuals'), totTarget = sum('target'), totWeighted = sum('weighted');
+  const totActual    = sum('actuals'),    totTarget = sum('target');
+  const totCommitted = sum('committed_w'), totBest  = sum('best_w');
+  const totPipeline  = sum('pipeline_w'),  totStale = sum('stale_arr');
+  const totBestCum     = totActual + totCommitted + totBest;
+  const totPipelineCum = totBestCum + totPipeline;
   const totals = {
-    name:    'Total',
-    subline: '',
-    actuals: totActual, target: totTarget, weighted: totWeighted,
-    pct_actuals:  totTarget > 0 ? totActual   / totTarget * 100 : null,
-    pct_weighted: totTarget > 0 ? totWeighted / totTarget * 100 : null,
+    name:      'Total',
+    subline:   '',
+    actuals:   totActual,
+    target:    totTarget,
+    best_case: totBestCum,
+    pipeline:  totPipelineCum,
+    pct_pipe:  totTarget > 0 ? totPipelineCum / totTarget * 100 : null,
+    upside:    totStale * 0.15 * winRate,
   };
 
-  // For "By Rep" we drop the subline column in compact mode so the 6 cols fit.
+  // Columns match the hero card order — Actuals · Best · Pipeline · % · Target.
+  // Upside is appended last when it has a non-zero contribution somewhere in
+  // the table; otherwise it's dropped so we don't show a column of em-dashes.
   const includeSubline = tab === 'byRep' && !compact;
+  const hasUpside = rows.some(r => (r.stale_arr || 0) > 0);
   const headers = [
     { key: 'name', label: meta.nameCol, bold: true },
     ...(includeSubline ? [{ key: 'subline', label: 'Market · Segment', muted: true }] : []),
-    { key: 'actuals',      label: compact ? 'Act.'      : 'Actuals',       align: 'right', numeric: true },
-    { key: 'target',       label: compact ? 'Tgt'       : 'Target',        align: 'right', numeric: true },
-    { key: 'pct_actuals',  label: compact ? '%'         : '% vs target',   align: 'right' },
-    { key: 'weighted',     label: compact ? 'Wtd pipe'  : 'Weighted pipe', align: 'right', numeric: true },
-    { key: 'pct_weighted', label: compact ? '%'         : '% vs target',   align: 'right' },
+    { key: 'actuals',    label: compact ? 'Act.'  : 'Actuals',        align: 'right', numeric: true },
+    { key: 'best_case',  label: compact ? 'Best'  : 'Best case',      align: 'right', numeric: true },
+    { key: 'pipeline',   label: compact ? 'Pipe'  : 'Pipeline',       align: 'right', numeric: true },
+    { key: 'pct_pipe',   label: compact ? '%'     : '% vs target',    align: 'right' },
+    { key: 'target',     label: compact ? 'Tgt'   : 'Target',         align: 'right', numeric: true },
+    ...(hasUpside ? [
+      { key: 'upside',   label: compact ? 'Up.'   : 'Upside',         align: 'right', numeric: true },
+    ] : []),
   ];
 
-  const enriched = visible.map(r => ({
-    ...r,
-    pct_actuals:  r.target > 0 ? r.actuals  / r.target * 100 : null,
-    pct_weighted: r.target > 0 ? r.weighted / r.target * 100 : null,
-  }));
+  // Enrich each row with the cumulative levels + achievement % + upside.
+  const enriched = visible.map(r => {
+    const bestCum     = (r.actuals || 0) + (r.committed_w || 0) + (r.best_w || 0);
+    const pipelineCum = bestCum + (r.pipeline_w || 0);
+    return {
+      ...r,
+      best_case: bestCum,
+      pipeline:  pipelineCum,
+      pct_pipe:  r.target > 0 ? pipelineCum / r.target * 100 : null,
+      upside:    (r.stale_arr || 0) * 0.15 * winRate,
+    };
+  });
 
   // Period navigation bounds — match the chart so we don't run off the data.
   const minOffset = period === 'quarter' ? -8 : period === 'month' ? -28 : -2;
@@ -1600,10 +2518,14 @@ function PerformanceTabs({ data, compact }) {
   };
 
   return (
-    <div>
-      {/* Top control row: tab strip + period pills + prev/next nav */}
+    // Toolbar + table share one white surface. The toolbar header strip
+    // sits at the top of the card with a hairline divider underneath; the
+    // table fills the body. This makes the filter controls feel attached
+    // to the data they steer, instead of floating above it on the panel.
+    <div style={{ background: T.card, borderRadius: 12, overflow: 'hidden' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center',
-                    gap: 8, marginBottom: 12 }}>
+                    gap: 8, padding: '10px 12px',
+                    borderBottom: `1px solid ${T.hairline}` }}>
         <div style={{ display: 'inline-flex', gap: 4, background: T.panel,
                       padding: 3, borderRadius: 999 }}>
           {tabs.map(t => (
@@ -1621,7 +2543,6 @@ function PerformanceTabs({ data, compact }) {
           ))}
         </div>
 
-        {/* Period pills + navigation — same pattern as the ARR chart */}
         <div style={{ display: 'inline-flex', gap: 2, background: T.panel,
                       padding: 2, borderRadius: 999 }}>
           <PillBtn active={period === 'month'}   onClick={() => setPeriodSafe('month')}>Month</PillBtn>
@@ -1644,12 +2565,13 @@ function PerformanceTabs({ data, compact }) {
         totals={totals}
         dense={compact}
         formatters={{
-          name:         fmtName,
-          actuals:      fmtRowEur,
-          target:       fmtRowEur,
-          weighted:     fmtRowEur,
-          pct_actuals:  fmtPctCell,
-          pct_weighted: fmtPctCell,
+          name:      fmtName,
+          actuals:   fmtRowEur,
+          best_case: fmtRowEur,
+          pipeline:  fmtRowEur,
+          target:    fmtRowEur,
+          pct_pipe:  fmtPctCell,
+          upside:    fmtRowEur,
         }}
       />
     </div>
@@ -1707,37 +2629,34 @@ function App() {
         {/* ===== 2×2 grid of equal sections ================================== */}
         <div style={{ display: 'grid', gridTemplateColumns: gridCols, gap: 12, marginTop: 16 }}>
 
-          {/* ── 1 — ARR vs Target ─────────────────────────────────────────── */}
+          {/* ── 1 — Performance ───────────────────────────────────────────────
+              Performance leads the column: it answers "who's hitting target?"
+              with actuals, target and weighted pipeline split by region /
+              segment / rep — the most actionable cut of the data. Historical
+              pace and the cumulative book are supporting context below. */}
           <Column>
             <ColumnHeader
-              tag="ARR VS TARGET"
-              title="Where we are vs the historical pace"
-              caption="Cumulative new ARR closed, day-by-day, compared against Q1 2026 (last Q) and Q2 2025 (same Q LY)."
+              tag="PERFORMANCE"
+              title="Who's hitting target — and who's not"
+              caption="Q2 actuals against ramp-adjusted target, plus the weighted pipeline still in play, split by region, segment and rep."
             />
-            <PaceInsights data={data} />
-
-            {/* Forecast levels — Commit ≤ Best ≤ Pipeline ≤ Target */}
-            <div>
-              <SectionH meta="Cumulative · Commit ≤ Best ≤ Pipeline">Forecast vs target</SectionH>
-              <ForecastRow data={data} />
-            </div>
-
-            <ArrTrendChart data={data} compact />
+            <PerformanceTabs data={data} compact />
 
             <div>
-              <SectionH meta="Actuals · Target · Weighted pipe">Performance</SectionH>
-              <PerformanceTabs data={data} compact />
+              <SectionH meta="Cumulative ARR · current Q vs last Q vs same Q LY">
+                Where we are vs the historical pace
+              </SectionH>
+              <PaceInsights data={data} />
+              {/* Breathing room between the insight cards and the chart —
+                  the cards otherwise sit flush against the chart's top axis. */}
+              <div style={{ marginTop: 16 }}>
+                <ArrTrendChart data={data} compact />
+              </div>
             </div>
 
-            <div>
-              <SectionH meta="No-churn assumption · supporting context">Cumulative ARR book</SectionH>
-              <FindingBox>
-                Ending book today is{' '}
-                <strong style={{ color: T.black, ...numStyle }}>€{Math.round(lastCum / 1000).toLocaleString()}K</strong>{' '}
-                assuming no churn. Supporting context — attainment above is the flow metric.
-              </FindingBox>
-              <CumulativeArrChart data={data} compact />
-            </div>
+            {/* Cumulative ARR section removed — it duplicated the attainment
+                story above with a no-churn assumption and added clutter
+                without changing any decision. */}
           </Column>
 
           {/* ── Column 2 — Pipeline Quality ──────────────────────────────── */}
@@ -1781,21 +2700,10 @@ function App() {
               </div>
             </div>
 
-            <div>
-              <SectionH meta="Last 9 months">Slippage rate</SectionH>
-              <SlippageTrendChart data={data} compact />
-              <FindingBox>
-                Slip rate has gone from <strong style={{ color: T.black }}>0% to 19%</strong> in four months.
-              </FindingBox>
-            </div>
-
-            <div>
-              <SectionH meta="Top 6 cells">Stale concentration</SectionH>
-              <StaleBySegmentChart data={data} compact />
-              <FindingBox>
-                UK + NL Mid-Market = <strong style={{ color: T.black }}>37% of all stale ARR</strong>.
-              </FindingBox>
-            </div>
+            {/* Two cuts on pipeline quality, tabbed: Slippage & Stale (left
+                tab) vs Velocity & ASP (right tab). Velocity slots in as a
+                minimal table so we surface the data without adding clutter. */}
+            <PipelineQualityCharts data={data} />
 
             <div>
               <SectionH meta="Open pipeline · current snapshot">Top stale deals · call list</SectionH>
@@ -1826,32 +2734,13 @@ function App() {
               caption="Top: lead → demo from funnel events (trail 12M). Bottom: how the 129 opportunities created since 2024 ended up."
             />
 
-            <div>
-              <SectionH meta="Trail 12 months · funnel events">Marketing funnel</SectionH>
-              <MarketingFunnel data={data} compact />
-            </div>
-
-            <div>
-              <SectionH meta="All-time · 129 opps">Deal outcomes</SectionH>
-              <OutcomeSplit data={data} />
-              <FindingBox>
-                <strong style={{ color: T.black }}>50% of deals are lost</strong> and 26% are silently stale.
-                Combined leakage is the biggest single drag on attainment.
-              </FindingBox>
-            </div>
-
-            {/* ASP bar chart dropped — the per-source numbers live inside the
-                pivot table below (Won ARR column), and the headline insight
-                stands fine as a one-line callout. */}
-            <FindingBox>
-              <strong style={{ color: T.black }}>Partnerships and Marketing punch above their weight on deal size</strong>{' '}
-              — ASP €93K and €68K vs €32K for SDR / AE Outbound. Drilldown in the table below.
-            </FindingBox>
-
-            <div>
-              <SectionH meta="Trail 12 months · click to expand">By demand source × segment</SectionH>
-              <FunnelSourcePivot data={data} />
-            </div>
+            {/* Funnel + outcomes share a row and a period filter. Insights
+                live inside the component, below each chart. */}
+            {/* Funnel + outcomes + source×segment now share one period
+                filter. Stand-alone FunnelSourcePivot / ASP callout removed —
+                the pivot lives inside MarketingAndOutcomes and one insight
+                per chart is already rendered there. */}
+            <MarketingAndOutcomes data={data} compact />
           </Column>
 
           {/* ── 4 — Activity ──────────────────────────────────────────────── */}
@@ -1862,26 +2751,9 @@ function App() {
               caption="Weekly activity volume by type, plus the per-rep activity count for the last 4 weeks."
             />
 
-            <div>
-              <SectionH meta="Trail 12 weeks · stacked by type">Activity volume</SectionH>
-              <ActivityWeeklyChart data={data} compact />
-            </div>
-
-            <div>
-              <SectionH meta="Last 4 weeks · per rep">Activity by rep</SectionH>
-              <ActivityByRep data={data} />
-              <FindingBox>
-                {(() => {
-                  const z = data.activity.perRep.filter(r => r.activities === 0).length;
-                  return (
-                    <>
-                      <strong style={{ color: T.black }}>{z} of {data.activity.perRep.length} reps have logged zero activities</strong>{' '}
-                      in the past 4 weeks — the likely root cause of the stale concentration in Pipeline Quality.
-                    </>
-                  );
-                })()}
-              </FindingBox>
-            </div>
+            {/* Both activity charts share one filter (Month / Quarter / Year
+                / All time + prev-next) inside the same white card. */}
+            <ActivitySection data={data} />
           </Column>
         </div>
 
@@ -1891,43 +2763,95 @@ function App() {
           title="Monday actions"
           caption="Specific, owned, time-bound."
         />
-        {/* Pink Pleo-style cards. Each card is one action — bold title up top,
-            severity pill, owner / value / when metadata at the bottom. */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 12,
-        }}>
-          {data.actions.map((a, i) => {
-            // Tint depth reflects urgency; pleo pink across the board.
-            const tint = a.severity === 'red'  ? T.pleoPink400
-                       : a.severity === 'amber' ? T.pleoPink200
-                                                 : T.pleoPink100;
-            return (
-              <div key={i} style={{
-                background: tint, borderRadius: 18, padding: '20px 22px',
-                display: 'flex', flexDirection: 'column', gap: 14,
-                minHeight: 168,
-              }}>
-                <Pill kind={a.severity === 'red' ? 'negative' : 'neutral'}>
-                  {a.severity === 'red' ? 'Urgent' : a.severity === 'amber' ? 'This sprint' : 'Process'}
-                </Pill>
-                <div style={{ fontSize: 18, color: T.black, fontWeight: T.fontWeightSemibold,
-                              lineHeight: 1.3, letterSpacing: '-0.01em' }}>
-                  {a.title}
-                </div>
-                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <div style={{ ...numStyle, fontSize: T.fontMedium, fontWeight: T.fontWeightSemibold, color: T.black }}>
-                    {a.value}
+        {/* Kanban layout — three columns of cards grouped by the action's
+            time horizon (`when`). The card visual is unchanged (pink-tinted
+            squares with severity pill, title, value, owner). Each column is
+            its own panel with a header band so the board reads as a project-
+            management view rather than a flat list. */}
+        {(() => {
+          // Group actions by their `when` value; order columns explicitly so
+          // "This week" sits on the left (most urgent) and the longest horizon
+          // sits on the right.
+          const COLUMNS = [
+            { key: 'This week',  title: 'This week',  sub: 'Urgent · do it now' },
+            { key: 'This sprint', title: 'This sprint', sub: 'In current sprint' },
+            { key: '45 days',    title: 'In progress', sub: 'Multi-week initiatives' },
+          ];
+          const buckets = Object.fromEntries(COLUMNS.map(c => [c.key, []]));
+          const other = [];
+          for (const a of data.actions) {
+            if (buckets[a.when]) buckets[a.when].push(a);
+            else other.push(a);
+          }
+          if (other.length) buckets['45 days'].push(...other);
+
+          return (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 12,
+              alignItems: 'start',
+            }}>
+              {COLUMNS.map(col => (
+                <div key={col.key} style={{
+                  background: T.panel, borderRadius: 14, padding: 12,
+                  display: 'flex', flexDirection: 'column', gap: 10,
+                }}>
+                  {/* Column header — title + count + one-line description */}
+                  <div style={{ display: 'flex', alignItems: 'baseline',
+                                gap: 8, padding: '0 4px 8px',
+                                borderBottom: `1px solid ${T.hairline}` }}>
+                    <span style={{ fontSize: 12, color: T.black,
+                                   fontWeight: T.fontWeightSemibold,
+                                   letterSpacing: '-0.01em' }}>{col.title}</span>
+                    <span style={{ fontSize: 11, color: T.textMuted,
+                                   ...numStyle }}>{buckets[col.key].length}</span>
+                    <span style={{ marginLeft: 'auto', fontSize: 10,
+                                   color: T.textMuted, textTransform: 'uppercase',
+                                   letterSpacing: '0.08em' }}>{col.sub}</span>
                   </div>
-                  <div style={{ fontSize: 12, color: T.textMuted, lineHeight: 1.5 }}>
-                    {a.owner} · {a.when}
-                  </div>
+
+                  {/* Action cards — unchanged design, just grouped by column */}
+                  {buckets[col.key].length === 0 ? (
+                    <div style={{ fontSize: 12, color: T.textMuted,
+                                  padding: '12px 4px', fontStyle: 'italic' }}>
+                      No actions in this lane.
+                    </div>
+                  ) : buckets[col.key].map((a, i) => {
+                    const tint = a.severity === 'red'  ? T.pleoPink400
+                               : a.severity === 'amber' ? T.pleoPink200
+                                                         : T.pleoPink100;
+                    return (
+                      <div key={i} style={{
+                        background: tint, borderRadius: 14, padding: '16px 18px',
+                        display: 'flex', flexDirection: 'column', gap: 12,
+                      }}>
+                        <Pill kind={a.severity === 'red' ? 'negative' : 'neutral'}>
+                          {a.severity === 'red' ? 'Urgent' : a.severity === 'amber' ? 'This sprint' : 'Process'}
+                        </Pill>
+                        <div style={{ fontSize: 15, color: T.black,
+                                      fontWeight: T.fontWeightSemibold,
+                                      lineHeight: 1.3, letterSpacing: '-0.01em' }}>
+                          {a.title}
+                        </div>
+                        <div style={{ marginTop: 'auto', display: 'flex',
+                                      flexDirection: 'column', gap: 4 }}>
+                          <div style={{ ...numStyle, fontSize: T.fontMedium,
+                                        fontWeight: T.fontWeightSemibold, color: T.black }}>
+                            {a.value}
+                          </div>
+                          <div style={{ fontSize: 11, color: T.textMuted, lineHeight: 1.5 }}>
+                            {a.owner} · {a.when}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              ))}
+            </div>
+          );
+        })()}
 
         {/* Picklist hygiene table dropped — the same point already lives inside
             the Monday-actions recommendation, no need to duplicate. */}
@@ -2043,6 +2967,11 @@ async function buildHero(conn) {
                                       sum(weighted_arr_eur) AS weighted,
                                       avg(days_since_last_activity) AS avg_silent
                                FROM fct_pipeline_health WHERE is_stale`);
+  // Q2-scoped stale ARR — recovery upside should reconcile with the
+  // Performance table's Upside column (which is also period-filtered).
+  const stQ2 = await one(conn, `SELECT sum(arr_eur) AS arr
+                                FROM fct_pipeline_health
+                                WHERE is_stale AND closes_in_q2_2026`);
   const pq2 = await one(conn, `SELECT sum(arr_eur) AS arr, sum(weighted_arr_eur) AS weighted
                                FROM fct_pipeline_health WHERE closes_in_q2_2026`);
   const wrR = await one(conn, `
@@ -2050,10 +2979,11 @@ async function buildHero(conn) {
            / nullif((count(*) FILTER (WHERE is_won OR is_lost)), 0) AS wr
     FROM fct_opportunities WHERE opp_created_date >= DATE '2024-01-01'`);
 
-  const tgt   = num(q2.tgt);
-  const close = num(q2.closed);
-  const arr   = num(st.arr);
-  const wr    = num(wrR.wr);
+  const tgt     = num(q2.tgt);
+  const close   = num(q2.closed);
+  const arr     = num(st.arr);
+  const arrQ2   = num(stQ2.arr) || 0;
+  const wr      = num(wrR.wr);
 
   return {
     asOf: '14 May 2026',
@@ -2064,10 +2994,14 @@ async function buildHero(conn) {
     q2PipeWeighted: Math.round(num(pq2.weighted)),
     staleDeals:     num(st.deals),
     staleArr:       Math.round(arr),
+    staleArrQ2:     Math.round(arrQ2),
     staleWeighted:  Math.round(num(st.weighted)),
     staleAvgSilent: Math.round(num(st.avg_silent)),
     winRatePct:     Math.round(wr * 100),
-    recoveryEur:    Math.round(arr * 0.15 * wr),
+    // Recovery upside is Q2-scoped so the hero number reconciles with the
+    // Performance table's Upside column. Same formula either way:
+    // stale_arr × 15% re-engage × historical win-rate.
+    recoveryEur:    Math.round(arrQ2 * 0.15 * wr),
   };
 }
 
@@ -2374,12 +3308,14 @@ async function buildPipelineOpenRaw(conn) {
   const r = await rows(conn, `
     SELECT cast(close_date AS varchar) AS close_date,
            market, segment, rep_id, rep_name,
+           forecast_category, is_stale,
            arr_eur, weighted_arr_eur
     FROM fct_pipeline_health
     ORDER BY close_date`);
   return r.map(x => ({
     close_date: x.close_date, market: x.market, segment: x.segment,
     rep_id: x.rep_id, rep_name: x.rep_name,
+    forecast_category: x.forecast_category, is_stale: !!x.is_stale,
     arr: num(x.arr_eur), weighted: num(x.weighted_arr_eur),
   }));
 }
@@ -2609,6 +3545,27 @@ async function buildForecast(conn) {
 }
 
 // ── Activity volume — weekly + per-rep ─────────────────────────────────────
+// Activity rows broken down by (week, rep, type) across the full history,
+// so the dashboard's Activity section can re-aggregate to any period the
+// user picks. Output is small (weeks × reps × types) so we can ship it
+// to the browser as one parquet without trouble.
+async function buildActivityRaw(conn) {
+  const r = await rows(conn, `
+    SELECT cast(date_trunc('week', a.activity_date) AS varchar) AS week,
+           a.rep_id, r.rep_name, r.market, r.segment,
+           a.activity_type AS type,
+           count(*)::int AS cnt
+    FROM int_activity_outcomes_filled a
+    LEFT JOIN dim_reps r USING (rep_id)
+    GROUP BY 1, 2, 3, 4, 5, 6
+    ORDER BY 1`);
+  return r.map(x => ({
+    week: x.week, rep_id: x.rep_id, rep_name: x.rep_name,
+    market: x.market, segment: x.segment,
+    type: x.type, cnt: num(x.cnt),
+  }));
+}
+
 async function buildActivity(conn) {
   // Weekly by activity_type for the trailing 12 weeks.
   const weekly = await rows(conn, `
@@ -2639,6 +3596,99 @@ async function buildActivity(conn) {
 }
 
 // ── Sankey · funnel → outcomes (trail 12M + all-time opps) ─────────────────
+// Monthly closed-won opportunities by demand_source × segment. We use this
+// for the "Won" / "Won ARR" columns in the source × segment table instead
+// of fct_funnel_conversion.won, because the two facts drift in the dataset
+// (the funnel table records aggregate "win events" that don't always have
+// a matching row in fct_opportunities). fct_opportunities is the canonical
+// deal-level fact, so reading wins from there reconciles with the hero,
+// Performance, and pace numbers.
+async function buildOppsWonMonthly(conn) {
+  const r = await rows(conn, `
+    SELECT cast(date_trunc('month', close_date) AS varchar) AS month,
+           demand_source, segment,
+           count(*)::int      AS won,
+           sum(arr_eur)       AS won_arr_eur
+    FROM fct_opportunities
+    WHERE is_won
+    GROUP BY 1, 2, 3
+    ORDER BY 1, 2, 3`);
+  return r.map(x => ({
+    month: x.month,
+    demand_source: x.demand_source,
+    segment: x.segment,
+    won: num(x.won),
+    won_arr_eur: num(x.won_arr_eur) || 0,
+  }));
+}
+
+// Monthly funnel events broken out by demand_source × segment — feeds
+// the period-filterable "By demand source × segment" table that lives
+// inside MarketingAndOutcomes. Same fact table as buildFunnelBySource,
+// just kept per-month so the client can roll up by the selected period.
+async function buildFunnelBySourceMonthly(conn) {
+  const r = await rows(conn, `
+    SELECT cast(event_month AS varchar) AS month,
+           demand_source, segment,
+           sum(leads)::int       AS leads,
+           sum(opps)::int        AS opps,
+           sum(won)::int         AS won,
+           sum(won_arr_eur)      AS won_arr_eur
+    FROM fct_funnel_conversion
+    GROUP BY 1, 2, 3
+    ORDER BY 1, 2, 3`);
+  return r.map(x => ({
+    month: x.month,
+    demand_source: x.demand_source,
+    segment: x.segment,
+    leads: num(x.leads), opps: num(x.opps), won: num(x.won),
+    won_arr_eur: num(x.won_arr_eur) || 0,
+  }));
+}
+
+// Monthly funnel + opportunity outcomes — feeds the filterable
+// "Marketing funnel & deal outcomes" section. Funnel events come from
+// fct_funnel_conversion (already monthly); outcomes are grouped by the
+// month an opportunity was created so the period filter answers
+// "for opps created in this period, how did they end up?".
+async function buildSankeyMonthly(conn) {
+  const r = await rows(conn, `
+    WITH funnel AS (
+      SELECT cast(event_month AS varchar) AS month,
+             sum(leads)::int AS leads, sum(mqls)::int AS mqls,
+             sum(sqls)::int  AS sqls,  sum(demos)::int AS demos
+      FROM fct_funnel_conversion
+      GROUP BY 1
+    ),
+    opps AS (
+      SELECT cast(date_trunc('month', opp_created_date) AS varchar) AS month,
+             count(*) FILTER (WHERE is_won)                   AS won,
+             count(*) FILTER (WHERE is_lost)                  AS lost,
+             count(*) FILTER (WHERE is_open AND NOT is_stale) AS active,
+             count(*) FILTER (WHERE is_open AND is_stale)     AS stale
+      FROM fct_opportunities
+      GROUP BY 1
+    )
+    SELECT coalesce(f.month, o.month) AS month,
+           coalesce(f.leads, 0)  AS leads,
+           coalesce(f.mqls, 0)   AS mqls,
+           coalesce(f.sqls, 0)   AS sqls,
+           coalesce(f.demos, 0)  AS demos,
+           coalesce(o.won, 0)    AS won,
+           coalesce(o.lost, 0)   AS lost,
+           coalesce(o.active, 0) AS active,
+           coalesce(o.stale, 0)  AS stale
+    FROM funnel f FULL OUTER JOIN opps o ON f.month = o.month
+    ORDER BY 1`);
+  return r.map(x => ({
+    month:  x.month,
+    leads:  num(x.leads), mqls:  num(x.mqls),
+    sqls:   num(x.sqls),  demos: num(x.demos),
+    won:    num(x.won),   lost:  num(x.lost),
+    active: num(x.active), stale: num(x.stale),
+  }));
+}
+
 async function buildSankey(conn) {
   const fn = await one(conn, `
     SELECT sum(leads)::int  AS leads,
@@ -2717,7 +3767,11 @@ async function loadData() {
   const pipelineOpen      = await buildPipelineOpenRaw(conn);
   const forecast          = await buildForecast(conn);
   const activity          = await buildActivity(conn);
-  const sankey            = await buildSankey(conn);
+  const activityRaw       = await buildActivityRaw(conn);
+  const sankey                    = await buildSankey(conn);
+  const sankeyMonthly             = await buildSankeyMonthly(conn);
+  const funnelBySourceMonthly     = await buildFunnelBySourceMonthly(conn);
+  const oppsWonMonthly            = await buildOppsWonMonthly(conn);
 
   return {
     hero, trend, pipelineQuality, qualityFlags, aspBySource, velocity,
@@ -2725,7 +3779,8 @@ async function loadData() {
     rep, pipeByMarket, drift, cumulativeArr,
     arrPace, paceCheckpoints, performance,
     arrTrend, performancePivot, repAttainment, pipelineOpen,
-    forecast, activity, sankey,
+    forecast, activity, activityRaw, sankey, sankeyMonthly,
+    funnelBySourceMonthly, oppsWonMonthly,
     actions: buildActions(hero),
   };
 }

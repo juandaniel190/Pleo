@@ -90,6 +90,11 @@ async function buildHero(conn) {
                                       sum(weighted_arr_eur) AS weighted,
                                       avg(days_since_last_activity) AS avg_silent
                                FROM fct_pipeline_health WHERE is_stale`);
+  // Q2-scoped stale ARR — recovery upside should reconcile with the
+  // Performance table's Upside column (which is also period-filtered).
+  const stQ2 = await one(conn, `SELECT sum(arr_eur) AS arr
+                                FROM fct_pipeline_health
+                                WHERE is_stale AND closes_in_q2_2026`);
   const pq2 = await one(conn, `SELECT sum(arr_eur) AS arr, sum(weighted_arr_eur) AS weighted
                                FROM fct_pipeline_health WHERE closes_in_q2_2026`);
   const wrR = await one(conn, `
@@ -97,10 +102,11 @@ async function buildHero(conn) {
            / nullif((count(*) FILTER (WHERE is_won OR is_lost)), 0) AS wr
     FROM fct_opportunities WHERE opp_created_date >= DATE '2024-01-01'`);
 
-  const tgt   = num(q2.tgt);
-  const close = num(q2.closed);
-  const arr   = num(st.arr);
-  const wr    = num(wrR.wr);
+  const tgt     = num(q2.tgt);
+  const close   = num(q2.closed);
+  const arr     = num(st.arr);
+  const arrQ2   = num(stQ2.arr) || 0;
+  const wr      = num(wrR.wr);
 
   return {
     asOf: '14 May 2026',
@@ -111,10 +117,14 @@ async function buildHero(conn) {
     q2PipeWeighted: Math.round(num(pq2.weighted)),
     staleDeals:     num(st.deals),
     staleArr:       Math.round(arr),
+    staleArrQ2:     Math.round(arrQ2),
     staleWeighted:  Math.round(num(st.weighted)),
     staleAvgSilent: Math.round(num(st.avg_silent)),
     winRatePct:     Math.round(wr * 100),
-    recoveryEur:    Math.round(arr * 0.15 * wr),
+    // Recovery upside is Q2-scoped so the hero number reconciles with the
+    // Performance table's Upside column. Same formula either way:
+    // stale_arr × 15% re-engage × historical win-rate.
+    recoveryEur:    Math.round(arrQ2 * 0.15 * wr),
   };
 }
 
@@ -421,12 +431,14 @@ async function buildPipelineOpenRaw(conn) {
   const r = await rows(conn, `
     SELECT cast(close_date AS varchar) AS close_date,
            market, segment, rep_id, rep_name,
+           forecast_category, is_stale,
            arr_eur, weighted_arr_eur
     FROM fct_pipeline_health
     ORDER BY close_date`);
   return r.map(x => ({
     close_date: x.close_date, market: x.market, segment: x.segment,
     rep_id: x.rep_id, rep_name: x.rep_name,
+    forecast_category: x.forecast_category, is_stale: !!x.is_stale,
     arr: num(x.arr_eur), weighted: num(x.weighted_arr_eur),
   }));
 }
@@ -656,6 +668,27 @@ async function buildForecast(conn) {
 }
 
 // ── Activity volume — weekly + per-rep ─────────────────────────────────────
+// Activity rows broken down by (week, rep, type) across the full history,
+// so the dashboard's Activity section can re-aggregate to any period the
+// user picks. Output is small (weeks × reps × types) so we can ship it
+// to the browser as one parquet without trouble.
+async function buildActivityRaw(conn) {
+  const r = await rows(conn, `
+    SELECT cast(date_trunc('week', a.activity_date) AS varchar) AS week,
+           a.rep_id, r.rep_name, r.market, r.segment,
+           a.activity_type AS type,
+           count(*)::int AS cnt
+    FROM int_activity_outcomes_filled a
+    LEFT JOIN dim_reps r USING (rep_id)
+    GROUP BY 1, 2, 3, 4, 5, 6
+    ORDER BY 1`);
+  return r.map(x => ({
+    week: x.week, rep_id: x.rep_id, rep_name: x.rep_name,
+    market: x.market, segment: x.segment,
+    type: x.type, cnt: num(x.cnt),
+  }));
+}
+
 async function buildActivity(conn) {
   // Weekly by activity_type for the trailing 12 weeks.
   const weekly = await rows(conn, `
@@ -686,6 +719,99 @@ async function buildActivity(conn) {
 }
 
 // ── Sankey · funnel → outcomes (trail 12M + all-time opps) ─────────────────
+// Monthly closed-won opportunities by demand_source × segment. We use this
+// for the "Won" / "Won ARR" columns in the source × segment table instead
+// of fct_funnel_conversion.won, because the two facts drift in the dataset
+// (the funnel table records aggregate "win events" that don't always have
+// a matching row in fct_opportunities). fct_opportunities is the canonical
+// deal-level fact, so reading wins from there reconciles with the hero,
+// Performance, and pace numbers.
+async function buildOppsWonMonthly(conn) {
+  const r = await rows(conn, `
+    SELECT cast(date_trunc('month', close_date) AS varchar) AS month,
+           demand_source, segment,
+           count(*)::int      AS won,
+           sum(arr_eur)       AS won_arr_eur
+    FROM fct_opportunities
+    WHERE is_won
+    GROUP BY 1, 2, 3
+    ORDER BY 1, 2, 3`);
+  return r.map(x => ({
+    month: x.month,
+    demand_source: x.demand_source,
+    segment: x.segment,
+    won: num(x.won),
+    won_arr_eur: num(x.won_arr_eur) || 0,
+  }));
+}
+
+// Monthly funnel events broken out by demand_source × segment — feeds
+// the period-filterable "By demand source × segment" table that lives
+// inside MarketingAndOutcomes. Same fact table as buildFunnelBySource,
+// just kept per-month so the client can roll up by the selected period.
+async function buildFunnelBySourceMonthly(conn) {
+  const r = await rows(conn, `
+    SELECT cast(event_month AS varchar) AS month,
+           demand_source, segment,
+           sum(leads)::int       AS leads,
+           sum(opps)::int        AS opps,
+           sum(won)::int         AS won,
+           sum(won_arr_eur)      AS won_arr_eur
+    FROM fct_funnel_conversion
+    GROUP BY 1, 2, 3
+    ORDER BY 1, 2, 3`);
+  return r.map(x => ({
+    month: x.month,
+    demand_source: x.demand_source,
+    segment: x.segment,
+    leads: num(x.leads), opps: num(x.opps), won: num(x.won),
+    won_arr_eur: num(x.won_arr_eur) || 0,
+  }));
+}
+
+// Monthly funnel + opportunity outcomes — feeds the filterable
+// "Marketing funnel & deal outcomes" section. Funnel events come from
+// fct_funnel_conversion (already monthly); outcomes are grouped by the
+// month an opportunity was created so the period filter answers
+// "for opps created in this period, how did they end up?".
+async function buildSankeyMonthly(conn) {
+  const r = await rows(conn, `
+    WITH funnel AS (
+      SELECT cast(event_month AS varchar) AS month,
+             sum(leads)::int AS leads, sum(mqls)::int AS mqls,
+             sum(sqls)::int  AS sqls,  sum(demos)::int AS demos
+      FROM fct_funnel_conversion
+      GROUP BY 1
+    ),
+    opps AS (
+      SELECT cast(date_trunc('month', opp_created_date) AS varchar) AS month,
+             count(*) FILTER (WHERE is_won)                   AS won,
+             count(*) FILTER (WHERE is_lost)                  AS lost,
+             count(*) FILTER (WHERE is_open AND NOT is_stale) AS active,
+             count(*) FILTER (WHERE is_open AND is_stale)     AS stale
+      FROM fct_opportunities
+      GROUP BY 1
+    )
+    SELECT coalesce(f.month, o.month) AS month,
+           coalesce(f.leads, 0)  AS leads,
+           coalesce(f.mqls, 0)   AS mqls,
+           coalesce(f.sqls, 0)   AS sqls,
+           coalesce(f.demos, 0)  AS demos,
+           coalesce(o.won, 0)    AS won,
+           coalesce(o.lost, 0)   AS lost,
+           coalesce(o.active, 0) AS active,
+           coalesce(o.stale, 0)  AS stale
+    FROM funnel f FULL OUTER JOIN opps o ON f.month = o.month
+    ORDER BY 1`);
+  return r.map(x => ({
+    month:  x.month,
+    leads:  num(x.leads), mqls:  num(x.mqls),
+    sqls:   num(x.sqls),  demos: num(x.demos),
+    won:    num(x.won),   lost:  num(x.lost),
+    active: num(x.active), stale: num(x.stale),
+  }));
+}
+
 async function buildSankey(conn) {
   const fn = await one(conn, `
     SELECT sum(leads)::int  AS leads,
@@ -764,7 +890,11 @@ export async function loadData() {
   const pipelineOpen      = await buildPipelineOpenRaw(conn);
   const forecast          = await buildForecast(conn);
   const activity          = await buildActivity(conn);
-  const sankey            = await buildSankey(conn);
+  const activityRaw       = await buildActivityRaw(conn);
+  const sankey                    = await buildSankey(conn);
+  const sankeyMonthly             = await buildSankeyMonthly(conn);
+  const funnelBySourceMonthly     = await buildFunnelBySourceMonthly(conn);
+  const oppsWonMonthly            = await buildOppsWonMonthly(conn);
 
   return {
     hero, trend, pipelineQuality, qualityFlags, aspBySource, velocity,
@@ -772,7 +902,8 @@ export async function loadData() {
     rep, pipeByMarket, drift, cumulativeArr,
     arrPace, paceCheckpoints, performance,
     arrTrend, performancePivot, repAttainment, pipelineOpen,
-    forecast, activity, sankey,
+    forecast, activity, activityRaw, sankey, sankeyMonthly,
+    funnelBySourceMonthly, oppsWonMonthly,
     actions: buildActions(hero),
   };
 }
