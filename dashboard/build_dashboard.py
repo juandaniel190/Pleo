@@ -34,7 +34,9 @@ TABLES = {
     'fct_funnel_conversion':       'main_marts.fct_funnel_conversion',
     'fct_monthly_arr':             'main_marts.fct_monthly_arr',
     'dim_accounts':                'main_marts.dim_accounts',
+    'dim_reps':                    'main_marts.dim_reps',
     'int_pipeline_stage_history':  'main_intermediate.int_pipeline_stage_history',
+    'int_activity_outcomes_filled':'main_intermediate.int_activity_outcomes_filled',
 }
 
 
@@ -96,25 +98,23 @@ HTML_TEMPLATE = '''<!doctype html>
   ::selection { background: #000000; color: #FFFFFF; }
 
   /* ── Responsive layout classes ───────────────────── */
+  /* Edge-to-edge layout: the dashboard takes the full viewport width with a
+     12px gutter on each side, no max-width clamp. */
   .grid-4       { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-  .body-wrap    { max-width: 1180px; margin: 0 auto; padding: 0 40px 80px; }
-  .hero-pad     { padding: 72px 40px 64px; }
-  .panel-pad    { padding: 32px 32px 36px; }
-  .tbl-scroll   { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 14px; }
-  .actions-row  {
-    display: grid; grid-template-columns: 1fr 180px 160px 100px;
-    gap: 16px; padding: 20px 24px; align-items: center;
-  }
+  .body-wrap    { width: 100%; margin: 0; padding: 0 12px 32px; }
+  .hero-wrap    { width: 100%; margin: 0; }
+  .hero-pad     { padding: 24px 12px 20px; }
+  .panel-pad    { padding: 16px 16px 20px; }
+  .tbl-scroll   { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
   @media (max-width: 768px) {
     .grid-4      { grid-template-columns: repeat(2,1fr); }
-    .body-wrap   { padding: 0 16px 48px; }
-    .hero-pad    { padding: 40px 20px 36px; }
-    .panel-pad   { padding: 20px 16px 24px; }
-    .actions-row { grid-template-columns: 1fr; padding: 16px; gap: 6px; }
-    .hero-h1     { font-size: 28px !important; }
-    .hero-num    { font-size: 22px !important; }
+    .body-wrap   { padding: 0 12px 32px; }
+    .hero-pad    { padding: 24px 12px 20px; }
+    .panel-pad   { padding: 14px 12px 16px; }
+    .hero-h1     { font-size: 26px !important; }
+    .hero-num    { font-size: 20px !important; }
     .hero-para   { font-size: 13px !important; }
-    .sec-title   { font-size: 24px !important; }
+    .sec-title   { font-size: 22px !important; }
   }
   @media (max-width: 480px) {
     .grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }

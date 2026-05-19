@@ -22,7 +22,9 @@ const TABLES = [
   'fct_funnel_conversion',
   'fct_monthly_arr',
   'dim_accounts',
+  'dim_reps',
   'int_pipeline_stage_history',
+  'int_activity_outcomes_filled',
 ];
 
 const DATA_DIR = new URL('data/', window.location.href).href.replace(/\/$/, '');
@@ -372,6 +374,340 @@ async function buildCumulativeArr(conn) {
   }));
 }
 
+// ── ARR trend · raw wins + monthly targets ─────────────────────────────────
+// The chart in the dashboard supports two views (cumulative lines vs actuals
+// bars) and three periods (month / quarter / year). Rather than precompute
+// every combination in SQL, we ship the source rows (~25 wins, ~30 monthly
+// targets) and let the front-end pivot them. That keeps the UI snappy when
+// the user clicks through periods.
+async function buildArrTrend(conn) {
+  const wins = await rows(conn, `
+    SELECT cast(close_date AS varchar) AS close_date, arr_eur
+    FROM fct_opportunities
+    WHERE is_won AND close_date >= DATE '2024-01-01'
+    ORDER BY close_date`);
+  const targets = await rows(conn, `
+    SELECT cast(target_month AS varchar) AS month,
+           sum(effective_monthly_target_eur) AS target
+    FROM fct_rep_attainment
+    WHERE target_month >= DATE '2024-01-01'
+    GROUP BY 1 ORDER BY 1`);
+  return {
+    wins:    wins.map(w => ({ close_date: w.close_date, arr_eur: num(w.arr_eur) })),
+    targets: targets.map(t => ({ month: t.month, target: num(t.target) })),
+  };
+}
+
+// ── Raw rep attainment + open pipeline ─────────────────────────────────────
+// The performance table now supports Month / Quarter / Year filtering, so we
+// ship the granular rows and let the front-end aggregate per period.
+async function buildRepAttainmentRaw(conn) {
+  const r = await rows(conn, `
+    SELECT cast(target_month AS varchar) AS month,
+           rep_id, rep_name, market, segment, team,
+           effective_monthly_target_eur AS target,
+           closed_won_arr_eur           AS actuals
+    FROM fct_rep_attainment
+    WHERE target_month >= DATE '2024-01-01'
+    ORDER BY target_month, rep_id`);
+  return r.map(x => ({
+    month: x.month, rep_id: x.rep_id, rep_name: x.rep_name,
+    market: x.market, segment: x.segment, team: x.team,
+    target: num(x.target), actuals: num(x.actuals),
+  }));
+}
+
+async function buildPipelineOpenRaw(conn) {
+  const r = await rows(conn, `
+    SELECT cast(close_date AS varchar) AS close_date,
+           market, segment, rep_id, rep_name,
+           arr_eur, weighted_arr_eur
+    FROM fct_pipeline_health
+    ORDER BY close_date`);
+  return r.map(x => ({
+    close_date: x.close_date, market: x.market, segment: x.segment,
+    rep_id: x.rep_id, rep_name: x.rep_name,
+    arr: num(x.arr_eur), weighted: num(x.weighted_arr_eur),
+  }));
+}
+
+// ── Performance pivot · region × segment cells ─────────────────────────────
+// Feeds the expandable Region / Segment tabs. Each cell is a (market, segment)
+// pair with Q2 2026 actuals / target / weighted-pipe. The same flat list is
+// grouped either way at render time.
+async function buildPerformancePivot(conn) {
+  const r = await rows(conn, `
+    WITH actuals AS (
+      SELECT market, segment, sum(closed_won_arr_eur) AS won
+      FROM fct_rep_attainment
+      WHERE quarter = 'Q2 2026' AND target_month <= DATE '2026-05-31'
+      GROUP BY 1, 2
+    ),
+    targets AS (
+      SELECT market, segment, sum(effective_monthly_target_eur) AS tgt
+      FROM fct_rep_attainment
+      WHERE quarter = 'Q2 2026'
+      GROUP BY 1, 2
+    ),
+    pipe AS (
+      SELECT market, segment, sum(weighted_arr_eur) AS weighted
+      FROM fct_pipeline_health
+      WHERE closes_in_q2_2026
+      GROUP BY 1, 2
+    )
+    SELECT coalesce(t.market, a.market, p.market)    AS market,
+           coalesce(t.segment, a.segment, p.segment) AS segment,
+           coalesce(a.won, 0)      AS actuals,
+           coalesce(t.tgt, 0)      AS target,
+           coalesce(p.weighted, 0) AS weighted
+    FROM           targets t
+    FULL OUTER JOIN actuals a ON a.market = t.market AND a.segment = t.segment
+    FULL OUTER JOIN pipe    p ON p.market = t.market AND p.segment = t.segment
+    WHERE coalesce(t.market, a.market, p.market) IS NOT NULL
+    ORDER BY market, segment`);
+  return r.map(x => ({
+    market:   x.market,
+    segment:  x.segment,
+    actuals:  num(x.actuals),
+    target:   num(x.target),
+    weighted: num(x.weighted),
+  }));
+}
+
+// ── ARR pace · cumulative by day-of-quarter, 3 series ──────────────────────
+// Q2 2026 line stops at day 44 (the "as of" date), so the chart shows
+// us still climbing while the comparison quarters complete.
+async function buildArrPace(conn) {
+  const r = await rows(conn, `
+    WITH spine AS (SELECT unnest(generate_series(1, 91)) AS d),
+    q2_2026 AS (
+      SELECT date_diff('day', DATE '2026-04-01', close_date) + 1 AS day_in_q, sum(arr_eur) AS arr
+      FROM fct_opportunities
+      WHERE is_won AND close_date BETWEEN DATE '2026-04-01' AND DATE '2026-05-14'
+      GROUP BY 1
+    ),
+    q1_2026 AS (
+      SELECT date_diff('day', DATE '2026-01-01', close_date) + 1 AS day_in_q, sum(arr_eur) AS arr
+      FROM fct_opportunities
+      WHERE is_won AND close_date BETWEEN DATE '2026-01-01' AND DATE '2026-03-31'
+      GROUP BY 1
+    ),
+    q2_2025 AS (
+      SELECT date_diff('day', DATE '2025-04-01', close_date) + 1 AS day_in_q, sum(arr_eur) AS arr
+      FROM fct_opportunities
+      WHERE is_won AND close_date BETWEEN DATE '2025-04-01' AND DATE '2025-06-30'
+      GROUP BY 1
+    )
+    SELECT s.d AS day_in_q,
+           sum(coalesce(a.arr, 0)) OVER (ORDER BY s.d) AS q2_2026,
+           sum(coalesce(b.arr, 0)) OVER (ORDER BY s.d) AS q1_2026,
+           sum(coalesce(c.arr, 0)) OVER (ORDER BY s.d) AS q2_2025
+    FROM spine s
+    LEFT JOIN q2_2026 a ON a.day_in_q = s.d
+    LEFT JOIN q1_2026 b ON b.day_in_q = s.d
+    LEFT JOIN q2_2025 c ON c.day_in_q = s.d
+    ORDER BY s.d`);
+
+  // Null out the current-quarter line past day 44 so the line stops "today"
+  // instead of running flat to the right edge.
+  const AS_OF_DAY = 44;
+  return r.map(x => ({
+    day_in_q: num(x.day_in_q),
+    q2_2026: num(x.day_in_q) <= AS_OF_DAY ? num(x.q2_2026) : null,
+    q1_2026: num(x.q1_2026),
+    q2_2025: num(x.q2_2025),
+  }));
+}
+
+// Same-point checkpoint for the right-column insights.
+async function buildPaceCheckpoints(conn) {
+  const r = await rows(conn, `
+    SELECT 'Q2 2026' AS quarter,
+           count(*) FILTER (WHERE is_won AND close_date BETWEEN DATE '2026-04-01' AND DATE '2026-05-14') AS deals,
+           coalesce(sum(arr_eur) FILTER (WHERE is_won AND close_date BETWEEN DATE '2026-04-01' AND DATE '2026-05-14'), 0) AS arr
+      FROM fct_opportunities
+    UNION ALL
+    SELECT 'Q1 2026',
+           count(*) FILTER (WHERE is_won AND close_date BETWEEN DATE '2026-01-01' AND DATE '2026-02-13'),
+           coalesce(sum(arr_eur) FILTER (WHERE is_won AND close_date BETWEEN DATE '2026-01-01' AND DATE '2026-02-13'), 0)
+      FROM fct_opportunities
+    UNION ALL
+    SELECT 'Q2 2025',
+           count(*) FILTER (WHERE is_won AND close_date BETWEEN DATE '2025-04-01' AND DATE '2025-05-14'),
+           coalesce(sum(arr_eur) FILTER (WHERE is_won AND close_date BETWEEN DATE '2025-04-01' AND DATE '2025-05-14'), 0)
+      FROM fct_opportunities`);
+  return r.map(x => ({ quarter: x.quarter, deals: num(x.deals), arr: num(x.arr) }));
+}
+
+// ── Performance · tabbed by Region / Segment / Rep ──────────────────────────
+// Each tab returns rows with: actuals (Q2 closed-won to date), target (full Q2
+// ramp-adjusted), and weighted pipeline (open deals closing in Q2). The two
+// percentages are computed in the front-end so the totals row can re-derive
+// them from the summed columns rather than averaging row-level percentages.
+async function buildPerformance(conn) {
+  const aggregate = async (dim) => {
+    const r = await rows(conn, `
+      WITH actuals AS (
+        SELECT ${dim} AS dim, sum(closed_won_arr_eur) AS won
+        FROM fct_rep_attainment
+        WHERE quarter = 'Q2 2026' AND target_month <= DATE '2026-05-31'
+        GROUP BY 1
+      ),
+      targets AS (
+        SELECT ${dim} AS dim, sum(effective_monthly_target_eur) AS tgt
+        FROM fct_rep_attainment
+        WHERE quarter = 'Q2 2026'
+        GROUP BY 1
+      ),
+      pipe AS (
+        SELECT ${dim} AS dim, sum(weighted_arr_eur) AS weighted
+        FROM fct_pipeline_health
+        WHERE closes_in_q2_2026
+        GROUP BY 1
+      )
+      SELECT coalesce(t.dim, a.dim, p.dim) AS name,
+             coalesce(a.won, 0)      AS actuals,
+             coalesce(t.tgt, 0)      AS target,
+             coalesce(p.weighted, 0) AS weighted
+      FROM targets t
+      FULL OUTER JOIN actuals a ON a.dim = t.dim
+      FULL OUTER JOIN pipe    p ON p.dim = t.dim
+      ORDER BY target DESC, name`);
+    return r.map(x => ({
+      name:     x.name,
+      actuals:  num(x.actuals),
+      target:   num(x.target),
+      weighted: num(x.weighted),
+    }));
+  };
+
+  const byRep = await rows(conn, `
+    WITH actuals AS (
+      SELECT rep_id, sum(closed_won_arr_eur) AS won
+      FROM fct_rep_attainment
+      WHERE quarter = 'Q2 2026' AND target_month <= DATE '2026-05-31'
+      GROUP BY 1
+    ),
+    targets AS (
+      SELECT rep_id, any_value(rep_name) AS rep_name,
+             any_value(market) AS market, any_value(segment) AS segment,
+             sum(effective_monthly_target_eur) AS tgt
+      FROM fct_rep_attainment
+      WHERE quarter = 'Q2 2026'
+      GROUP BY rep_id
+    ),
+    pipe AS (
+      SELECT rep_id, sum(weighted_arr_eur) AS weighted
+      FROM fct_pipeline_health
+      WHERE closes_in_q2_2026
+      GROUP BY 1
+    )
+    SELECT t.rep_name AS name,
+           t.market || ' · ' || t.segment AS subline,
+           coalesce(a.won, 0)      AS actuals,
+           t.tgt                   AS target,
+           coalesce(p.weighted, 0) AS weighted
+    FROM targets t
+    LEFT JOIN actuals a USING (rep_id)
+    LEFT JOIN pipe    p USING (rep_id)
+    ORDER BY t.tgt DESC, t.rep_name`);
+
+  return {
+    byRegion:  await aggregate('market'),
+    bySegment: await aggregate('segment'),
+    byRep:     byRep.map(x => ({
+      name:     x.name,
+      subline:  x.subline,
+      actuals:  num(x.actuals),
+      target:   num(x.target),
+      weighted: num(x.weighted),
+    })),
+  };
+}
+
+// ── Q2 2026 forecast breakdown by category ─────────────────────────────────
+// Open opportunities scheduled to close in Q2, grouped by forecast_category
+// (Committed / Best Case / Pipeline). Plus already-closed-won for the
+// "what's locked" portion of the headline.
+async function buildForecast(conn) {
+  const cats = await rows(conn, `
+    SELECT forecast_category AS category,
+           count(*)::int AS deals,
+           sum(arr_eur) AS gross,
+           sum(arr_eur * coalesce(close_probability_pct, 0) / 100.0) AS weighted
+    FROM fct_opportunities
+    WHERE close_date BETWEEN DATE '2026-04-01' AND DATE '2026-06-30'
+      AND is_open
+    GROUP BY 1`);
+  const closed = await one(conn, `
+    SELECT sum(arr_eur) FILTER (WHERE is_won)  AS closed_won,
+           sum(arr_eur) FILTER (WHERE is_lost) AS closed_lost
+    FROM fct_opportunities
+    WHERE close_date BETWEEN DATE '2026-04-01' AND DATE '2026-06-30'`);
+  const byCat = Object.fromEntries(cats.map(c => [c.category, c]));
+  const get = (k) => byCat[k] ? num(byCat[k].weighted) : 0;
+  return {
+    committedWeighted: get('Committed'),
+    bestCaseWeighted:  get('Best Case'),
+    pipelineWeighted:  get('Pipeline'),
+    closedWon:         num(closed.closed_won) || 0,
+    closedLost:        num(closed.closed_lost) || 0,
+  };
+}
+
+// ── Activity volume — weekly + per-rep ─────────────────────────────────────
+async function buildActivity(conn) {
+  // Weekly by activity_type for the trailing 12 weeks.
+  const weekly = await rows(conn, `
+    SELECT cast(date_trunc('week', activity_date) AS varchar) AS week,
+           activity_type, count(*)::int AS cnt
+    FROM int_activity_outcomes_filled
+    WHERE activity_date BETWEEN DATE '2026-02-19' AND DATE '2026-05-14'
+    GROUP BY 1, 2 ORDER BY 1, 2`);
+  // Activities per rep, last 4 weeks. Join to dim_reps so reps with zero
+  // activities still show up.
+  const perRep = await rows(conn, `
+    WITH a AS (
+      SELECT rep_id, count(*)::int AS activities
+      FROM int_activity_outcomes_filled
+      WHERE activity_date BETWEEN DATE '2026-04-17' AND DATE '2026-05-14'
+      GROUP BY 1
+    )
+    SELECT r.rep_name, r.market, r.segment, coalesce(a.activities, 0)::int AS activities
+    FROM dim_reps r LEFT JOIN a USING (rep_id)
+    ORDER BY activities ASC, r.rep_name`);
+  return {
+    weekly: weekly.map(x => ({ week: x.week, type: x.activity_type, cnt: num(x.cnt) })),
+    perRep: perRep.map(x => ({
+      rep_name: x.rep_name, market: x.market, segment: x.segment,
+      activities: num(x.activities),
+    })),
+  };
+}
+
+// ── Sankey · funnel → outcomes (trail 12M + all-time opps) ─────────────────
+async function buildSankey(conn) {
+  const fn = await one(conn, `
+    SELECT sum(leads)::int  AS leads,
+           sum(mqls)::int   AS mqls,
+           sum(sqls)::int   AS sqls,
+           sum(demos)::int  AS demos
+    FROM fct_funnel_conversion
+    WHERE event_month BETWEEN DATE '2025-06-01' AND DATE '2026-05-31'`);
+  const out = await one(conn, `
+    SELECT
+      count(*) FILTER (WHERE is_won)                      AS won,
+      count(*) FILTER (WHERE is_lost)                     AS lost,
+      count(*) FILTER (WHERE is_open AND NOT is_stale)    AS active,
+      count(*) FILTER (WHERE is_open AND is_stale)        AS stale
+    FROM fct_opportunities`);
+  return {
+    leads: num(fn.leads), mqls: num(fn.mqls), sqls: num(fn.sqls), demos: num(fn.demos),
+    won:   num(out.won), lost: num(out.lost),
+    active: num(out.active), stale: num(out.stale),
+  };
+}
+
 // Recommendations are advisory, not data — they don't change row-by-row.
 function buildActions(hero) {
   return [
@@ -398,7 +734,8 @@ export async function loadData() {
   const [
     hero, trend, pipelineQuality, qualityFlags, aspBySource, velocity,
     topStale, staleBySegment, funnel, funnelBySource, slippageTrend,
-    rep, pipeByMarket, drift, cumulativeArr
+    rep, pipeByMarket, drift, cumulativeArr,
+    arrPace, paceCheckpoints, performance
   ] = await Promise.all([
     buildHero(conn),
     buildTrend(conn),
@@ -415,12 +752,27 @@ export async function loadData() {
     buildPipeByMarket(conn),
     buildDrift(conn),
     buildCumulativeArr(conn),
+    buildArrPace(conn),
+    buildPaceCheckpoints(conn),
+    buildPerformance(conn),
   ]);
+
+  // Sequential — small, keeps the deps obvious.
+  const arrTrend          = await buildArrTrend(conn);
+  const performancePivot  = await buildPerformancePivot(conn);
+  const repAttainment     = await buildRepAttainmentRaw(conn);
+  const pipelineOpen      = await buildPipelineOpenRaw(conn);
+  const forecast          = await buildForecast(conn);
+  const activity          = await buildActivity(conn);
+  const sankey            = await buildSankey(conn);
 
   return {
     hero, trend, pipelineQuality, qualityFlags, aspBySource, velocity,
     topStale, staleBySegment, funnel, funnelBySource, slippageTrend,
     rep, pipeByMarket, drift, cumulativeArr,
+    arrPace, paceCheckpoints, performance,
+    arrTrend, performancePivot, repAttainment, pipelineOpen,
+    forecast, activity, sankey,
     actions: buildActions(hero),
   };
 }
