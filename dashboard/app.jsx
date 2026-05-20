@@ -876,14 +876,13 @@ function PipelineFunnelChart({ data, period, offset }) {
                     </span>
                   </div>
 
-                  {/* Bar — gross (light grey) with weighted overlay (pink) */}
+                  {/* Bar — gross (grey) with weighted overlay (pink) */}
                   <div style={{ position: 'relative', height: 14,
-                                background: T.hairline, borderRadius: 7,
-                                overflow: 'hidden' }}>
+                                background: T.panel, borderRadius: 7,
+                                overflow: 'hidden',
+                                border: `1px solid ${T.hairline}` }}>
                     <div style={{ position: 'absolute', inset: '0 auto 0 0',
                                   width: `${grossW}%`, background: T.hairline,
-                                  // already the track colour; keeps the layer
-                                  // explicit if track styling changes later.
                                 }} />
                     <div style={{ position: 'absolute', inset: '0 auto 0 0',
                                   width: `${weightedW}%`, background: T.pleoPink500,
