@@ -1,8 +1,4 @@
--- Stale-deal call sheet — the single most useful output of this exercise.
--- Joins fct_pipeline_health with dim_reps to include manager-level grouping.
--- Sorted by ARR descending so the largest at-risk deals are at the top.
---
--- Joins: fct_pipeline_health × dim_reps
+-- Stale-deal call sheet sorted by ARR; largest at-risk deals first. Joins: fct_pipeline_health × dim_reps.
 
 select
     ph.market,

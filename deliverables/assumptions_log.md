@@ -1,7 +1,5 @@
 # Assumptions log
 
-Every data decision made while building this analysis. Each one is mechanical and reproducible in code.
-
 ## Data quality
 
 | # | Issue | Decision | Where it's implemented |
@@ -38,7 +36,3 @@ Every data decision made while building this analysis. Each one is mechanical an
 - **Did not split REP-004's attainment by market in the headline rep scorecard.** With one rep and one transition, the scorecard reads more cleanly if we keep their current market. The data is structured so the split is trivial when requested.
 - **Did not use Jinja in any staging model.** Per project rules, staging is rename + cast only.
 
-## Sources of judgment
-
-- The brief explicitly says some labels are inconsistent and we have to decide how to handle them. The drift flags in the marts make every decision auditable.
-- The 30-day stale threshold matches the brief's worked example. A tighter (14-day) or looser (45-day) threshold is trivially configurable in `fct_opportunities`.

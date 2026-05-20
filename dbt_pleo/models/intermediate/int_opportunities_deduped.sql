@@ -1,12 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_opportunities_deduped
-  -------------------------
-  Resolves the intentional OPP-127 duplicate.
-  Rule: keep the earliest `created_at` (oldest source-system record); drop later.
-  Documented in assumptions_log.md.
-*/
+-- Resolves OPP-127 duplicate; keeps earliest created_at.
 
 with ranked as (
     select

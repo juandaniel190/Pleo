@@ -1,10 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  dim_reps
-  --------
-  Conformed rep dimension. One row per rep_id with full roster context.
-*/
+-- Conformed rep dimension; UKI renamed to UK.
 
 select
     rep_id,

@@ -1,12 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  fct_rep_attainment
-  ------------------
-  Rep × month closed-won ARR vs ramp-adjusted target. Includes quarter rollups
-  via window functions so the dashboard can show QTD attainment without
-  re-aggregating client-side.
-*/
+-- Rep × month closed-won ARR vs ramp-adjusted target with QTD window functions.
 
 with targets as (
     select
@@ -52,7 +46,6 @@ select
         else coalesce(w.closed_won_arr_eur, 0) / t.effective_monthly_target_eur
     end as monthly_attainment_pct,
 
-    -- QTD attainment (cumulative within the quarter)
     sum(coalesce(w.closed_won_arr_eur, 0)) over (
         partition by t.rep_id, t.quarter
         order by t.target_month

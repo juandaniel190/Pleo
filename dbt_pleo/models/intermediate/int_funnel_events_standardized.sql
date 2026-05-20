@@ -1,11 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_funnel_events_standardized
-  ------------------------------
-  Funnel events with a canonical demand source (same dictionary used in opps,
-  so the marts can join the two consistently).
-*/
+-- Funnel events with canonical demand_source (same dictionary as opps).
 
 select
     fe.event_id,

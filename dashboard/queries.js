@@ -1,19 +1,7 @@
-// Runtime data layer for the Pleo dashboard.
-//
-// Loads DuckDB-WASM in the browser, mounts the parquet exports of each dbt
-// mart, and runs all dashboard SQL right here. The result is shaped into
-// `window.DATA` for the existing React/Recharts app to consume.
-//
-// Why this exists: previously `window.DATA` was a hardcoded JSON blob baked
-// into index.html at build time. Now the dashboard genuinely queries the dbt
-// marts at runtime — refresh the page and you see the latest numbers from the
-// parquet files under `dashboard/data/`. No Python middleware required.
+// DuckDB-WASM runtime for the Pleo dashboard — loads parquet marts and populates window.DATA.
 
 import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
 
-// ── Parquet files to register as tables ─────────────────────────────────────
-// Names match the SQL identifiers we use below. The build script exports
-// each mart with the same filename.
 const TABLES = [
   'fct_quarterly_arr',
   'fct_pipeline_health',
@@ -28,8 +16,6 @@ const TABLES = [
 ];
 
 const DATA_DIR = new URL('data/', window.location.href).href.replace(/\/$/, '');
-
-// ── DuckDB-WASM bootstrap ───────────────────────────────────────────────────
 
 async function bootDuckDB() {
   const bundles = duckdb.getJsDelivrBundles();
@@ -50,9 +36,7 @@ async function bootDuckDB() {
 }
 
 async function mountTables(db) {
-  // Fetch each parquet as a full buffer and register it in-memory.
-  // This avoids HTTP range requests (which Python's http.server doesn't support)
-  // and works on any static host including GitHub Pages.
+  // fetch as full buffer — avoids HTTP range requests that http.server doesn't support
   const conn = await db.connect();
   await Promise.all(TABLES.map(async (t) => {
     const filename = `${t}.parquet`;
@@ -67,7 +51,6 @@ async function mountTables(db) {
   return conn;
 }
 
-// Convenience: turn an Arrow result into plain JS objects.
 async function rows(conn, sql) {
   const result = await conn.query(sql);
   return result.toArray().map(r => r.toJSON());
@@ -79,8 +62,6 @@ async function one(conn, sql) {
 
 // Helper: round bigint/number safely (Arrow may return BigInts for INTs).
 const num = (v) => v == null ? null : (typeof v === 'bigint' ? Number(v) : Number(v));
-
-// ── Section queries — one per slice of window.DATA ──────────────────────────
 
 async function buildHero(conn) {
   const q2  = await one(conn, `SELECT sum(target_eur) AS tgt, sum(closed_arr_eur) AS closed
@@ -102,7 +83,7 @@ async function buildHero(conn) {
            / nullif((count(*) FILTER (WHERE is_won OR is_lost)), 0) AS wr
     FROM fct_opportunities WHERE opp_created_date >= DATE '2024-01-01'`);
 
-  const tgt     = num(q2.tgt);
+  const tgt   = num(q2.tgt);
   const close   = num(q2.closed);
   const arr     = num(st.arr);
   const arrQ2   = num(stQ2.arr) || 0;
@@ -124,7 +105,7 @@ async function buildHero(conn) {
     // Recovery upside is Q2-scoped so the hero number reconciles with the
     // Performance table's Upside column. Same formula either way:
     // stale_arr × 15% re-engage × historical win-rate.
-    recoveryEur:    Math.round(arrQ2 * 0.15 * wr),
+    recoveryEur: Math.round(arrQ2 * 0.15 * wr),
   };
 }
 
@@ -384,12 +365,6 @@ async function buildCumulativeArr(conn) {
   }));
 }
 
-// ── ARR trend · raw wins + monthly targets ─────────────────────────────────
-// The chart in the dashboard supports two views (cumulative lines vs actuals
-// bars) and three periods (month / quarter / year). Rather than precompute
-// every combination in SQL, we ship the source rows (~25 wins, ~30 monthly
-// targets) and let the front-end pivot them. That keeps the UI snappy when
-// the user clicks through periods.
 async function buildArrTrend(conn) {
   const wins = await rows(conn, `
     SELECT cast(close_date AS varchar) AS close_date, arr_eur
@@ -408,9 +383,6 @@ async function buildArrTrend(conn) {
   };
 }
 
-// ── Raw rep attainment + open pipeline ─────────────────────────────────────
-// The performance table now supports Month / Quarter / Year filtering, so we
-// ship the granular rows and let the front-end aggregate per period.
 async function buildRepAttainmentRaw(conn) {
   const r = await rows(conn, `
     SELECT cast(target_month AS varchar) AS month,
@@ -445,10 +417,6 @@ async function buildPipelineOpenRaw(conn) {
   }));
 }
 
-// ── Performance pivot · region × segment cells ─────────────────────────────
-// Feeds the expandable Region / Segment tabs. Each cell is a (market, segment)
-// pair with Q2 2026 actuals / target / weighted-pipe. The same flat list is
-// grouped either way at render time.
 async function buildPerformancePivot(conn) {
   const r = await rows(conn, `
     WITH actuals AS (
@@ -488,9 +456,6 @@ async function buildPerformancePivot(conn) {
   }));
 }
 
-// ── ARR pace · cumulative by day-of-quarter, 3 series ──────────────────────
-// Q2 2026 line stops at day 44 (the "as of" date), so the chart shows
-// us still climbing while the comparison quarters complete.
 async function buildArrPace(conn) {
   const r = await rows(conn, `
     WITH spine AS (SELECT unnest(generate_series(1, 91)) AS d),
@@ -553,11 +518,6 @@ async function buildPaceCheckpoints(conn) {
   return r.map(x => ({ quarter: x.quarter, deals: num(x.deals), arr: num(x.arr) }));
 }
 
-// ── Performance · tabbed by Region / Segment / Rep ──────────────────────────
-// Each tab returns rows with: actuals (Q2 closed-won to date), target (full Q2
-// ramp-adjusted), and weighted pipeline (open deals closing in Q2). The two
-// percentages are computed in the front-end so the totals row can re-derive
-// them from the summed columns rather than averaging row-level percentages.
 async function buildPerformance(conn) {
   const aggregate = async (dim) => {
     const r = await rows(conn, `
@@ -639,10 +599,6 @@ async function buildPerformance(conn) {
   };
 }
 
-// ── Q2 2026 forecast breakdown by category ─────────────────────────────────
-// Open opportunities scheduled to close in Q2, grouped by forecast_category
-// (Committed / Best Case / Pipeline). Plus already-closed-won for the
-// "what's locked" portion of the headline.
 async function buildForecast(conn) {
   const cats = await rows(conn, `
     SELECT forecast_category AS category,
@@ -669,11 +625,6 @@ async function buildForecast(conn) {
   };
 }
 
-// ── Activity volume — weekly + per-rep ─────────────────────────────────────
-// Activity rows broken down by (week, rep, type) across the full history,
-// so the dashboard's Activity section can re-aggregate to any period the
-// user picks. Output is small (weeks × reps × types) so we can ship it
-// to the browser as one parquet without trouble.
 async function buildActivityRaw(conn) {
   const r = await rows(conn, `
     SELECT cast(date_trunc('week', a.activity_date) AS varchar) AS week,
@@ -699,8 +650,6 @@ async function buildActivity(conn) {
     FROM int_activity_outcomes_filled
     WHERE activity_date BETWEEN DATE '2026-02-19' AND DATE '2026-05-14'
     GROUP BY 1, 2 ORDER BY 1, 2`);
-  // Activities per rep, last 4 weeks. Join to dim_reps so reps with zero
-  // activities still show up.
   const perRep = await rows(conn, `
     WITH a AS (
       SELECT rep_id, count(*)::int AS activities

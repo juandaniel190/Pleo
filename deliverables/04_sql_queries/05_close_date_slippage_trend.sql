@@ -1,8 +1,4 @@
--- Close-date slippage trend — month over month, for opps that are still open.
--- Joins int_pipeline_stage_history with fct_opportunities so we can scope to
--- still-open opps only.
---
--- Joins: int_pipeline_stage_history × fct_opportunities
+-- Month-over-month close-date slippage on open deals. Joins: int_pipeline_stage_history × fct_opportunities.
 
 select
     h.snapshot_month,

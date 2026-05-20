@@ -1,12 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  fct_funnel_conversion
-  ---------------------
-  Funnel-stage volumes by month × market × segment × demand_source, plus
-  stage-to-stage conversion rates aggregated over the whole period (for the
-  dashboard's headline funnel rates) and per-month (for trend charts).
-*/
+-- Funnel-stage volumes and stage-to-stage conversion rates by month × market × segment × demand_source.
 
 with events as (
     select * from {{ ref('int_funnel_events_standardized') }}
@@ -33,7 +27,6 @@ pivoted as (
 
 select
     *,
-    -- Stage-to-stage conversion (guarded against div/0)
     case when leads > 0 then mqls::double / leads end  as lead_to_mql,
     case when mqls  > 0 then sqls::double / mqls  end  as mql_to_sql,
     case when sqls  > 0 then demos::double / sqls end  as sql_to_demo,

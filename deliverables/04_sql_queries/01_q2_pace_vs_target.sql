@@ -1,8 +1,4 @@
--- Q2 2026 pace vs ramp-adjusted target by market × segment
--- BigQuery-compatible standard SQL. Joins fct_quarterly_arr with dim_accounts
--- to expose where the gap is concentrated.
---
--- Joins: fct_quarterly_arr × dim_accounts (filter on Q2 2026 markets)
+-- Q2 2026 pace vs ramp-adjusted target by market × segment. Joins: fct_quarterly_arr × dim_accounts.
 
 select
     qa.market,

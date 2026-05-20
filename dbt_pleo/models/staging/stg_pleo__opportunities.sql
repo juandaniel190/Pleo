@@ -1,9 +1,5 @@
 {{ config(materialized='view') }}
 
--- Pure staging. The OPP-127 duplicate is preserved here; deduplication happens
--- in int_opportunities_deduped. parse_date and parse_percent handle the messy
--- source formats.
-
 select
     cast(opportunity_id          as varchar)   as opportunity_id,
     cast(account_id              as varchar)   as account_id,

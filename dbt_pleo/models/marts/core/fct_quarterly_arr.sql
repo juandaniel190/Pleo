@@ -1,13 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  fct_quarterly_arr
-  -----------------
-  Quarter × market × segment closed ARR vs the ramp-adjusted aggregate target.
-  This is the single source for the CRO hero card "Are we on track for Q2?".
-*/
-
--- Quarter format matches `quarter` in staging ('Q2 2026', with a space).
+-- Quarter × market × segment closed ARR vs ramp-adjusted target.
 
 with target_q as (
     select

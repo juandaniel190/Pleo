@@ -1,12 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_activity_outcomes_filled
-  ----------------------------
-  Replaces missing outcomes with 'Unknown'. The is_outcome_known flag lets the
-  marts include these rows in activity volume but exclude them from outcome
-  ratios. Null opportunity_id values are preserved (legitimate pre-opp outreach).
-*/
+-- Fills missing outcomes with 'Unknown'; adds is_outcome_known and is_pre_opp_activity flags.
 
 select
     activity_id,

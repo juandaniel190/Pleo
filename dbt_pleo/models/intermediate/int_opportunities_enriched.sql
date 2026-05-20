@@ -1,12 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_opportunities_enriched
-  --------------------------
-  Joins deduplicated opportunities to standardized accounts and rep roster, and
-  re-derives canonical stage, demand source, closed-lost reason, and is_won/lost
-  flags. Drift flags surface disagreement vs Pleo's pre-cleaned values.
-*/
+-- Joins opps to accounts/reps; adds canonical stage, demand_source, closed-lost reason, lifecycle flags, and drift detection.
 
 with opps as (
     select * from {{ ref('int_opportunities_deduped') }}

@@ -1,11 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_pipeline_stage_history
-  --------------------------
-  Per-snapshot view of every opp's stage/forecast/close-date trajectory.
-  Adds month-over-month slippage and stage-transition flags.
-*/
+-- Per-snapshot opp trajectory with prev-stage lookbacks and close-date slippage.
 
 with snaps as (
     select * from {{ ref('stg_pleo__pipeline_snapshots') }}
