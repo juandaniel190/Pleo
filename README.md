@@ -2,9 +2,13 @@
 
 **Author:** Daniel Amezquita · **Stack:** dbt + DuckDB → Jupyter → React + Recharts
 
-**[→ View dashboard](https://juandaniel190.github.io/Pleo/)** 
+## Deliverables
 
-**[→ View deck](https://juandaniel190.github.io/Pleo/deliverables/05_executive_deck.html)**
+- **Part 1 — Data model:** [→ dbt Data Model](deliverables/01_data_model.md) · [assumptions_log.md](deliverables/assumptions_log.md)
+- **Part 2 — Dashboard:** [→ Dashboard](https://juandaniel190.github.io/Pleo/)
+- **Part 3 — Deck:** [→ Deck](https://juandaniel190.github.io/Pleo/deliverables/05_executive_deck.html)
+- **Part 4 — SQL + Python:** [→ Queries](deliverables/04_sql_queries/) · [04_python_script.py](deliverables/04_python_script.py)
+- **AI usage log:** [→ AI log](deliverables/ai_usage_log.md)
 
 ## What's here
 
