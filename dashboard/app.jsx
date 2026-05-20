@@ -1,19 +1,4 @@
-// Pleo RevOps dashboard — React + Recharts, rendered at runtime via Babel.
-//
-// Design intent (per Daniel's direction):
-//   - Pleo Telescope palette (no Finstatement / monochrome).
-//   - Light cream surface, white cards on a grey panel.
-//   - Neue Haas Grotesk Display. Numbers use tabular-nums.
-//   - Pleo brand pastels (yellow / green / pink / purple) appear ONLY on
-//     specific data callouts (status pills, the won funnel bar, the hero
-//     headline number). Everything else is black / grey / white.
-//   - Less colour overall; the eye should land on the numbers that matter.
-//
-// Layout (per Daniel's sketch — single page, ~25% viewport header + scroll):
-//   1. Header (dark, compact) — AI insight + 4 KPI tiles
-//   2. ARR vs Target — three-line cumulative pace chart + insights column
-//   3. Pipeline quality — tiles, AI insight, slip-rate, stale, funnel, ASP
-//   4. Performance — tabbed table (Region / Segment / Rep) + cumulative ARR
+// Pleo RevOps dashboard — React + Recharts, Pleo Telescope palette, runtime via Babel.
 
 const { useState, useMemo, useEffect } = React;
 

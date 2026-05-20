@@ -1,19 +1,10 @@
 {{ config(materialized='view') }}
 
-/*
-  int_opportunity_last_activity
-  -----------------------------
-  Most recent activity per opportunity, with days-since-last-activity computed
-  against the analysis-as-of date. Drives the stale-deal flag in marts.
-
-  The "as of" date is configurable via the `analysis_as_of_date` variable in
-  dbt_project.yml; defaults to current_date.
-*/
+-- Per-opp last_activity_date and days_since_last_activity (falls back to account-level activity).
 
 {% set analysis_as_of = var('analysis_as_of_date', 'current_date') %}
 
 with last_act_opp as (
-    -- Latest activity attached to an opp
     select
         opportunity_id,
         max(activity_date) as last_activity_date
@@ -23,7 +14,6 @@ with last_act_opp as (
 ),
 
 last_act_account as (
-    -- Fallback: latest activity at the account level (for pre-opp outreach or opps with no direct activity)
     select
         account_id,
         max(activity_date) as last_account_activity_date

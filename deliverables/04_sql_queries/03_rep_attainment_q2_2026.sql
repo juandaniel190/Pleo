@@ -1,7 +1,4 @@
--- Rep-level Q2 2026 attainment (ramp-adjusted), through 2026-05-31.
--- Joins fct_rep_attainment with dim_reps to bring ramp_status and team context.
---
--- Joins: fct_rep_attainment × dim_reps
+-- Q2 2026 rep attainment (ramp-adjusted), through 2026-05-31. Joins: fct_rep_attainment × dim_reps.
 
 with q2 as (
     select

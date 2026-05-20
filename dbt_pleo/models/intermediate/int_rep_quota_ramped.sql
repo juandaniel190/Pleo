@@ -1,13 +1,6 @@
 {{ config(materialized='view') }}
 
-/*
-  int_rep_quota_ramped
-  --------------------
-  Rep × month effective quota. The source already supplies an
-  `adjusted_monthly_target_eur` which equals `monthly_arr_target_eur * ramp_factor`,
-  but it is occasionally missing — we coalesce to a safe re-computation.
-  REP-004's mid-period market change is preserved through the rep roster join.
-*/
+-- Rep × month effective quota; coalesces missing adjusted_monthly_target_eur.
 
 select
     t.target_id,
@@ -16,8 +9,6 @@ select
     t.quarter,
     t.rep_id,
     coalesce(t.rep_name, r.rep_name)            as rep_name,
-    -- Pleo's source uses 'UKI' — rename to 'UK' to match the canonical
-    -- market label used everywhere else in the model layer.
     case when coalesce(t.market, r.market) = 'UKI' then 'UK' else coalesce(t.market, r.market) end as market,
     coalesce(t.segment, r.segment)              as segment,
     t.region,

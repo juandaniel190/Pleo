@@ -1,8 +1,4 @@
--- Funnel conversion by demand_source × segment for the trailing 12 months.
--- Joins fct_funnel_conversion to dim_accounts (filtered on the same market/segment)
--- to enrich the numerator with the account count contributing to each cohort.
---
--- Joins: fct_funnel_conversion × dim_accounts
+-- Funnel conversion by demand_source × segment, trailing 12 months. Joins: fct_funnel_conversion × dim_accounts.
 
 select
     f.demand_source,

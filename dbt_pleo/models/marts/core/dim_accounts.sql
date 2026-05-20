@@ -1,12 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  dim_accounts
-  ------------
-  Conformed account dimension. The canonical market / segment / country come
-  from int_accounts_standardized; drift flags are passed through so the
-  dashboard can quantify the CRM data-quality gap.
-*/
+-- Conformed account dimension with canonical market/segment/country and drift flags.
 
 select
     account_id,
@@ -17,11 +11,9 @@ select
     industry,
     employee_count,
     created_date,
-    -- Quality flags
     country_drift,
     market_drift,
     segment_drift,
-    -- Raw / Pleo-cleaned values, for traceability
     pleo_country,
     pleo_market,
     pleo_segment,

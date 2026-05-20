@@ -1,8 +1,5 @@
 {{ config(materialized='view') }}
 
--- Pure staging: rename, cast, and the date/percent macros handle the messy
--- source formats (DD/MM/YYYY mixed with ISO).
-
 select
     cast(account_id        as varchar) as account_id,
     cast(account_name      as varchar) as account_name,

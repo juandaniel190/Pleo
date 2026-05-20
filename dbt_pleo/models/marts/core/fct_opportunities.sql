@@ -1,15 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  fct_opportunities
-  -----------------
-  Opportunity-grain fact, fully enriched. Adds:
-    - days_since_last_activity (from int_opportunity_last_activity)
-    - is_stale flag (open opp with no activity in 30+ days)
-    - quarter and is_q2_2026 helper columns
-
-  Drives every opportunity-level chart in the dashboard.
-*/
+-- Opp-grain fact with is_stale, days_since_last_activity, and closes_in_q2_2026.
 
 {% set analysis_as_of = var('analysis_as_of_date', 'current_date') %}
 

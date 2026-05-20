@@ -1,14 +1,6 @@
 {{ config(materialized='table') }}
 
-/*
-  fct_pipeline_health
-  -------------------
-  Open opportunities only, with the metrics the VP of Sales needs at a glance:
-    - stale flag + days since last activity
-    - close-date slippage in current month vs last snapshot
-    - stage_age_days
-    - forecast-weighted ARR (arr_eur * close_probability / 100)
-*/
+-- Open opps with stale flag, slippage, stage age, and weighted ARR.
 
 with opp as (
     select * from {{ ref('fct_opportunities') }}
