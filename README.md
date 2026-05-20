@@ -2,7 +2,9 @@
 
 **Author:** Daniel Amezquita · **Stack:** dbt + DuckDB → Jupyter → React + Recharts
 
-**[→ View dashboard](https://juandaniel190.github.io/Pleo/)** · **[→ View deck](https://juandaniel190.github.io/Pleo/deliverables/05_executive_deck.html)**
+**[→ View dashboard](https://juandaniel190.github.io/Pleo/)** 
+
+**[→ View deck](https://juandaniel190.github.io/Pleo/deliverables/05_executive_deck.html)**
 
 ## What's here
 
@@ -62,3 +64,4 @@ python3 -m http.server 8000 --directory dashboard
 - **23 deals stuck >90 days in stage** — €785K of frozen pipeline.
 - **Automation #1:** weekly stale-deal alert → +€44K recovered ARR in 45 days (15% re-engage × 22% win rate).
 - **Automation #2:** lock CRM picklists — `segment_raw` has 11 distinct values for 3 canonical segments.
+
