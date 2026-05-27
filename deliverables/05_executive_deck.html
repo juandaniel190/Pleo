@@ -89,13 +89,15 @@
 
   /* Body grid — bullets left / visual right (default) */
   .body {
-    display: grid; grid-template-columns: 1fr 1fr;
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 32px; padding: 18px 48px 0;
     flex: 1 1 auto; min-height: 0;
   }
-  .body.split-7-5 { grid-template-columns: 7fr 5fr; }
-  .body.split-5-7 { grid-template-columns: 5fr 7fr; }
-  .body.full { grid-template-columns: 1fr; }
+  .body.split-7-5 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .body.split-5-7 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .body.full      { grid-template-columns: minmax(0, 1fr); }
+  .body.w90       { width: 90%; margin-inline: auto; padding-inline: 0; }
+  .body > *       { min-width: 0; }
 
   /* Top-level findings list — three to four max */
   .findings { display: flex; flex-direction: column; gap: 4px; }
@@ -132,6 +134,7 @@
     gap: 12px;
   }
   .visual.bare { background: transparent; padding: 0; }
+  .visual > svg { display: grid; overflow: visible; }
   .vis-title {
     font-size: 10px; color: var(--text-mut);
     text-transform: uppercase; letter-spacing: 0.12em;
@@ -389,32 +392,91 @@
   /* ── Decision panel (slide 5) ──────────────────────────────────────────── */
   .ask-box {
     background: var(--black); color: #fff;
-    border-radius: 14px; padding: 18px 22px;
-    display: flex; flex-direction: column; gap: 10px;
+    border-radius: 14px; padding: 22px 24px;
+    display: flex; flex-direction: column;
+    align-self: stretch; min-height: 0;
+  }
+  .ask-head {
+    flex: 0 0 auto;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    margin-bottom: 16px;
   }
   .ask-box .lbl {
-    font-size: 10px; color: var(--pink-500);
+    font-size: 11px; color: var(--pink-500);
     text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600;
   }
   .ask-box .h {
-    font-size: 17px; line-height: 1.35; color: #fff;
+    margin-top: 8px;
+    font-size: 19px; line-height: 1.3; color: #fff;
     font-weight: 500; letter-spacing: -0.015em;
   }
-  .ask-list {
-    list-style: none; display: flex; flex-direction: column; gap: 8px;
+  .ask-box .h .em { color: var(--pink-500); font-weight: 600; }
+  .ask-grid {
+    flex: 1 1 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; gap: 10px;
+    min-height: 0;
   }
-  .ask-list li {
-    display: grid; grid-template-columns: 18px 1fr;
-    gap: 10px; font-size: 12px; color: rgba(255,255,255,0.88);
-    line-height: 1.45;
+  .ask-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 14px 14px 12px;
+    display: flex; flex-direction: column; gap: 5px;
+    border-left: 3px solid var(--pink-500);
+    min-width: 0;
   }
-  .ask-list li::before {
-    content: counter(list-item);
+  .ask-item.q3 { border-left-color: var(--purple); }
+  .ask-item-top {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px;
+  }
+  .ask-q {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.10em;
     color: var(--pink-500); font-weight: 600;
+  }
+  .ask-item.q3 .ask-q { color: var(--purple); }
+  .ask-num {
+    font-size: 22px; font-weight: 600; line-height: 1;
+    color: rgba(255,255,255,0.12);
     font-feature-settings: "tnum";
   }
-  .ask-list { counter-reset: list-item; }
-  .ask-list li { counter-increment: list-item; }
+  .ask-action {
+    font-size: 14px; font-weight: 600; color: #fff;
+    line-height: 1.35; letter-spacing: -0.01em;
+  }
+  .ask-impact {
+    margin-top: auto;
+    display: flex; flex-direction: column; gap: 2px;
+    padding-top: 8px;
+  }
+  .ask-metric {
+    font-size: 28px; font-weight: 600; line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--pink-500);
+    font-feature-settings: "tnum";
+  }
+  .ask-item.q3 .ask-metric { color: var(--purple); }
+  .ask-metric.text { font-size: 22px; letter-spacing: -0.015em; }
+  .ask-metric-lbl {
+    font-size: 11px; color: rgba(255,255,255,0.45);
+    line-height: 1.35;
+  }
+  .ask-cta {
+    flex: 0 0 auto;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ask-cta-mark {
+    flex: 0 0 30px; width: 30px; height: 30px;
+    border-radius: 999px; background: var(--pink-500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+  }
+  .ask-cta-text {
+    font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.45;
+  }
+  .ask-cta-text strong { color: #fff; font-weight: 600; }
 
   .impact-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
@@ -454,6 +516,195 @@
     font-weight: 600;
   }
 
+  /* ── AI marker · forward-points to slide-5 roadmap ─────────────────────── */
+  .ai-mark {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; color: var(--purple);
+    text-transform: uppercase; letter-spacing: 0.10em;
+    font-weight: 700; vertical-align: 1px;
+    margin-left: 6px;
+    background: rgba(166,154,227,0.14);
+    border-radius: 999px; padding: 1px 6px 1px 4px;
+    white-space: nowrap;
+  }
+  .ai-mark svg { width: 10px; height: 10px; display: inline-block; }
+
+  /* ── OKR kanban (slide 4) ──────────────────────────────────────────────── */
+  .okr-grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px; height: 100%;
+  }
+  .okr-col {
+    background: var(--pink-100); border-radius: 14px; padding: 14px 14px 14px;
+    display: flex; flex-direction: column; gap: 12px;
+    min-width: 0; min-height: 0;
+  }
+  .okr-col.q3 { background: rgba(166,154,227,0.10); }
+  .okr-col-head {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 0 4px 6px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .okr-col-title {
+    font-size: 13px; font-weight: 700; color: var(--black);
+    letter-spacing: -0.005em;
+  }
+  .okr-col-when {
+    font-size: 10px; color: var(--text-mut);
+    text-transform: uppercase; letter-spacing: 0.10em;
+  }
+  .okr-col-count {
+    margin-left: auto;
+    font-size: 11px; color: var(--text-mut);
+    background: var(--card); border-radius: 999px; padding: 1px 8px;
+  }
+  .okr-card {
+    background: var(--card); border-radius: 10px; padding: 12px 14px 12px;
+    display: flex; flex-direction: column; gap: 7px;
+    border: 1px solid rgba(0,0,0,0.04);
+    min-width: 0;
+  }
+  .okr-card .okr-tag {
+    font-size: 10px; color: var(--pink-700);
+    text-transform: uppercase; letter-spacing: 0.10em;
+    font-weight: 700;
+  }
+  .okr-col.q3 .okr-card .okr-tag { color: var(--purple); }
+  .okr-card .okr-obj {
+    font-size: 14px; line-height: 1.3; color: var(--black);
+    font-weight: 600; letter-spacing: -0.005em;
+  }
+  .okr-krs {
+    display: flex; flex-direction: column; gap: 8px;
+    border-top: 1px solid var(--hairline); padding-top: 9px;
+    margin-top: 2px;
+  }
+  .okr-kr { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .okr-kr .kr-metric {
+    display: flex; align-items: baseline; gap: 6px;
+    font-size: 12px; line-height: 1.3;
+    color: var(--black); font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .okr-kr .kr-metric .kr-tag {
+    flex: 0 0 auto;
+    font-size: 9px; font-weight: 700;
+    color: var(--pink-700);
+    background: var(--pink-100);
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+    font-feature-settings: "tnum";
+  }
+  .okr-col.q3 .okr-kr .kr-metric .kr-tag {
+    color: var(--purple);
+    background: rgba(166,154,227,0.14);
+  }
+  .okr-kr .kr-init {
+    font-size: 11px; color: var(--text-sec);
+    line-height: 1.45;
+    padding-left: 30px;
+  }
+  .okr-kr .kr-init em { color: var(--text-mut); font-style: italic; }
+  .okr-kr .kr-init strong { color: var(--black); font-weight: 600; }
+  .okr-kr .kr-init .quote {
+    display: inline-block; margin-top: 2px;
+    font-style: italic; color: var(--text-mut);
+    border-left: 2px solid var(--pink-500); padding-left: 6px;
+  }
+
+  /* ── AI roadmap panel (slide 5) — mirrors ask-box, light + purple ─────── */
+  .ai-box {
+    background: linear-gradient(180deg, rgba(166,154,227,0.10) 0%, var(--card) 42%);
+    border: 1px solid rgba(166,154,227,0.22);
+    border-radius: 14px; padding: 22px 24px;
+    display: flex; flex-direction: column;
+    align-self: stretch; min-height: 0;
+  }
+  .ai-head {
+    flex: 0 0 auto;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(166,154,227,0.18);
+    margin-bottom: 16px;
+  }
+  .ai-box .lbl {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--purple);
+    text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600;
+  }
+  .ai-box .lbl svg { width: 10px; height: 10px; }
+  .ai-box .h {
+    margin-top: 8px;
+    font-size: 19px; line-height: 1.3; color: var(--black);
+    font-weight: 500; letter-spacing: -0.015em;
+  }
+  .ai-box .h .em { color: var(--purple); font-weight: 600; }
+  .ai-grid {
+    flex: 1 1 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; gap: 10px;
+    min-height: 0;
+  }
+  .ai-item {
+    background: var(--card);
+    border-radius: 10px; padding: 14px 14px 12px;
+    display: flex; flex-direction: column; gap: 5px;
+    border: 1px solid rgba(166,154,227,0.14);
+    border-left: 3px solid var(--purple);
+    min-width: 0;
+    box-shadow: 0 1px 3px rgba(166,154,227,0.08);
+  }
+  .ai-item-top {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px;
+  }
+  .ai-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.10em;
+    color: var(--purple); font-weight: 600;
+  }
+  .ai-num {
+    font-size: 22px; font-weight: 600; line-height: 1;
+    color: rgba(166,154,227,0.25);
+    font-feature-settings: "tnum";
+  }
+  .ai-action {
+    font-size: 14px; font-weight: 600; color: var(--black);
+    line-height: 1.35; letter-spacing: -0.01em;
+  }
+  .ai-impact {
+    margin-top: auto;
+    display: flex; flex-direction: column; gap: 2px;
+    padding-top: 8px;
+  }
+  .ai-metric {
+    font-size: 28px; font-weight: 600; line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--purple);
+    font-feature-settings: "tnum";
+  }
+  .ai-metric.text { font-size: 22px; letter-spacing: -0.015em; }
+  .ai-metric-lbl {
+    font-size: 11px; color: var(--text-mut);
+    line-height: 1.35;
+  }
+  .ai-foot {
+    flex: 0 0 auto;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(166,154,227,0.18);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ai-foot-mark {
+    flex: 0 0 30px; width: 30px; height: 30px;
+    border-radius: 999px; background: var(--purple);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .ai-foot-mark svg { width: 12px; height: 12px; }
+  .ai-foot-text {
+    font-size: 14px; color: var(--text-sec); line-height: 1.45;
+  }
+  .ai-foot-text strong { color: var(--black); font-weight: 600; }
+
   /* Screen-only print hint */
   .hint {
     background: var(--black); color: #fff; text-align: center;
@@ -462,6 +713,29 @@
   }
   .hint code { background: rgba(255,255,255,0.12); padding: 2px 6px;
                border-radius: 3px; font-family: ui-monospace, monospace; }
+
+  /* ── Regional attainment table (slide 1) ──────────────────────────────── */
+  .reg-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .reg-table th, .reg-table td {
+    padding: 3px 7px; text-align: right; white-space: nowrap; vertical-align: middle;
+  }
+  .reg-table th:first-child, .reg-table td:first-child { text-align: left; font-weight: 600; }
+  .reg-table thead tr:first-child th {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-sec); font-weight: 600; padding-bottom: 3px;
+    border-bottom: 1px solid var(--hairline2); text-align: center;
+  }
+  .reg-table thead tr:first-child th:first-child { text-align: left; }
+  .reg-table thead tr:last-child th {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-mut); font-weight: 500; padding-top: 3px;
+  }
+  .reg-table tbody tr td { border-top: 1px solid var(--hairline); }
+  .reg-table tbody tr:first-child td { border-top: 1px solid var(--hairline2); }
+  .reg-table .sep { border-left: 2px solid var(--hairline2); }
+  .att-ok  { color: var(--positive); background: #e6f7ee; border-radius: 3px; padding: 1px 5px; font-size: 9px; font-weight: 600; display: inline-block; }
+  .att-mid { color: #5c4400;         background: var(--yellow); border-radius: 3px; padding: 1px 5px; font-size: 9px; font-weight: 600; display: inline-block; }
+  .att-bad { color: var(--negative); background: var(--pink-200); border-radius: 3px; padding: 1px 5px; font-size: 9px; font-weight: 600; display: inline-block; }
 
   /* ── Print: 1 slide per page, exact colors ─────────────────────────────── */
   @page { size: 1280px 720px; margin: 0; }
@@ -516,8 +790,8 @@
         <div class="finding-p"><strong>€654K of Q2-scoped stale ARR × 15% re-engage × 22% historical win rate</strong>. Floor, not forecast — and it doesn't depend on net-new pipeline arriving in seven weeks.</div>
       </li>
       <li class="finding">
-        <div class="finding-h">The remaining €34K residual gap is a re-baselining conversation with Finance, not a sales push</div>
-        <div class="finding-p">Four consecutive quarters under 25% attainment make this a target-setting question, taken up on slide 2.</div>
+        <div class="finding-h">Only UK <span class="em">(105%)</span> and DE <span class="em">(157%)</span> are above Q2 pipeline coverage — ES, NL, SE, DK range from 15–52%</div>
+        <div class="finding-p">Not a uniform miss. Two regions are well-covered; four need a targeted plan. Full year view: DE, ES, DK at ≥100% — NL and SE structurally behind. See table right.</div>
       </li>
     </ul>
 
@@ -558,7 +832,7 @@
       </div>
 
       <!-- Cumulative bar -->
-      <svg viewBox="0 0 580 60" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
+      <svg viewBox="0 0 580 60" width="100%" preserveAspectRatio="xMidYMid meet">
         <!-- Track (full = 311K) -->
         <rect x="0" y="22" width="580" height="14" rx="7" fill="var(--hairline)"/>
         <!-- Commit cumulative = 47/311 = 15.1% → width = 87.6 -->
@@ -578,27 +852,72 @@
       <!-- Upside card sits OUTSIDE the bar story -->
       <div style="display:flex; align-items:center; gap:14px; margin-top:2px;">
         <div class="kpi upside" style="flex:0 0 160px;">
-          <div class="kpi-label">Upside</div>
+          <div class="kpi-label">Upside <span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span></div>
           <div class="kpi-value num">+€22K</div>
           <div class="kpi-sub blue">Re-engagement</div>
         </div>
         <div style="font-size:11px; color:var(--text-mut); line-height:1.5;">
-          Upside is recovery potential — not committed forecast. Sits outside the bar deliberately. The Mid-Market intervention on slide 4 is what unlocks it.
+          Recovery potential — not committed forecast. Mid-Market intervention (→ slide 4) is what unlocks it.
         </div>
       </div>
+
+      <!-- Regional pipeline coverage table -->
+      <div>
+        <div class="vis-title-row" style="margin-bottom:5px;">
+          <div class="vis-title">Regional pipeline coverage vs target</div>
+          <div class="meta num">Weighted · Q2: open only · FY: actuals + open</div>
+        </div>
+        <table class="reg-table num">
+          <thead>
+            <tr>
+              <th></th>
+              <th colspan="3">Q2 2026</th>
+              <th colspan="3" class="sep">Full Year 2026</th>
+            </tr>
+            <tr>
+              <th>Region</th>
+              <th>Pipeline</th>
+              <th>Attainment</th>
+              <th>Target</th>
+              <th class="sep">Pipeline</th>
+              <th>Attainment</th>
+              <th>Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>UK</td><td>€107K</td><td><span class="att-ok">105%</span></td><td>€102K</td>
+              <td class="sep">€179K</td><td><span class="att-mid">70%</span></td><td>€255K</td>
+            </tr>
+            <tr>
+              <td>DE</td><td>€97K</td><td><span class="att-ok">157%</span></td><td>€62K</td>
+              <td class="sep">€174K</td><td><span class="att-ok">112%</span></td><td>€155K</td>
+            </tr>
+            <tr>
+              <td>ES</td><td>€7K</td><td><span class="att-bad">15%</span></td><td>€46K</td>
+              <td class="sep">€179K</td><td><span class="att-ok">155%</span></td><td>€115K</td>
+            </tr>
+            <tr>
+              <td>NL</td><td>€23K</td><td><span class="att-bad">52%</span></td><td>€44K</td>
+              <td class="sep">€46K</td><td><span class="att-bad">41%</span></td><td>€110K</td>
+            </tr>
+            <tr>
+              <td>SE</td><td>€8K</td><td><span class="att-bad">27%</span></td><td>€31K</td>
+              <td class="sep">€8K</td><td><span class="att-bad">9%</span></td><td>€91K</td>
+            </tr>
+            <tr>
+              <td>DK</td><td>€13K</td><td><span class="att-bad">51%</span></td><td>€26K</td>
+              <td class="sep">€66K</td><td><span class="att-ok">102%</span></td><td>€65K</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
   </div>
 
-  <div class="foot">
-    <div class="note">
-      <span class="lbl">Speaker note</span>
-      Open at the operating decision, not the miss. The forecast covers 82% of target; the gap is real but not insurmountable. The question for this room is which lever closes the €56K — and the rest of the deck names it: a Mid-Market intervention, not a generic "everyone push harder."
-    </div>
-    <div class="trans">
-      → Before we talk levers, one structural observation: this gap has held for four quarters, and it lives in one specific cell of the pipeline.
-    </div>
-  </div>
+
 </section>
 
 
@@ -751,15 +1070,7 @@
 
   </div>
 
-  <div class="foot">
-    <div class="note">
-      <span class="lbl">Speaker note</span>
-      Two findings reinforce: the quarterly pattern (four quarters of misses) and the segment concentration (Mid-Market is the cell). The current operating model treats Mid-Market and Enterprise the same; the data says they need different motions. This is a coverage/capacity story, not a blame story — and it's the frame that makes every recommendation on slide 4 line up.
-    </div>
-    <div class="trans">
-      → If Mid-Market is where the money lives, three frictions explain why the deals there aren't closing.
-    </div>
-  </div>
+
 </section>
 
 
@@ -784,16 +1095,20 @@
     <!-- LEFT: 3 frictions, named -->
     <ul class="findings">
       <li class="finding">
-        <div class="finding-h">Silence · 34 deals worth <span class="em">€1.34M</span> with no AE activity in 30+ days</div>
+        <div class="finding-h">Silence · 34 deals worth <span class="em">€1.34M</span> with no AE activity in 30+ days<span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span></div>
         <div class="finding-p"><strong>Wise · €161K · 85 days silent</strong> is the largest single exposure. 6 of 16 reps logged zero activity in the last 4 weeks — and 5 of those 6 own at least one stale deal. <em>Owner: UK Sales Lead. This is a sales motion failure, not a marketing one.</em></div>
       </li>
       <li class="finding">
-        <div class="finding-h">Slippage · close-date push-out rate jumped from <span class="em">0% → 19%</span> in four months</div>
+        <div class="finding-h">Slippage · close-date push-out rate jumped from <span class="em">0% → 19%</span> in four months<span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span></div>
         <div class="finding-p">9 deals worth €405K had their close date pushed in May alone. Reps are no longer committing to dates — so the weighted forecast moves week-to-week. <em>Owner: VP Sales · tight close-date discipline in forecast calls.</em></div>
       </li>
       <li class="finding">
-        <div class="finding-h">Contracting · <span class="em">all 3 deals stuck &gt;90 days</span> at €110K weighted</div>
+        <div class="finding-h">Contracting · <span class="em">all 3 deals stuck &gt;90 days</span> at €110K weighted<span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span></div>
         <div class="finding-p">Money frozen at the finish line. This is a legal/procurement issue, not a sales issue — the wrong owner won't move it. <em>Owner: Deal Desk + Legal escalation.</em></div>
+      </li>
+      <li class="finding">
+        <div class="finding-h">Separate analysis: shift SDR capacity toward Partnerships + Marketing — won ASP <span class="em">€94K</span> vs <span class="em">€32K</span> SDR Outbound</div>
+        <div class="finding-p">Partnerships-sourced won deals average 3× the ARR of SDR Outbound. Not asked of this meeting; demand source breakdown right.</div>
       </li>
     </ul>
 
@@ -858,7 +1173,7 @@
           <div class="vis-title-row" style="margin-bottom:6px;">
             <div class="vis-title">Slippage rate · last 6 months</div>
           </div>
-          <svg viewBox="0 0 240 90" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
+          <svg viewBox="0 0 240 90" width="100%" preserveAspectRatio="xMidYMid meet">
             <!-- Grid -->
             <line x1="20" y1="70" x2="240" y2="70" stroke="var(--hairline)" stroke-width="1"/>
             <!-- Bars (slipped ARR € — relative heights) -->
@@ -892,31 +1207,43 @@
           </div>
         </div>
 
-        <!-- Activity-zero -->
+        <!-- Demand source · lead-to-won -->
         <div class="slip-chart">
           <div class="vis-title-row" style="margin-bottom:6px;">
-            <div class="vis-title">Reps · activities logged · last 4 weeks</div>
+            <div class="vis-title">Demand source · lead-to-won</div>
           </div>
-          <div class="actchip-grid">
-            <div class="actchip zero"><span class="nm">K. Nguyen</span><span class="ct">0</span></div>
-            <div class="actchip zero"><span class="nm">E. Lindqvist</span><span class="ct">0</span></div>
-            <div class="actchip zero"><span class="nm">C. Rossi</span><span class="ct">0</span></div>
-            <div class="actchip zero"><span class="nm">S. Andersen</span><span class="ct">0</span></div>
-            <div class="actchip zero"><span class="nm">F. Jacobs</span><span class="ct">0</span></div>
-            <div class="actchip zero"><span class="nm">P. Van Berg</span><span class="ct">0</span></div>
-            <div class="actchip"><span class="nm">S. Muller</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">O. Svensson</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">I. Garcia</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">A. Kowalski</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">M. Eriksson</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">N. Walsh</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">J. Patel</span><span class="ct">1</span></div>
-            <div class="actchip"><span class="nm">T. Brauer</span><span class="ct">2</span></div>
-            <div class="actchip"><span class="nm">L. Dubois</span><span class="ct">2</span></div>
-            <div class="actchip"><span class="nm">N. Weber</span><span class="ct">3</span></div>
-          </div>
-          <div style="font-size:10px; color:var(--text-mut); margin-top:6px; line-height:1.45;">
-            <strong style="color:var(--pink-700)">6 of 16 reps logged zero</strong>. The activity-zero set overlaps the stale-deal set 1-for-1 — that's the systems argument.
+          <table class="reg-table num" style="font-size:10px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mut); font-weight:500;">Source / Segment</th>
+                <th style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mut); font-weight:500;">Leads</th>
+                <th style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mut); font-weight:500;">Won</th>
+                <th style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mut); font-weight:500;">Won ARR</th>
+                <th style="font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-mut); font-weight:500;">L→W</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:left; font-weight:600;">▸ Partnerships</td>
+                <td>5</td><td>5</td><td><span class="att-ok">€468K</span></td>
+                <td><span class="att-ok">100%</span></td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600;">▸ SDR Outbound</td>
+                <td>23</td><td>5</td><td>€161K</td><td>22%</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600;">▸ Marketing</td>
+                <td>25</td><td>5</td><td>€340K</td><td>20%</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600;">▸ AE Outbound</td>
+                <td>26</td><td>3</td><td>€95K</td><td><span class="att-bad">12%</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-size:10px; color:var(--text-mut); margin-top:5px; line-height:1.45;">
+            <strong style="color:var(--positive)">Partnerships €468K</strong> at 100% L→W vs SDR Outbound <strong style="color:var(--text-sec)">€161K</strong> at 22% — 3× ARR gap. See finding left.
           </div>
         </div>
 
@@ -926,15 +1253,7 @@
 
   </div>
 
-  <div class="foot">
-    <div class="note">
-      <span class="lbl">Speaker note</span>
-      The three frictions live in three different parts of the funnel. The wrong owner kills the recovery: a sales motion won't unstick Contracting (legal does); a marketing campaign won't fix silence (a rep manager does). The activity-zero overlay is the cleanest proof that the team isn't being lazy — they're sitting on stale pipeline with no urgency signal. Fix the signal; the activity follows.
-    </div>
-    <div class="trans">
-      → Knowing where the frictions are, the executable plan is five named actions across two time horizons.
-    </div>
-  </div>
+
 </section>
 
 
@@ -950,87 +1269,195 @@
   </div>
 
   <div class="title-block">
-    <h1><span class="accent">Five named actions, two time horizons</span> — Mid-Market is the lens through which all five align</h1>
-    <p class="msg">Decide today; assign owners before leaving the room. The plan compounds: Q2 capture, Q3 protection, H2 structural reset.</p>
+    <h1>The plan as <span class="accent">OKRs</span> — two objectives this quarter, two for next</h1>
+    <p class="msg">Each KR: the number we'll move · initiative · owner. AI markers → slide 5.</p>
   </div>
 
   <div class="body full">
-    <div class="kanban">
+    <div class="okr-grid">
 
-      <!-- Column 1 — This week -->
-      <div class="kcol">
-        <div class="kcol-head">
-          <span class="kcol-title">This week</span>
-          <span class="kcol-when">Decide by Friday</span>
-          <span class="kcol-count num">2 actions</span>
+      <!-- ═══════════════════════════════════════════════════════════════════
+           Column 1 — Q2 (45 days)
+           ═══════════════════════════════════════════════════════════════════ -->
+      <div class="okr-col q2">
+        <div class="okr-col-head">
+          <span class="okr-col-title">Q2 · 45 days</span>
+          <span class="okr-col-when">Decide today · owners assigned</span>
+          <span class="okr-col-count num">2 objectives</span>
         </div>
 
-        <div class="kcard red">
-          <span class="kpill">Urgent · Q2 capture</span>
-          <div class="ktitle">Manager touch on Wise · J. Patel · UK Enterprise</div>
-          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
-            €161K · 85 days silent · largest single exposure. UK Sales Lead picks up the phone, not the AE. If we lose Wise this quarter we eat a 50% additional gap.
-          </div>
-          <div class="kmeta">
-            <span class="kval">€161K at-risk</span>
-            <span class="kown">UK Sales Lead</span>
+        <!-- Objective 1 -->
+        <div class="okr-card">
+          <span class="okr-tag">Objective 1</span>
+          <div class="okr-obj">Close Q2 with forecast credibility intact.</div>
+          <div class="okr-krs">
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR1</span>
+                <span>Recover <span class="num">≥€22K</span> ARR
+                  <span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span>
+                </span>
+              </div>
+              <div class="kr-init">
+                Alert flow + manager-led outreach on 34 stale deals (€654K × 15% × 22%). <em>Owner: UK + NL Sales Leads.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR2</span>
+                <span>Manager-touch on <span class="num">6 of 6</span> deals silent &gt;60d · 14 days</span>
+              </div>
+              <div class="kr-init">
+                UK Sales Lead calls Wise (€161K, 85d silent) — manager, not AE. <em>Owner: UK Sales Lead.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR3</span>
+                <span>Slip rate <span class="num">19% → ≤10%</span> by end of Q2
+                  <span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span>
+                </span>
+              </div>
+              <div class="kr-init">
+                No close-date moves without manager sign-off in weekly forecast calls. <em>Owner: VP Sales.</em>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="kcard red">
-          <span class="kpill">Urgent · Forecast trust</span>
-          <div class="ktitle">Open Q2 contingency review with Finance — flip RAG to RED</div>
-          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
-            The €34K residual gap after weighted-pipe and upside lands is a re-baselining conversation, not a sales push. Open the H2 quota dialogue now.
-          </div>
-          <div class="kmeta">
-            <span class="kval">€311K target</span>
-            <span class="kown">CRO</span>
+        <!-- Objective 2 -->
+        <div class="okr-card">
+          <span class="okr-tag">Objective 2</span>
+          <div class="okr-obj">Build the foundation H2 plans against.</div>
+          <div class="okr-krs">
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR1</span>
+                <span>Segment values <span class="num">11 → 3</span>
+                  <span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span>
+                </span>
+              </div>
+              <div class="kr-init">
+                Lock segment, market, source, stage dropdowns — no free-text. <em>Owner: RevOps + Sales Ops.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR2</span>
+                <span>Stale alert + Contracting escalation live · 30d trigger</span>
+              </div>
+              <div class="kr-init">
+                Auto-flag opps silent 30d; escalate Contracting &gt;90d to Deal Desk + Legal. <em>Owner: RevOps.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR3</span>
+                <span>Activity-zero reps <span class="num">6 → 0</span> · ≥1 activity / rep / week</span>
+              </div>
+              <div class="kr-init">
+                Activity reporting in forecast calls; ≥1 logged activity / rep / week. <em>Owner: Sales Managers.</em>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
 
-      <!-- Column 2 — 45 days -->
-      <div class="kcol">
-        <div class="kcol-head">
-          <span class="kcol-title">This sprint · 45 days</span>
-          <span class="kcol-when">Owned and tracked weekly</span>
-          <span class="kcol-count num">3 actions</span>
+      <!-- ═══════════════════════════════════════════════════════════════════
+           Column 2 — Q3 (structural play)
+           ═══════════════════════════════════════════════════════════════════ -->
+      <div class="okr-col q3">
+        <div class="okr-col-head">
+          <span class="okr-col-title">Q3 · structural play</span>
+          <span class="okr-col-when">Owned and tracked monthly</span>
+          <span class="okr-col-count num">2 objectives</span>
         </div>
 
-        <div class="kcard amber">
-          <span class="kpill">Mid-Market intervention</span>
-          <div class="ktitle">UK + NL Mid-Market re-engagement sprint — 12 stale deals, €495K</div>
-          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
-            Block AE diaries for opp reviews on the 12 cells representing 37% of all stale ARR. Manager-led, deal-by-deal, exit criteria locked at each stage.
-          </div>
-          <div class="kmeta">
-            <span class="kval">~€12K Q2 capture</span>
-            <span class="kown">UK + Benelux Sales Leads</span>
+        <!-- Objective 3 -->
+        <div class="okr-card">
+          <span class="okr-tag">Objective 3</span>
+          <div class="okr-obj">Make Mid-Market a repeatable motion.</div>
+          <div class="okr-krs">
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR1</span>
+                <span>Mid-Market stale ARR <span class="num">€836K → €500K</span> (−40%)</span>
+              </div>
+              <div class="kr-init">
+                Manager-led sprint: 12 MM stale deals (€495K), exit criteria locked. <em>Owner: UK + Benelux Sales Leads.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR2</span>
+                <span>UK + NL Mid-Market Q3 attainment <span class="num">≥50%</span></span>
+              </div>
+              <div class="kr-init">
+                Separate MM coverage and cadence from Enterprise — different motion. <em>Owner: VP Sales.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR3</span>
+                <span>Mid-Market avg sales cycle <span class="num">−20%</span></span>
+              </div>
+              <div class="kr-init">
+                Stage-exit criteria locked + stale alerts per stage. <em>Owner: RevOps + Sales Leads.</em>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="kcard amber">
-          <span class="kpill">Automation</span>
-          <div class="ktitle">Weekly stale-deal alert + Contracting escalation</div>
-          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
-            Auto-flag every open opp with no activity ≥30 days. Separate flow auto-escalates stuck-at-Contracting deals to Deal Desk + Legal. Source already in <code style="font-size:10px; background:var(--card); padding:1px 4px; border-radius:3px;">fct_pipeline_health.is_stale</code>.
-          </div>
-          <div class="kmeta">
-            <span class="kval">+€22K recovered</span>
-            <span class="kown">RevOps</span>
-          </div>
-        </div>
+        <!-- Objective 4 -->
+        <div class="okr-card">
+          <span class="okr-tag">Objective 4</span>
+          <div class="okr-obj">Replace forecast guesswork with forecast machinery.</div>
+          <div class="okr-krs">
 
-        <div class="kcard gray">
-          <span class="kpill">Process</span>
-          <div class="ktitle">Lock CRM picklists · segment / market / source / stage</div>
-          <div style="font-size:11px; color:var(--text-sec); line-height:1.45;">
-            <code style="font-size:10px; background:var(--panel); padding:1px 4px; border-radius:3px;">segment_raw</code> has 11 values for 3 canonical segments. Lock it now; unlock the H2 re-baseline conversation with Finance using clean data.
-          </div>
-          <div class="kmeta">
-            <span class="kval">Forecast trust</span>
-            <span class="kown">RevOps + Sales Ops</span>
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR1</span>
+                <span>Forecast accuracy <span class="num">±15%</span> · 2 consecutive months</span>
+              </div>
+              <div class="kr-init">
+                Weekly forecast calls; close-date discipline carried from Q2·O1. <em>Owner: VP Sales + RevOps.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR2</span>
+                <span>1 AI pilot live · 1 segment
+                  <span class="ai-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>AI</span>
+                </span>
+              </div>
+              <div class="kr-init">
+                Pilot one automation from slide 5 (drafter · slip · stale · contract). Proof first. <em>Owner: RevOps.</em>
+              </div>
+            </div>
+
+            <div class="okr-kr">
+              <div class="kr-metric">
+                <span class="kr-tag num">KR3</span>
+                <span>H2 plan signed off · Finance + CRO</span>
+              </div>
+              <div class="kr-init">
+                Quota re-baseline against historical conversion; Q2·O2 unlocks it. <em>Owner: CRO + Finance.</em>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1038,15 +1465,7 @@
     </div>
   </div>
 
-  <div class="foot">
-    <div class="note">
-      <span class="lbl">Speaker note</span>
-      Resist a sixth action — every micro-insight in the dashboard could be one, and we've deliberately chosen the five with the highest leverage. The Mid-Market sprint is the central bet; the other four set it up (urgent), unblock it (Contracting escalation), automate it (stale alert), and clean its base data (picklist lock). The decision in this meeting is who owns each line and what success looks like in 45 days.
-    </div>
-    <div class="trans">
-      → Five actions in 45 days deliver ~€22K of capture, protect €1.34M of Q3 pipeline, and reset the forecast. The slide-5 ask names what we need from this room to make that real.
-    </div>
-  </div>
+
 </section>
 
 
@@ -1062,102 +1481,146 @@
   </div>
 
   <div class="title-block">
-    <h1>Decision asked of this room: <span class="accent">sign off on the five actions and open the H2 re-baseline with Finance</span></h1>
-    <p class="msg">Q2 capture is modest. The compounding wins are forecast trust, a Mid-Market motion that scales, and a sourcing mix the company can plan against.</p>
+    <h1>Decision asked of this room: <span class="accent">approve the four OKRs and pilot one AI automation in Q3</span></h1>
+    <p class="msg">Q2 capture is modest. The compounding wins are forecast trust, a Mid-Market motion that scales, and a RevOps function that moves from reactive alerts to predictive operations.</p>
   </div>
 
-  <div class="body split-7-5">
+  <div class="body w90">
 
-    <!-- LEFT: Impact cards + sourcing strategic recommendation -->
-    <div style="display: flex; flex-direction: column; gap: 14px;">
+    <!-- LEFT: AI automation roadmap — each automation solves a friction from slides 1–3 -->
+    <div class="ai-box">
+      <div class="ai-head">
+        <div class="lbl">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/><path d="M19 14.5 L19.6 16.7 L21.8 17.3 L19.6 17.9 L19 20.1 L18.4 17.9 L16.2 17.3 L18.4 16.7 Z" fill="currentColor" opacity="0.55"/></svg>
+          AI automation roadmap
+        </div>
+        <div class="h">Four automations. <span class="em">Pilot one</span> in Q3 — each resolves a friction from slides 1–3.</div>
+      </div>
 
-      <div class="impact-grid">
-        <div class="impact-card">
-          <div class="lbl">Q2 · 45 days</div>
-          <div class="v num">+€22K</div>
-          <div class="p">Recovered ARR from re-engaging 34 stale deals. <strong>Conservative floor</strong> (€654K × 15% × 22%).</div>
-          <div class="conf">High confidence</div>
+      <div class="ai-grid">
+        <div class="ai-item">
+          <div class="ai-item-top">
+            <span class="ai-tag">Stale-deal predictor</span>
+            <span class="ai-num num">01</span>
+          </div>
+          <div class="ai-action">Flags silence before recovery is needed</div>
+          <div class="ai-impact">
+            <div class="ai-metric num">€654K</div>
+            <div class="ai-metric-lbl">stale ARR at risk · day 15 alert vs day 30</div>
+          </div>
         </div>
-        <div class="impact-card">
-          <div class="lbl">Q3 · rolling</div>
-          <div class="v num">€1.34M</div>
-          <div class="p">Stale pipeline kept in the forecast instead of silently rolling out. <strong>This is the real prize</strong> — capture is small, protection is large.</div>
-          <div class="conf med">Medium confidence</div>
+
+        <div class="ai-item">
+          <div class="ai-item-top">
+            <span class="ai-tag">Re-engagement drafter</span>
+            <span class="ai-num num">02</span>
+          </div>
+          <div class="ai-action">Context-aware outreach · AE approves in one click</div>
+          <div class="ai-impact">
+            <div class="ai-metric num">+€22K</div>
+            <div class="ai-metric-lbl">34 stale deals · recovery floor</div>
+          </div>
         </div>
-        <div class="impact-card future">
-          <div class="lbl">This sprint</div>
-          <div class="v">Forecast trust</div>
-          <div class="p">CRM picklist lock removes recurring reconciliation cost and gives Finance a clean baseline for the H2 re-quota conversation.</div>
-          <div class="conf">High confidence</div>
+
+        <div class="ai-item">
+          <div class="ai-item-top">
+            <span class="ai-tag">Slip predictor</span>
+            <span class="ai-num num">03</span>
+          </div>
+          <div class="ai-action">Surfaces close-date push-outs before forecast calls</div>
+          <div class="ai-impact">
+            <div class="ai-metric num">19→10%</div>
+            <div class="ai-metric-lbl">slip rate target · forecast credibility</div>
+          </div>
         </div>
-        <div class="impact-card future">
-          <div class="lbl">Next plan cycle</div>
-          <div class="v">Sourcing re-mix</div>
-          <div class="p">Partnerships ASP <strong>€93K</strong> vs SDR/AE Outbound <strong>€32K</strong>. Capacity should shift toward inbound + partnerships. <em>Standing recommendation — separate analysis.</em></div>
-          <div class="conf fut">Future cycle</div>
+
+        <div class="ai-item">
+          <div class="ai-item-top">
+            <span class="ai-tag">Contract review</span>
+            <span class="ai-num num">04</span>
+          </div>
+          <div class="ai-action">Flags redlines for Deal Desk + Legal</div>
+          <div class="ai-impact">
+            <div class="ai-metric num">€110K</div>
+            <div class="ai-metric-lbl">contracting unblocked · 3 deals stuck</div>
+          </div>
         </div>
       </div>
 
-      <!-- ASP bar — small, supporting the sourcing card -->
-      <div class="visual" style="padding:12px 14px; gap:8px;">
-        <div class="vis-title-row">
-          <div class="vis-title">ASP by demand source · all-time closed-won</div>
-          <div class="meta num">18 deals total</div>
+      <div class="ai-foot">
+        <div class="ai-foot-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.4 9 L20 10.5 L13.4 12 L12 19 L10.6 12 L4 10.5 L10.6 9 Z" fill="currentColor"/></svg>
         </div>
-        <svg viewBox="0 0 560 70" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;">
-          <!-- Bars · scaled to max 93.6K → 220px width -->
-          <text x="0"   y="14" font-size="10" fill="var(--text-sec)">Partnerships</text>
-          <rect x="100" y="6"  width="220" height="12" rx="2" fill="var(--pink-500)"/>
-          <text x="328" y="16" font-size="10" fill="var(--black)" class="num" font-weight="600">€93K · 5 deals</text>
-
-          <text x="0"   y="32" font-size="10" fill="var(--text-sec)">Marketing</text>
-          <rect x="100" y="24" width="160" height="12" rx="2" fill="var(--pink-300)"/>
-          <text x="268" y="34" font-size="10" fill="var(--black)" class="num" font-weight="600">€68K · 5 deals</text>
-
-          <text x="0"   y="50" font-size="10" fill="var(--text-mut)">SDR Outbound</text>
-          <rect x="100" y="42" width="76"  height="12" rx="2" fill="var(--hairline)"/>
-          <text x="184" y="52" font-size="10" fill="var(--text-sec)" class="num">€32K · 5 deals</text>
-
-          <text x="0"   y="68" font-size="10" fill="var(--text-mut)">AE Outbound</text>
-          <rect x="100" y="60" width="74"  height="12" rx="2" fill="var(--hairline)"/>
-          <text x="182" y="70" font-size="10" fill="var(--text-sec)" class="num">€32K · 3 deals</text>
-        </svg>
+        <div class="ai-foot-text"><strong>Q3 ask:</strong> pick one automation, one segment — prove it works before scaling all four.</div>
       </div>
-
     </div>
 
     <!-- RIGHT: The Ask -->
     <div class="ask-box">
-      <div class="lbl">Decision · sign-off today</div>
-      <div class="h">Five actions, two horizons, owners assigned before this meeting ends.</div>
+      <div class="ask-head">
+        <div class="lbl">Decision · sign-off today</div>
+        <div class="h">Approve <span class="em">four OKRs</span>. Confirm owners. Open the H2 re-baseline.</div>
+      </div>
 
-      <ol class="ask-list">
-        <li>UK Sales Lead picks up the phone on Wise — this week.</li>
-        <li>CRO opens H2 quota re-baseline with Finance — this week.</li>
-        <li>UK + NL Sales Leads run the Mid-Market re-engagement sprint — 45 days.</li>
-        <li>RevOps ships the stale-deal alert + Contracting escalation — 45 days.</li>
-        <li>RevOps + Sales Ops lock CRM picklists — this sprint.</li>
-      </ol>
-
-      <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 10px; margin-top: 4px;">
-        <div style="font-size:10px; color:var(--pink-500); text-transform:uppercase; letter-spacing:0.16em; font-weight:600; margin-bottom:6px;">Standing recommendation</div>
-        <div style="font-size:12px; color:rgba(255,255,255,0.85); line-height:1.5;">
-          Move SDR capacity toward Partnerships / Marketing for next plan cycle. Separate analysis — not asked of this meeting.
+      <div class="ask-grid">
+        <div class="ask-item q2">
+          <div class="ask-item-top">
+            <span class="ask-q">Q2 · Objective 1</span>
+            <span class="ask-num num">01</span>
+          </div>
+          <div class="ask-action">Close Q2 with forecast credibility intact</div>
+          <div class="ask-impact">
+            <div class="ask-metric num">≥€22K</div>
+            <div class="ask-metric-lbl">ARR recovery · 34 stale deals</div>
+          </div>
         </div>
+
+        <div class="ask-item q2">
+          <div class="ask-item-top">
+            <span class="ask-q">Q2 · Objective 2</span>
+            <span class="ask-num num">02</span>
+          </div>
+          <div class="ask-action">Build the foundation H2 plans against</div>
+          <div class="ask-impact">
+            <div class="ask-metric num">11 → 3</div>
+            <div class="ask-metric-lbl">CRM values locked · alerts live</div>
+          </div>
+        </div>
+
+        <div class="ask-item q3">
+          <div class="ask-item-top">
+            <span class="ask-q">Q3 · Objective 3</span>
+            <span class="ask-num num">03</span>
+          </div>
+          <div class="ask-action">Make Mid-Market a repeatable motion</div>
+          <div class="ask-impact">
+            <div class="ask-metric num">−40%</div>
+            <div class="ask-metric-lbl">MM stale ARR · ≥50% attainment</div>
+          </div>
+        </div>
+
+        <div class="ask-item q3">
+          <div class="ask-item-top">
+            <span class="ask-q">Q3 · Objective 4</span>
+            <span class="ask-num num">04</span>
+          </div>
+          <div class="ask-action">Replace forecast guesswork with forecast machinery</div>
+          <div class="ask-impact">
+            <div class="ask-metric num">±15%</div>
+            <div class="ask-metric-lbl">forecast accuracy · 1 AI pilot</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ask-cta">
+        <div class="ask-cta-mark">✓</div>
+        <div class="ask-cta-text"><strong>Ask of this room:</strong> explicit sign-off on all four — not agreement to review further.</div>
       </div>
     </div>
 
   </div>
 
-  <div class="foot">
-    <div class="note">
-      <span class="lbl">Speaker note</span>
-      Don't oversell the €22K — it's a conservative floor. The real prize is system-level: a trustworthy forecast, a Mid-Market motion that scales, and a sourcing mix that lets the company plan against a target it can actually hit. Close the room on the five actions — that's the answer the CRO needs to walk into the board meeting with.
-    </div>
-    <div class="trans">
-      → Thank you. The dashboard at <code style="font-size:10px;">dashboard/index.html</code> is the live source for every number in this deck.
-    </div>
-  </div>
+
 </section>
 
 </div>
